@@ -1,0 +1,53 @@
+@import '../../ahAntDef';
+
+.theling_tagSelect {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  user-select: none;
+
+  .theling_tagOptions {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ant-tag {
+    margin-inline-end: 0;
+    font-size: @font-size-base;
+  }
+
+  .theling_trigger {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--ant-color-primary, #1677ff);
+    font-size: 13px;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s;
+
+    .anticon {
+      font-size: 11px;
+    }
+
+    &:hover {
+      color: var(--ant-color-primary-hover, #4096ff);
+    }
+  }
+
+  &.theling_tagSelect-expandable:not(.theling_tagSelect-expanded) {
+    .theling_tagOptions {
+      overflow: hidden;
+    }
+  }
+}

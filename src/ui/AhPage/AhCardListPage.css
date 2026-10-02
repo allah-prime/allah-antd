@@ -1,0 +1,7 @@
+[data-domid='zl-card-list-page'] .ant-spin-nested-loading {
+  height: 100%;
+}
+
+[data-domid='zl-card-list-page'] .ant-spin-nested-loading > div > .ant-spin {
+  max-height: none;
+}

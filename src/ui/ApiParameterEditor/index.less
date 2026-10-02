@@ -1,0 +1,390 @@
+.theling_apiParamEditor {
+  --theling-schema-row-height: 36px;
+  --theling-schema-type-string: #389e0d;
+  --theling-schema-type-number: #d48806;
+  --theling-schema-type-boolean: #722ed1;
+  --theling-schema-type-object: #1677ff;
+  --theling-schema-type-array: #389e0d;
+  --theling-schema-items: #722ed1;
+  --theling-schema-star: #ff4d4f;
+  --theling-schema-line: var(--ant-color-split, #f0f0f0);
+
+  font-size: 13px;
+  color: var(--ant-color-text, rgba(0, 0, 0, 0.88));
+
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+
+  .ant-pro-form-list-action,
+  .ant-pro-form-list-creator-button-bottom,
+  .ant-pro-form-list-creator-button-top {
+    display: none;
+  }
+
+  .ant-pro-form-list {
+    width: 100%;
+  }
+}
+
+.theling_apiParamEditor_toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 40px;
+  padding: 0 4px 0 8px;
+  border-bottom: 1px solid var(--theling-schema-line);
+}
+
+.theling_apiParamEditor_title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  color: var(--ant-color-text, rgba(0, 0, 0, 0.88));
+}
+
+.theling_apiParamEditor_toolbarAdd {
+  color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.45));
+  transition: color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  &:hover {
+    color: var(--ant-color-primary, #1677ff);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.theling_apiParamEditor_row {
+  display: grid;
+  grid-template-columns: minmax(180px, 2fr) minmax(168px, max-content) 76px minmax(120px, 1.4fr) 56px;
+  align-items: center;
+  min-height: var(--theling-schema-row-height);
+  padding-right: 4px;
+  border-radius: 4px;
+  transition: background-color 120ms ease;
+
+  &:focus-within {
+    background: var(--ant-color-fill-tertiary, #f5f5f5);
+  }
+}
+
+.theling_apiParamEditor_row.is-meta {
+  &:hover,
+  &:focus-within {
+    background: transparent;
+  }
+}
+
+.theling_apiParamEditor_name {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.theling_apiParamEditor_caret {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.45));
+  cursor: pointer;
+  transition: color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  &:hover {
+    color: var(--ant-color-text, rgba(0, 0, 0, 0.88));
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  .anticon {
+    font-size: 10px;
+  }
+}
+
+.theling_apiParamEditor_caret.is-placeholder {
+  cursor: default;
+  pointer-events: none;
+}
+
+.theling_apiParamEditor_itemsLabel {
+  padding: 0 6px;
+  color: var(--theling-schema-items);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.theling_apiParamEditor_type {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  overflow: visible;
+  gap: 0;
+
+  > * {
+    flex: none;
+  }
+
+  > .ant-form-item {
+    width: auto;
+    margin-inline-end: 0;
+  }
+}
+
+.theling_apiParamEditor_in,
+.theling_apiParamEditor_desc {
+  min-width: 0;
+}
+
+.theling_apiParamEditor_ops {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+}
+
+.theling_apiParamEditor_iconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.45));
+  cursor: pointer;
+  transition: color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  .anticon {
+    font-size: 15px;
+  }
+
+  &:hover {
+    color: var(--ant-color-primary, #1677ff);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &.is-danger:hover {
+    color: var(--ant-color-error, #ff4d4f);
+  }
+}
+
+.theling_apiParamEditor_star {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 22px;
+  margin-inline-start: 1px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--ant-color-text-quaternary, rgba(0, 0, 0, 0.15));
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  &:hover,
+  &.is-on {
+    color: var(--theling-schema-star);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.theling_apiParamEditor_nullMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  margin-inline-start: 4px;
+  padding: 0 4px;
+  border: 1px solid var(--ant-color-border, #d9d9d9);
+  border-radius: 4px;
+  background: var(--ant-color-fill-quaternary, #f5f5f5);
+  color: var(--ant-color-text-quaternary, rgba(0, 0, 0, 0.25));
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  &:hover,
+  &.is-on {
+    color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.45));
+    border-color: var(--ant-color-border-secondary, #bfbfbf);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.theling_apiParamEditor_ghostInput,
+.theling_apiParamEditor_ghostSelect {
+  width: 100%;
+}
+
+.theling_apiParamEditor_ghostSelect .ant-select-selector {
+  height: 28px !important;
+  padding: 0 6px !important;
+  border-color: transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 13px;
+}
+
+.theling_apiParamEditor_ghostSelect .ant-select-selection-item,
+.theling_apiParamEditor_ghostSelect .ant-select-selection-placeholder {
+  line-height: 26px !important;
+}
+
+.theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput.ant-input,
+.theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput .ant-input {
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 13px;
+  line-height: 26px;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput.ant-input:hover,
+  .theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput:hover .ant-input,
+  .theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput .ant-input:hover {
+    border-color: var(--ant-color-primary-border, #91caff) !important;
+    background: #fff !important;
+  }
+}
+
+.theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput.ant-input:focus,
+.theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput.ant-input-focused,
+.theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput .ant-input:focus,
+.theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_ghostInput .ant-input-focused {
+  border-color: var(--ant-color-primary, #1677ff) !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 2px var(--ant-color-primary-bg, #e6f4ff) !important;
+}
+
+.theling_apiParamEditor.theling_apiParamEditor .theling_apiParamEditor_typeSelect.ant-select {
+  width: fit-content !important;
+  min-width: 0 !important;
+  max-width: none;
+  padding-inline: 4px 0 !important;
+
+  .ant-select-content {
+    flex: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin-inline-end: 0 !important;
+  }
+
+  .ant-select-arrow,
+  .ant-select-suffix {
+    display: none !important;
+    width: 0 !important;
+    margin: 0 !important;
+  }
+
+  .ant-select-selection-item,
+  .ant-select-selection-placeholder,
+  .ant-select-content-value {
+    font-weight: 500;
+    padding-inline-end: 0 !important;
+  }
+
+  &.is-string .ant-select-selection-item,
+  &.is-array .ant-select-selection-item,
+  &.is-array_object .ant-select-selection-item {
+    color: var(--theling-schema-type-array);
+  }
+
+  &.is-object .ant-select-selection-item {
+    color: var(--theling-schema-type-object);
+  }
+
+  &.is-number .ant-select-selection-item {
+    color: var(--theling-schema-type-number);
+  }
+
+  &.is-boolean .ant-select-selection-item {
+    color: var(--theling-schema-type-boolean);
+  }
+}
+
+.theling_apiParamEditor_typeOption.is-string,
+.theling_apiParamEditor_typeOption.is-array,
+.theling_apiParamEditor_typeOption.is-array_object {
+  color: var(--theling-schema-type-array);
+}
+
+.theling_apiParamEditor_typeOption.is-object {
+  color: var(--theling-schema-type-object);
+}
+
+.theling_apiParamEditor_typeOption.is-number {
+  color: var(--theling-schema-type-number);
+}
+
+.theling_apiParamEditor_typeOption.is-boolean {
+  color: var(--theling-schema-type-boolean);
+}
+
+.theling_apiParamEditor_inSelect {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
+  .ant-select-arrow {
+    display: none;
+  }
+
+  .ant-select-selection-item {
+    color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.45));
+  }
+}
+
+.theling_apiParamEditor_typeText {
+  padding: 0 6px;
+  font-weight: 500;
+
+  &.is-object {
+    color: var(--theling-schema-type-object);
+  }
+}
+
+.theling_apiParamEditor_empty {
+  padding: 8px 0 8px 8px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .theling_apiParamEditor_row .theling_apiParamEditor_ops {
+    opacity: 0.7;
+  }
+
+  .theling_apiParamEditor_row:hover .theling_apiParamEditor_ops,
+  .theling_apiParamEditor_row:focus-within .theling_apiParamEditor_ops {
+    opacity: 1;
+  }
+}

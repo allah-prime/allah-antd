@@ -1,0 +1,30 @@
+.theling-antd-AhFormFilter{
+  display: flex;
+  // 横向布局
+  flex-direction: row;
+  .ant-pro:nth-of-type(2){
+    flex-shrink: 0;
+  }
+  .ant-pro-form-light-filter {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .theling-antd-AhFormFilter-AddFilter {
+    display: inline-flex;
+    grid-gap: 4px;
+    gap: 4px;
+    align-items: center;
+    height: 30px;
+    padding: 0 4px;
+    font-size: 14px;
+    line-height: 30px;
+    border-radius: 2px;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+    .ant-form-item-control-input{
+      min-height: 30px;
+    }
+  }
+}

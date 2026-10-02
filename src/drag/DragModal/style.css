@@ -1,0 +1,378 @@
+.zl-drag-modal {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  transition: box-shadow 0.3s, border 0.3s;
+  border-radius: 8px;
+  overflow: hidden;
+  position: fixed;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.zl-drag-modal.fullscreen {
+  position: fixed;
+  inset: 20px;
+  /* 覆盖任何可能的具体方向设置 */
+  top: 20px !important; 
+  left: 20px !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 8px;
+  max-width: none !important;
+  max-height: none !important;
+  z-index: 9999 !important;
+}
+
+.zl-drag-modal-backdrop {
+  transition: background 0.3s, backdrop-filter 0.3s, opacity 0.3s;
+  pointer-events: auto;
+}
+
+/* 标题区域样式 */
+.zl-drag-modal-header {
+  user-select: none;
+  min-height: 56px;
+  padding: 0;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.zl-drag-modal-title-area {
+  position: relative;
+  transition: background-color 0.3s;
+  cursor: move;
+  user-select: none;
+  flex-grow: 1;
+  height: 100%;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+}
+
+.zl-drag-modal-title-area.no-drag {
+  cursor: default;
+}
+
+.zl-drag-modal-title {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 控制区域样式 */
+.zl-drag-modal-controls {
+  flex-shrink: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 1;
+  padding: 16px 24px;
+}
+
+/* 内容区域样式 */
+.zl-drag-modal-body {
+  padding: 24px;
+  flex: 1;
+  overflow: auto;
+}
+
+/* 页脚区域样式 */
+.zl-drag-modal-footer {
+  padding: 10px 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* 按钮图标通用样式 */
+.zl-drag-modal-header .ant-btn-text {
+  transition: all 0.3s;
+}
+
+.zl-drag-modal-header .ant-btn-text:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* 固定按钮样式 */
+.zl-drag-modal-pin.active {
+  transform: rotate(45deg);
+  animation: zl-pin-fixed 0.3s ease;
+}
+
+.zl-drag-modal-pin.active .anticon,
+.zl-drag-modal-pin.active .anticon svg {
+  color: #1890ff !important;
+  fill: #1890ff !important;
+}
+
+/* 全屏按钮样式 */
+.zl-drag-modal-fullscreen.active .anticon,
+.zl-drag-modal-fullscreen.active .anticon svg {
+  color: #1890ff !important;
+  fill: #1890ff !important;
+}
+
+/* 磨砂玻璃效果 */
+.zl-drag-modal-backdrop.blurred {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(4px) !important;
+  opacity: 1;
+}
+
+.zl-drag-modal-backdrop:not(.blurred) {
+  opacity: 0;
+}
+
+.zl-drag-modal.pinned::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 8px;
+  pointer-events: none;
+  animation: zl-pulse-border 2s infinite;
+}
+
+/* 拖拽时的样式 */
+.zl-drag-modal-title-area.dragging {
+  cursor: move !important;
+}
+
+@keyframes zl-pin-fixed {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(45deg); }
+}
+
+/* 动画效果 */
+.zl-drag-modal-enter, .zl-drag-modal-appear {
+  opacity: 0;
+  transform: scale(0.8);
+  animation: zl-modal-fade-in 0.3s cubic-bezier(0.08, 0.82, 0.17, 1);
+}
+
+.zl-drag-modal-enter-active, .zl-drag-modal-appear-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms cubic-bezier(0.08, 0.82, 0.17, 1), transform 300ms cubic-bezier(0.08, 0.82, 0.17, 1);
+}
+
+.zl-drag-modal-exit {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: none;
+}
+
+.zl-drag-modal-exit-active {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 300ms cubic-bezier(0.78, 0.14, 0.15, 0.86), transform 300ms cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  pointer-events: none;
+}
+
+/* 缩放时挡住 iframe，避免指针一进内容区就丢事件 */
+.zl-drag-modal.resizing .zl-drag-modal-body,
+.zl-drag-modal.resizing .zl-drag-modal-header,
+.zl-drag-modal.resizing iframe {
+  pointer-events: none !important;
+}
+
+.zl-drag-modal-resize-shield {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+}
+
+/* 调整大小的手柄基础样式 */
+.zl-resize-handle {
+  position: absolute;
+  z-index: 10;
+  touch-action: none;
+  transition: background-color 0.3s;
+}
+
+/* 右侧调整宽度手柄 */
+.zl-resize-handle-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+}
+
+/* 左侧调整宽度手柄 */
+.zl-resize-handle-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+}
+
+/* 底部调整高度手柄 */
+.zl-resize-handle-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 8px; /* 避开左下角手柄 */
+  right: 8px; /* 避开右下角手柄 */
+  height: 8px;
+  cursor: ns-resize;
+}
+
+/* 右下角调整手柄 */
+.zl-resize-handle-bottom-right {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 8px;
+  height: 8px;
+  cursor: nwse-resize;
+}
+
+/* 左下角调整手柄 */
+.zl-resize-handle-bottom-left {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 8px;
+  height: 8px;
+  cursor: nesw-resize;
+}
+
+/* 悬停和调整时样式 */
+.zl-resize-handle:hover, 
+.zl-drag-modal.resizing .zl-resize-handle {
+  background-color: rgba(24, 144, 255, 0.3);
+}
+
+/* 底部边界指示器 */
+.zl-drag-modal.resizing.at-max-height::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: rgba(245, 34, 45, 0.5);
+  animation: zl-pulse-opacity 1s infinite;
+  z-index: 10;
+}
+
+@keyframes zl-pulse-opacity {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0.3; }
+}
+
+/* 拖拽边界指示效果 */
+.zl-drag-modal.resizing {
+  box-shadow: 0 0 0 1px rgba(24, 144, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  user-select: none;
+  transition: none;
+}
+
+/* 添加一个微妙的视觉反馈 */
+.zl-drag-modal.resizing::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px dashed #1890ff;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* 调整大小到右侧边界时的指示效果 */
+.zl-drag-modal.resizing.at-max-width::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: rgba(245, 34, 45, 0.5); /* 红色边界指示 */
+  animation: zl-pulse-opacity 1s infinite;
+  z-index: 10;
+}
+
+/* 调整大小到左侧边界时的指示效果 */
+.zl-drag-modal.resizing.at-left-bound::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: rgba(245, 34, 45, 0.5); /* 红色边界指示 */
+  animation: zl-pulse-opacity 1s infinite;
+  z-index: 10;
+}
+
+@keyframes zl-pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(24, 144, 255, 0.4); }
+  70% { box-shadow: 0 0 0 4px rgba(24, 144, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(24, 144, 255, 0); }
+}
+
+/* 背景动画 */
+.zl-drag-modal-backdrop {
+  transition: background 0.3s, backdrop-filter 0.3s, opacity 0.3s;
+  pointer-events: auto;
+}
+
+.zl-drag-modal-backdrop.blurred {
+  animation: zl-backdrop-fade-in 0.3s ease;
+}
+
+/* 背景遮罩进入动画 */
+.backdrop-enter {
+  opacity: 0;
+}
+
+.backdrop-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+/* 背景遮罩退出动画 */
+.backdrop-exit {
+  opacity: 1;
+}
+
+.backdrop-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+
+@keyframes zl-modal-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zl-backdrop-fade-in {
+  0% {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}

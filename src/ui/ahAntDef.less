@@ -1,0 +1,155 @@
+@import "./styles/colorPalette";
+
+@normal-color: #d9d9d9;
+@white: #fff;
+@black: #000;
+
+// Background color for `<body>`
+@body-background: #fff;
+// Base background color for most components
+@component-background: #fff;
+
+// Layer background
+@popover-background: #1f1f1f;
+@popover-customize-border-color: #3a3a3a;
+@body-background: @black;
+@component-background: #141414;
+
+@text-color: fade(@black, 85%);
+@text-color-secondary: fade(@black, 45%);
+@text-color-inverse: @white;
+@text-color-secondary: fade(@black, 45%);
+@heading-color: fade(@black, 85%);
+@font-variant-base: tabular-nums;
+@font-feature-settings-base: 'tnum';
+@font-size-base: 14px;
+@font-size-lg: @font-size-base + 2px;
+
+// Shadow
+@shadow-color: rgba(0, 0, 0, 0.15);
+@shadow-color-inverse: @component-background;
+@box-shadow-base: @shadow-2;
+@shadow-1-up: 0 -6px 16px -8px rgba(0, 0, 0, 0.08), 0 -9px 28px 0 rgba(0, 0, 0, 0.05),
+  0 -12px 48px 16px rgba(0, 0, 0, 0.03);
+@shadow-1-down: 0 6px 16px -8px rgba(0, 0, 0, 0.08), 0 9px 28px 0 rgba(0, 0, 0, 0.05),
+0 12px 48px 16px rgba(0, 0, 0, 0.03);
+@shadow-1-left: -6px 0 16px -8px rgba(0, 0, 0, 0.08), -9px 0 28px 0 rgba(0, 0, 0, 0.05),
+-12px 0 48px 16px rgba(0, 0, 0, 0.03);
+@shadow-1-right: 6px 0 16px -8px rgba(0, 0, 0, 0.08), 9px 0 28px 0 rgba(0, 0, 0, 0.05),
+12px 0 48px 16px rgba(0, 0, 0, 0.03);
+@shadow-2: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+0 9px 28px 8px rgba(0, 0, 0, 0.05);
+
+
+// Border color
+@border-color-base: hsv(0, 0, 85%); // base border outline a component
+@border-color-split: hsv(0, 0, 94%); // split border inside a component
+@border-color-inverse: @white;
+@border-width-base: 1px; // width of the border for a component
+@border-style-base: solid; // style of a components border
+
+@border-radius-base: 2px;
+@border-radius-sm: 2px;
+
+// height rules
+@height-base: 32px;
+@height-lg: 40px;
+@height-sm: 24px;
+
+// Input
+// ---
+@input-height-base: @height-base;
+@input-height-lg: @height-lg;
+@input-height-sm: @height-sm;
+
+@line-height-base: 1.5715;
+
+// Outline
+@outline-blur-size: 0;
+@outline-width: 2px;
+@outline-color: @primary-color; // No use anymore
+@outline-fade: 20%;
+
+@primary-color: @blue-6;
+@primary-color-outline: fade(@primary-color, @outline-fade);
+
+@blue-base: #1890ff;
+@blue-1: color(~`colorPalette('@{blue-6}', 1) `);
+@blue-2: color(~`colorPalette('@{blue-6}', 2) `);
+@blue-3: color(~`colorPalette('@{blue-6}', 3) `);
+@blue-4: color(~`colorPalette('@{blue-6}', 4) `);
+@blue-5: color(~`colorPalette('@{blue-6}', 5) `);
+@blue-6: @blue-base;
+@blue-7: color(~`colorPalette('@{blue-6}', 7) `);
+@blue-8: color(~`colorPalette('@{blue-6}', 8) `);
+@blue-9: color(~`colorPalette('@{blue-6}', 9) `);
+@blue-10: color(~`colorPalette('@{blue-6}', 10) `);
+
+@red-base: #f5222d;
+@red-1: color(~`colorPalette('@{red-6}', 1) `);
+@red-2: color(~`colorPalette('@{red-6}', 2) `);
+@red-3: color(~`colorPalette('@{red-6}', 3) `);
+@red-4: color(~`colorPalette('@{red-6}', 4) `);
+@red-5: color(~`colorPalette('@{red-6}', 5) `);
+@red-6: @red-base;
+@red-7: color(~`colorPalette('@{red-6}', 7) `);
+@red-8: color(~`colorPalette('@{red-6}', 8) `);
+@red-9: color(~`colorPalette('@{red-6}', 9) `);
+@red-10: color(~`colorPalette('@{red-6}', 10) `);
+
+@green-base: #52c41a;
+@green-1: color(~`colorPalette('@{green-6}', 1) `);
+@green-2: color(~`colorPalette('@{green-6}', 2) `);
+@green-3: color(~`colorPalette('@{green-6}', 3) `);
+@green-4: color(~`colorPalette('@{green-6}', 4) `);
+@green-5: color(~`colorPalette('@{green-6}', 5) `);
+@green-6: @green-base;
+@green-7: color(~`colorPalette('@{green-6}', 7) `);
+@green-8: color(~`colorPalette('@{green-6}', 8) `);
+@green-9: color(~`colorPalette('@{green-6}', 9) `);
+@green-10: color(~`colorPalette('@{green-6}', 10) `);
+
+@box-shadow-base: @shadow-2;
+
+// Badge
+// ---
+@badge-text-color: @white;
+
+// Popover
+@popover-bg: @popover-background;
+
+// Drawer
+@drawer-bg: @popover-background;
+
+// Media queries breakpoints
+// @screen-xs and @screen-xs-min is not used in Grid
+// smallest break point is @screen-md
+@screen-xs: 480px;
+@screen-xs-min: @screen-xs;
+// 👆 Extra small screen / phone
+
+// 👇 Small screen / tablet
+@screen-sm: 576px;
+@screen-sm-min: @screen-sm;
+
+// Medium screen / desktop
+@screen-md: 768px;
+@screen-md-min: @screen-md;
+
+// Large screen / wide desktop
+@screen-lg: 992px;
+@screen-lg-min: @screen-lg;
+// Extra large screen / full hd
+@screen-xl: 1200px;
+@screen-xl-min: @screen-xl;
+
+// Extra extra large screen / large desktop
+@screen-xxl: 1600px;
+@screen-xxl-min: @screen-xxl;
+
+// provide a maximum
+@screen-xs-max: (@screen-sm-min - 1px);
+@screen-sm-max: (@screen-md-min - 1px);
+@screen-md-max: (@screen-lg-min - 1px);
+@screen-lg-max: (@screen-xl-min - 1px);
+@screen-xl-max: (@screen-xxl-min - 1px);

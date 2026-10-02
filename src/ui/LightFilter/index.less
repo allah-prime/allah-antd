@@ -1,0 +1,58 @@
+.ah-light-filter {
+  box-sizing: border-box;
+  line-height: var(--ant-control-height, 32px);
+
+  &::before {
+    display: block;
+    height: 0;
+    visibility: hidden;
+    content: '.';
+  }
+
+  &-small {
+    line-height: var(--ant-line-height, 1.5714285714);
+  }
+
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ant-margin-xs, 8px);
+  }
+
+  &-item {
+    white-space: nowrap;
+
+    .ant-form-item {
+      margin-block: 0;
+    }
+
+    // 隐藏与 FieldLabel 重复的 Form.Item 标签；折叠项 .ah-light-filter-line 不受影响
+    .ant-form-item-label {
+      display: none;
+    }
+  }
+
+  &-line {
+    min-width: 198px;
+  }
+
+  &-line:not(:first-child) {
+    margin-block-start: var(--ant-margin-md, 16px);
+    margin-block-end: var(--ant-margin-xs, 8px);
+  }
+
+  &-collapse-icon {
+    width: var(--ant-control-height, 32px);
+    height: var(--ant-control-height, 32px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-effective {
+    .ah-light-filter-collapse-icon {
+      background-color: var(--ant-color-fill-secondary, rgba(0, 0, 0, 0.06));
+    }
+  }
+}
