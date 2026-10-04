@@ -1,0 +1,358 @@
+// AhProTable 组件样式
+// 使用 CSS 变量方式，这些变量由 ConfigProvider 动态注入
+
+@ant-prefix: ant;
+
+@pro-table-prefix-cls: ~'@{ant-prefix}-pro-table';
+
+.ah-search-bottom {
+  .ant-input-wrapper {
+    .ant-input {
+      height: 32px;
+    }
+  }
+}
+
+.ah-page-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+// 表头第一列添加20px padding
+.ant-table-thead {
+  > tr {
+    > th:first-child {
+      padding-left:20px !important;
+    }
+  }
+}
+
+// 表格内容第一列添加20px padding
+.ant-table-tbody {
+  > tr {
+    > td:first-child {
+      padding-left: 20px !important;
+    }
+  }
+}
+
+.ah-antd-pro-table-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--ant-border-radius, 8px);
+  overflow: hidden;
+
+  // 无纵轴占位时：去掉 antd 表头为滚动条预留的 15px，避免固定「操作」列与内容错位
+  &.ah-no-v-scrollbar {
+    .ant-table-header {
+      colgroup col:last-child {
+        width: 0 !important;
+      }
+
+      .ant-table-cell-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        overflow: hidden !important;
+      }
+
+      .ant-table-cell-fix-end {
+        inset-inline-end: 0 !important;
+      }
+    }
+  }
+  .ah-antd-pro-table-alone-page {
+    height: calc(100% - 84px);
+  }
+
+  .ah-antd-pro-table-has-pagination {
+    // 只扣底栏高度。横向条在 table body 内，不要再从这里减
+    flex: 1 1 auto;
+    min-height: 0;
+    height: calc(100% - var(--ah-footer-height, 38px));
+    overflow: hidden;
+    .ant-pro-card {
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+  .ah-antd-pro-table-no-pagination {
+    height: 100%;
+    .ant-pro-card {
+      height: 100%;
+    }
+  }
+  height: 100%;
+  .ant-spin-spinning {
+
+  }
+
+  // 公共结构提取成一个 mixin
+  .table-full-height() {
+    height: 100%;
+    .ant-spin-container {
+      height: 100%;
+      .ant-table {
+        height: 100%;
+        .ant-table-container {
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  // 应用到两个选择器
+  .ant-spin-nested-loading {
+    .table-full-height();
+  }
+
+  .ah-antd-pro-table-no-data {
+    height: 100%;
+    .ant-spin {
+      height: 100%;
+      .ant-spin-container {
+        height: 100% !important;
+        .ant-table {
+          height: 100%;
+          .ant-table-container {
+            height: 100%;
+          }
+        }
+      }
+    }
+    .ant-table-body {
+      height: 100% !important;
+      max-height: 100% !important;
+    }
+    .ant-table-body > table {
+      height: 100%;
+    }
+    .ant-spin-nested-loading {
+      .table-full-height();
+    }
+  }
+
+  .ah-antd-pro-table-has-data {
+    height: 100%;
+    .ant-table-body {
+      // scroll.y 默认只写 max-height：行少时 body 收缩，横向条贴在行下、下方大片空白
+      // 用 --ah-table-body-y 强制撑满，横向条落在表格区底部（footer 上方）
+      height: var(--ah-table-body-y, auto) !important;
+      max-height: var(--ah-table-body-y, none) !important;
+      box-sizing: border-box;
+      > table {
+        height: auto;
+      }
+    }
+  }
+
+  &.show-border {
+    border: 1px solid var(--ant-color-border-secondary, #f0f0f0);
+
+    .ant-pro-card-body {
+      border-radius: var(--ant-border-radius, 8px);
+    }
+
+    .ah-table-footer {
+      border-top: 1px solid var(--ant-color-border-secondary, #f0f0f0);
+    }
+  }
+
+  &.hide-border {
+    border: none;
+
+    .ah-table-footer {
+      border-top: none;
+    }
+  }
+}
+
+.ah-antd-pro-table-no-radius {
+  .ant-pro-card-border {
+    border-radius: 0 !important;
+  }
+}
+
+.ah-antd-pro-table {
+  .ant-pro-table-list-toolbar {
+    border-bottom: 1px solid var(--ant-color-border-secondary, #f0f0f0);
+  }
+
+  .ah-antd-pro-hide-boottom-border {
+    .ant-table-header {
+      border-radius: var(--ant-border-radius, 8px) var(--ant-border-radius, 8px) 0 0;
+    }
+
+    .ant-table-cell {
+      font-size: 14px !important;
+    }
+
+    .ant-pro-card {
+      border-radius: var(--ant-border-radius, 8px) var(--ant-border-radius, 8px) 0 0;
+    }
+  }
+
+  .ant-pro-card > .ant-pro-card-body {
+    padding: 0 !important;
+
+    .ant-pro-table-alert {
+      margin-block-end: 0 !important;
+    }
+  }
+
+  .ant-table-thead {
+    .ant-table-selection {
+      .ant-table-selection-extra {
+        line-height: calc(var(--ant-line-height, 1.5714285714) * var(--ant-font-size, 14px));
+        padding-inline-start: var(--ant-padding-xxs, 4px);
+      }
+    }
+  }
+
+  .ant-table-thead > tr > th {
+    color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.65)) !important;
+    font-size: 14px !important;
+  }
+
+  .ant-table-row {
+    height: 45px;
+  }
+
+  .ah-antd-pro-table-dom {
+    .ant-table-body {
+      // antd 在设了 scroll.y 时常用 overflow-y: scroll（总显示纵轴），改为 auto
+      overflow-x: auto !important;
+      overflow-y: auto !important;
+    }
+  }
+}
+
+.ah-antd-pro-table-small {
+  .ant-table-thead > tr > th {
+    &:first-child {
+      padding-left: var(--ant-padding-xs, 8px) !important;
+    }
+  }
+
+  .ant-table-body > table > tbody > tr > td {
+    &:first-child {
+      padding-left: var(--ant-padding-xs, 8px) !important;
+    }
+  }
+}
+
+.pro-table-tooltip-text span {
+  color: var(--ant-color-text-light-solid, #fff);
+}
+
+.@{pro-table-prefix-cls} {
+  z-index: 1;
+
+  &:not(:root):fullscreen {
+    min-height: 100vh;
+    overflow: auto;
+    background: var(--ant-color-bg-container, #ffffff);
+  }
+
+  &-extra {
+    margin-bottom: var(--ant-margin-md, 16px);
+  }
+
+  &-polling {
+    .@{pro-table-prefix-cls}-list-toolbar-setting-item {
+      .anticon.anticon-reload {
+        transform: rotate(0deg);
+        animation: turn 1s linear infinite;
+      }
+    }
+  }
+
+  td.@{ant-prefix}-table-cell {
+    > a {
+      font-size: var(--ant-font-size, 14px);
+    }
+  }
+
+  .@{ant-prefix}-table,
+  .@{ant-prefix}-table-tbody,
+  .@{ant-prefix}-table-wrapper:only-child,
+  .@{ant-prefix}-table {
+    margin: 0;
+  }
+
+  .@{ant-prefix}-table.@{ant-prefix}-table-middle .@{pro-table-prefix-cls} {
+    margin: calc(var(--ant-padding-sm, 12px) * -1) calc(var(--ant-padding-xs, 8px) * -1);
+  }
+}
+
+@keyframes turn {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.ah-antd-pro-table-footer {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  margin-top: auto;
+  height: var(--ah-footer-height, 38px);
+  background-color: var(--ant-color-bg-container, #ffffff);
+
+  > div {
+    display: flex;
+    align-items: center;
+  }
+
+  // 分页是 mini（24px）。默认按钮 32px 会撑满 38px 底栏，视觉上贴顶
+  .ant-btn:not(.ant-btn-lg) {
+    height: var(--ant-control-height-sm, 24px);
+    padding-inline: calc(var(--ant-padding-xs, 8px) - var(--ant-line-width, 1px));
+  }
+}
+
+.ah-antd-pro-table-container-show-border {
+  border: 1px solid var(--ant-color-border-secondary, #f0f0f0);
+
+  .ah-antd-pro-table .ant-pro-card-body {
+    border-radius: var(--ant-border-radius, 8px);
+  }
+
+  .ah-antd-pro-table-footer {
+    border-top: 1px solid var(--ant-color-border-secondary, #f0f0f0);
+  }
+}
+
+.ah-antd-pro-table-container-hide-border {
+  border: none;
+
+  .ah-antd-pro-table-footer {
+    border-top: none;
+  }
+}
+
+.ah-antd-pro-table-footer-border {
+  height: 4px;
+}
+
+.ah-antd-pro-bottom-border-radius {
+  .ah-antd-pro-table .ant-pro-card {
+    border-radius: var(--ant-border-radius, 8px);
+  }
+}

@@ -1,0 +1,55 @@
+.ah-schema-form, .ah-schema-form-details {
+  position: relative; // 为子元素的绝对定位提供参考
+  .adm-list-body {
+    // 背景色透明
+    background-color: transparent;
+    // 去掉顶部的边框
+    border-top: none;
+  }
+  .adm-list-item-content {
+    border-top: none;
+  }
+  .ah-form-list-body {
+    .ah-schema-form-card {
+      background: var(--adm-color-background);
+      border-radius: var(--adm-card-border-radius, 8px);
+      margin-bottom: 12px;
+      padding: 0 var(--adm-card-padding-inline, 12px);
+      padding: var(--adm-card-body-padding-block, 12px);
+      .adm-list-item{
+        padding-left: 6px
+      }
+      .adm-form-item-label {
+        margin-top: 4px;
+      }
+    }
+    // 最后一个卡片没有下边距
+    .ah-schema-form-card:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .adm-input {
+    --placeholder-color: #999999;
+  }
+  .adm-text-area {
+    --placeholder-color: #999999;
+  }
+}
+
+.ah-schema-form-details {
+  .adm-input {
+    --placeholder-color: #333;
+  }
+}
+
+.submitBtnFixed {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 100;
+  padding: 12px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid #f0f0f0;
+}

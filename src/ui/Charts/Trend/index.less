@@ -1,0 +1,37 @@
+@import "../../ahAntDef";
+
+.Trend_trendItem {
+  display: inline-block;
+  font-size: @font-size-base;
+  line-height: 22px;
+
+  .Trend_up,
+  .Trend_down {
+    position: relative;
+    top: 1px;
+    margin-left: 4px;
+    span {
+      font-size: 12px;
+      transform: scale(0.83);
+    }
+  }
+  .Trend_up {
+    color: @red-6;
+  }
+  .Trend_down {
+    top: -1px;
+    color: @green-6;
+  }
+
+  &.Trend_trendItemGrey .Trend_up,
+  &.Trend_trendItemGrey .Trend_down {
+    color: @text-color;
+  }
+
+  &.Trend_reverseColor .Trend_up {
+    color: @green-6;
+  }
+  &.Trend_reverseColor .Trend_down {
+    color: @red-6;
+  }
+}

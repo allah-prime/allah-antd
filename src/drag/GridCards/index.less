@@ -1,0 +1,24 @@
+.theling_grid_cards {
+  width: 100%;
+  min-height: 300px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+/* 拖拽时的样式 */
+[data-dnd-draggable-dragging] {
+  z-index: 9999 !important;
+  position: relative !important;
+}
+
+/* 确保拖拽层在最上方 */
+.theling_grid_cards [data-dnd-draggable-dragging] {
+  position: relative !important;
+  z-index: 9999 !important;
+}
+
+/* 针对Card组件的特殊处理 */
+.theling_grid_cards .ant-card[style*="z-index: 100"] {
+  position: relative !important;
+  z-index: 9999 !important;
+} 

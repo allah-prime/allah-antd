@@ -1,0 +1,55 @@
+.ah-image-preview-container {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 8px;
+
+    .loading-text {
+      color: #999;
+      font-size: 14px;
+    }
+  }
+
+
+  .image-item {
+    cursor: pointer;
+
+    .ant-image {
+      display: block;
+      overflow: hidden; // 确保圆角效果生效
+      border-radius: inherit;
+
+      .ant-image-mask {
+        border-radius: inherit;
+      }
+
+      // 对默认图片也应用相同的样式
+      img {
+        border-radius: inherit;
+        border: 1px solid #d9d9d9;
+      }
+    }
+  }
+
+  .no-image-container {
+    .image-item {
+      cursor: pointer;
+
+      .default-image {
+        opacity: 0.6;
+        overflow: hidden; // 确保圆角效果生效
+        // 对默认图片也应用相同的样式
+        img {
+          border-radius: inherit;
+          border: 1px solid #d9d9d9;
+        }
+      }
+    }
+  }
+}

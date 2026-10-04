@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./",
+    "lib": ["esnext", "dom"],
+    "paths": {
+      "@@/*": [".dumi/tmp/*"],
+      "@allahjs/antd": ["src"],
+      "@allahjs/antd/*": ["src/*", "*"],
+      "@theling/ui": ["src/ui"],
+      "@theling/ui/*": ["src/ui/*"],
+      "@theling/drag": ["src/drag"],
+      "@theling/drag/*": ["src/drag/*"],
+      "@theling/edit": ["src/edit"],
+      "@theling/edit/*": ["src/edit/*"],
+      "@theling/mobile": ["src/mobile"],
+      "@theling/mobile/*": ["src/mobile/*"],
+      "@theling/types": ["src/types"],
+      "@theling/types/*": ["src/types/*"]
+    }
+  },
+  "include": ["src", "docs", "example", ".dumirc.ts", "typings.d.ts"],
+  "exclude": ["node_modules", "dist", "docs-dist", "es", "lib", "**/demo/**", "**/demos/**"]
+}

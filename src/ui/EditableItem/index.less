@@ -1,0 +1,24 @@
+@import "../ahAntDef";
+.theling_editableItem {
+  display: table;
+  width: 100%;
+  margin-top: (@font-size-base * @line-height-base - @input-height-base) / 2;
+  line-height: @input-height-base;
+
+  .theling_wrapper {
+    display: table-row;
+
+    & > * {
+      display: table-cell;
+    }
+
+    & > *:first-child {
+      width: 85%;
+    }
+
+    .theling_icon {
+      text-align: right;
+      cursor: pointer;
+    }
+  }
+}
