@@ -1,17 +1,15 @@
 ---
-title: ApiParameterEditor
+title: ApiParameterEditor API 参数
+toc: content
 group:
-  title: 表单组件
-  order: 2
-nav:
-  title: ApiParameterEditor
-  path: /components
+  title: 数据录入
+  order: 3
 demo:
-  cols: 1 
+  cols: 1
 author: 何奥
---- 
- 
-## ApiParameterEditor
+---
+
+# ApiParameterEditor API 参数
  
 用于编辑符合特定 OpenAPI 规范的 API 参数列表。界面采用表格化树形编辑：行内修改字段名、类型、传入方式和说明，用缩进表达嵌套。类型后的 `*` 表示必传，`N` 表示允许为 null。
 

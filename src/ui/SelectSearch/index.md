@@ -1,11 +1,12 @@
 ---
+title: SelectSearch 搜索选择
 toc: content
 group:
   title: 数据录入
-  order: 1
+  order: 3
 ---
-# SelectSearch
-`SelectSearch` 组件
+
+# SelectSearch 搜索选择
 ### 组件简介
 
 `SelectSearch` 是一个增强型下拉选择框组件，结合了 `Ant Design` 的 `Select` 组件和搜索功能。它允许用户通过输入搜索框来过滤选项，还可以通过点击链接来添加新的选项。该组件可以配置不同的模式，如单选或多选，并支持自定义选项的渲染方式。

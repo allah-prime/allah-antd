@@ -1,13 +1,14 @@
 ---
+title: ListGroup 列表
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 数据展示
+  order: 2
 demo:
   cols: 2
 ---
 
-# 列表组件
+# ListGroup 列表
 
 列表组件系列提供了多种数据展示和交互方式，适用于不同的业务场景。
 

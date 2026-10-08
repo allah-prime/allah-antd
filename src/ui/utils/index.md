@@ -1,16 +1,14 @@
 ---
-nav:
-  title: 工具
-  order: 3
+title: utils 工具函数
 toc: content
 group:
   title: 工具
-  order: 3
+  order: 5
 demo:
   cols: 2
 ---
 
-# 工具组件集合
+# utils 工具函数
 
 ### initialAhState.ts
 

@@ -1,11 +1,12 @@
 ---
+title: AhModalForm 表单弹窗
 toc: content
 group:
-  title: 数据录入
+  title: 通用
   order: 1
 ---
 
-# AhModalForm
+# AhModalForm 表单弹窗
 
 这是一个基于 Ant Design ProForm 的模态表单组件，提供了更便捷的表单弹窗操作方式。
 

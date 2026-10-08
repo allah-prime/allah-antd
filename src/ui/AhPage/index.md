@@ -1,11 +1,9 @@
 ---
-nav:
-  title: UI 组件
-  order: 1
+title: AhPageContent 表格页面
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 通用
+  order: 1
 ---
 
 # AhPageContent 表格页面

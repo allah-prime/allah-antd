@@ -90,8 +90,9 @@ const TagsFilter = ({
   };
   return (
     <div
-      className="ahWL_ah_sb"
       style={{
+        display: 'flex',
+        justifyContent: 'space-between',
         lineHeight: '34px',
         width: '100%'
       }}

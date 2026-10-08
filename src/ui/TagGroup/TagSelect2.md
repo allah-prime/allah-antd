@@ -1,13 +1,4 @@
----
-toc: content
-group:
-  title: 展示
-  order: 0
----
-
-# TagSelect2
-
-标签选择器。完整示例见 [TagGroup / TagSelect2](/ui/tag-group)。
+标签选择器片段，完整示例见 [TagGroup 标签](/ui/tag-group)。
 
 ```jsx
 import React, { useState } from 'react';

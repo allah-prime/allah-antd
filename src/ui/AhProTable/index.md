@@ -1,14 +1,12 @@
 ---
-nav:
-  title: UI 组件
-  order: 1
+title: AhProTable 高级表格
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 通用
+  order: 1
 ---
 
-# AhProTable
+# AhProTable 高级表格
 
 AhProTable 是基于 Ant Design Pro 的 ProTable 组件进行二次封装的高级表格组件，提供了自动分页、自定义底部渲染、刷新按钮等功能。
 

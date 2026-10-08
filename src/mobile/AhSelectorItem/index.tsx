@@ -24,9 +24,12 @@ const AhSelectorItem = ({
       >
         {item.label}
         <div
-          className="ahWL_ah_ellipsis_1 ah-text-xs"
           style={{
-            maxWidth: item.label.length * 24 + 16
+            maxWidth: item.label.length * 24 + 16,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            fontSize: 10
           }}
         >
           {item.description}

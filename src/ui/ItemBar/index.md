@@ -1,16 +1,14 @@
 ---
-nav:
-  title: UI 组件
-  order: 1
+title: ItemBar 项目栏
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 布局
+  order: 4
 demo:
   cols: 2
 ---
 
-# ItemBar
+# ItemBar 项目栏
 
 ```jsx
 import React from 'react';

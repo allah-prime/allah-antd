@@ -1,11 +1,14 @@
 ---
+title: AhImageRender 图片渲染
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 数据展示
+  order: 2
 ---
-# AhImageRender
-异步图片渲染组件
+
+# AhImageRender 图片渲染
+
+按 `cosKey` 或 `fileId` 渲染单张图片。同页的 `AhImagePreview` 按关联 ID 批量预览。
 
 ## 何时使用
 `AhImageRender` 组件用于在 React 应用中异步加载和显示图片。它通过 `cosKey` 或 `fileId` 作为输入参数来请求图片的 URL 并显示该图片。适用于需要从远程服务或 CDN 动态获取图片链接的场景。
@@ -72,6 +75,10 @@ const App = () => {
 
 export default App;
 ```
+
+## AhImagePreview 批量预览
+
+按关联 ID 一次拉出多张图片。接口可以走 props，也可以走 `AhAntdConfig.getUploadConfig()`。
 
 ### 示例 4: 批量渲染
 

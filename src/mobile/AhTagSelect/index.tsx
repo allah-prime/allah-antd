@@ -192,12 +192,13 @@ const AhTagSelect: React.FC<IProps> = ({ value = [], onChange, mode = 'single', 
           }}
           request={dataReq!}
           emptyRender={(params) => (
-            <div className="ah-px-6">
-              <div className="ah-text-gray-400 ah-text-sm ah-mb-2">点击新增使用</div>
+            <div style={{ paddingLeft: 24, paddingRight: 24 }}>
+              <div style={{ color: '#9ca3af', fontSize: 12, marginBottom: 8 }}>点击新增使用</div>
               <div
-                className="ah-py-3"
                 onClick={() => handleAdd(params!.keyword!)}
                 style={{
+                  paddingTop: 12,
+                  paddingBottom: 12,
                   borderBottom: '1px solid var(--adm-color-border)',
                   borderTop: '1px solid var(--adm-color-border)'
                 }}
@@ -238,9 +239,10 @@ const AhTagSelect: React.FC<IProps> = ({ value = [], onChange, mode = 'single', 
                     : '#ffffff',
                   borderBottom: '1px solid var(--adm-color-border)',
                   // 如果是第一个 ，则需要加上 borderTop
-                  borderTop: index === 0 ? '1px solid var(--adm-color-border)' : 'none'
+                  borderTop: index === 0 ? '1px solid var(--adm-color-border)' : 'none',
+                  paddingLeft: 24,
+                  paddingRight: 24
                 }}
-                className="ah-px-6"
               >
                 <div
                   style={{

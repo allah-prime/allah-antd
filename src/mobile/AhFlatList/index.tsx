@@ -173,9 +173,16 @@ const AhFlatList = <T, F extends IBaseFilter>({
   const renderListItems = () => {
     if (searchLoading) {
       return (
-        <div className="ahWL_ah_jz_all ahWM_t_4">
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 16
+          }}
+        >
           <span>正在搜索中</span>
-          <DotLoading className="ahWM_t_4" />
+          <DotLoading style={{ marginTop: 16 }} />
         </div>
       );
     }

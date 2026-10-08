@@ -1,13 +1,14 @@
 ---
+title: DebounceSelect 防抖选择
 toc: content
 group:
   title: 数据录入
-  order: 1
+  order: 3
 demo:
   cols: 2
 ---
 
-# 异步下拉搜索组件
+# DebounceSelect 防抖选择
 
 ## 何时使用
 

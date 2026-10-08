@@ -1,14 +1,12 @@
 ---
-nav:
-  title: 工具
-  order: 3
+title: ExplainTips 说明提示
 toc: content
 group:
   title: 工具
-  order: 3
+  order: 5
 ---
-# ExplainTips
-解释提示
+
+# ExplainTips 说明提示
 
 ## 何时使用
 `ExplainTips` 组件用于在用户界面上提供额外的帮助信息或解释，通常与图标结合使用。当用户将鼠标悬停在图标上时，会显示相关的提示内容。适用于需要简洁展示提示信息的场景。

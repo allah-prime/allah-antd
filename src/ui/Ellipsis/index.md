@@ -1,13 +1,14 @@
 ---
+title: Ellipsis 文本省略
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 数据展示
+  order: 2
 demo:
   cols: 2
 ---
-# Ellipsis
-文本省略组件
+
+# Ellipsis 文本省略
 
 ## 何时使用
 `Ellipsis` 组件用于展示长文本时对文本进行省略，并提供工具提示功能，确保在文本被截断时用户可以通过悬停查看完整内容。它可以根据字符长度或行数来控制文本的显示，支持自定义省略号和前后缀。

@@ -1,11 +1,12 @@
 ---
+title: PageLoading 页面加载
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 布局
+  order: 4
 ---
-# PageLoading
-页面加载中提示
+
+# PageLoading 页面加载
 
 ## 何时使用
 `PageLoading` 组件用于在页面或数据加载过程中提供用户反馈，告知他们当前有操作正在进行。它非常适合用于动态加载页面或异步数据时，提升用户体验。

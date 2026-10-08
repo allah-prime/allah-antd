@@ -18,10 +18,8 @@ pnpm add @allahjs/antd
 ```tsx
 import { AhProTable } from '@allahjs/antd';
 
-// 入口处引入全量样式（推荐）
+// 入口处引入全量样式
 import '@allahjs/antd/dist/ui/index.less';
-// 或仅引入基础工具样式（布局、间距等辅助类）
-// import '@allahjs/antd/dist/ui/styles/base.less';
 ```
 
 ## 包结构

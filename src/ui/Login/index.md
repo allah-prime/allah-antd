@@ -1,11 +1,12 @@
 ---
+title: PasswordLogin 密码登录
 toc: content
 group:
   title: 数据录入
-  order: 1
+  order: 3
 ---
-# PasswordLogin
-密码登录组件
+
+# PasswordLogin 密码登录
 
 ## 何时使用
 `PasswordLogin` 组件适用于需要用户进行密码验证的登录场景。它支持验证码验证、记住密码选项和忘记密码功能。

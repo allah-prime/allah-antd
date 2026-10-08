@@ -1,11 +1,12 @@
 ---
+title: CardList 卡片列表
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 数据展示
+  order: 2
 ---
-# CardList
-卡片列表
+
+# CardList 卡片列表
 ## 何时使用
 当你需要在页面上展示一组卡片，并且需要支持新增功能时，可以使用 `CardList` 组件。它允许你灵活地控制每个卡片的内容以及新增卡片的行为。
 

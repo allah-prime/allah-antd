@@ -1,8 +1,9 @@
 ---
+title: IconSelect 图标选择
 toc: content
 group:
   title: 数据录入
-  order: 1
+  order: 3
 ---
 
 # IconSelect 图标选择

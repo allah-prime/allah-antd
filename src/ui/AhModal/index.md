@@ -1,11 +1,12 @@
 ---
+title: AhModal 模态框
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 通用
+  order: 1
 ---
 
-# AhModal
+# AhModal 模态框
 
 AhModal 是一个基于 Ant Design Modal 组件的增强版模态框组件，提供了更多的配置选项和样式定制能力。它支持自定义宽高、滚动区域、加载状态、标题扩展等功能。
 

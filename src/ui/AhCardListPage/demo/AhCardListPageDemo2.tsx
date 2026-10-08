@@ -1,6 +1,5 @@
 import { Card } from 'antd';
 import { CardList, AhCardListPage } from '../../index';
-import '../../styles/base.less';
 
 /**
  * 搜索

@@ -32,7 +32,7 @@ const SortFilter: React.FC<ISortFilterProps> = ({ onChange, opts, value }) => {
   const [columnType, setColumnType] = useState<string>(value || opts[0].value);
 
   return (
-    <div className="ahWL_ah_sb">
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <Select<string>
         value={columnType}
         variant="borderless"

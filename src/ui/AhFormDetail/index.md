@@ -1,11 +1,12 @@
 ---
-title: AhFormDetail
+title: AhFormDetail 详情表单
+toc: content
 group:
-  title: 表单组件
-  order: 2
---- 
+  title: 通用
+  order: 1
+---
 
-# AhFormDetail 详情展示
+# AhFormDetail 详情表单
 
 基于 Ant Design Descriptions 组件封装的详情展示组件，支持类似 ProDescriptions 的功能，包括多种数据类型展示、异步数据请求等。
 

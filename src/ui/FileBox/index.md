@@ -1,13 +1,12 @@
 ---
+title: FileBox 文件盒
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 数据展示
+  order: 2
 ---
 
-# FileBox
-
-文件下载组件
+# FileBox 文件盒
 
 ## 何时使用
 

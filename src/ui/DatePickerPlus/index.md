@@ -1,11 +1,12 @@
 ---
+title: DatePickerPlus 日期选择
 toc: content
 group:
   title: 数据录入
-  order: 1
+  order: 3
 ---
-## DatePickerPlus
-# 日期选择器增强版
+
+# DatePickerPlus 日期选择
 
 ## 何时使用
 `DatePickerPlus` 组件是一个增强的日期选择器，适用于需要快速选择日期范围的场景。它允许用户选择特定的日期范围或预设的时间段，如“今天”、“本周”、“本月”和“本年”。此组件适用于报表分析、数据筛选等功能，提供了良好的用户体验和交互性。

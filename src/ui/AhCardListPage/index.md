@@ -1,14 +1,12 @@
 ---
-nav:
-  title: UI 组件
-  order: 1
+title: AhCardListPage 卡片列表
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 通用
+  order: 1
 ---
 
-# AhCardListPage 卡片列表页面
+# AhCardListPage 卡片列表
 
 AhCardListPage 是用于展示卡片列表的页面容器组件，支持无限滚动加载、自定义卡片渲染、搜索筛选等功能。
 

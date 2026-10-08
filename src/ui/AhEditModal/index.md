@@ -1,11 +1,12 @@
 ---
+title: AhEditModal 编辑弹窗
 toc: content
 group:
-  title: 数据录入
+  title: 通用
   order: 1
 ---
-# AhEditModal
-编辑弹窗
+
+# AhEditModal 编辑弹窗
 
 ### 组件简介
 

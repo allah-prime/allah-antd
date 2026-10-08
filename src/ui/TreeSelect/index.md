@@ -1,14 +1,12 @@
 ---
-title: TreeSelect
+title: TreeSelect 树选择
+toc: content
 group:
   title: 数据录入
   order: 3
-nav:
-  title: PC 组件
-  path: /ui
 ---
 
-# TreeSelect 树选择器（PC 端）
+# TreeSelect 树选择
 
 ## 组件简介
 

@@ -1,9 +1,12 @@
 ---
-title: AhFormFilter
+title: AhFormFilter 筛选表单
+toc: content
 group:
-  title: 表单组件
+  title: 通用
   order: 1
---- 
+---
+
+# AhFormFilter 筛选表单
 
 ## 自定义表单筛选器
 

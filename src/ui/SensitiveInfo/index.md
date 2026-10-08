@@ -1,13 +1,14 @@
 ---
+title: SensitiveInfo 敏感信息
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 数据展示
+  order: 2
 demo:
   cols: 1
 ---
 
-# SensitiveInfo 敏感信息展示
+# SensitiveInfo 敏感信息
 
 用于展示敏感信息的组件，支持脱敏显示、切换显示/隐藏、复制等功能。
 

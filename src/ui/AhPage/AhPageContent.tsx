@@ -204,8 +204,10 @@ const AhPageContent = <T, F extends IBaseFilter>({
       </Card>
     ) : (
       <div
-        className={searchLayout === 'plugin' ? 'ahWP_y_2' : undefined}
-        style={searchLayoutStyle ? searchLayoutStyle : undefined}
+        style={{
+          ...(searchLayout === 'plugin' ? { paddingTop: 8, paddingBottom: 8 } : undefined),
+          ...searchLayoutStyle
+        }}
       >
         {searchFormComponent}
       </div>

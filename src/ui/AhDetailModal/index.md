@@ -1,16 +1,13 @@
 ---
-title: AhDetailModal
+title: AhDetailModal 详情弹窗
 group:
-  title: 数据展示
-  order: 0
-nav:
-  title: 组件
-  path: /components
+  title: 通用
+  order: 1
 demo:
   cols: 2
 ---
 
-# AhDetailModal 详情内容
+# AhDetailModal 详情弹窗
 
 `AhDetailModal` 是一个基于 `Descriptions` 的详情展示组件。它负责渲染“详情内容”，不负责弹窗开关；如需弹窗场景，请与 `AhModal` 组合使用。
 

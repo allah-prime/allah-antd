@@ -1,13 +1,14 @@
 ---
+title: InfoLog 信息日志
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 数据展示
+  order: 2
 demo:
   cols: 2
 ---
 
-# 信息日志
+# InfoLog 信息日志
 
 ```jsx
 import React from 'react';

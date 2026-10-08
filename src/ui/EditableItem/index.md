@@ -1,14 +1,12 @@
 ---
-nav:
-  title: 工具
-  order: 3
+title: EditableItem 可编辑项
 toc: content
 group:
-  title: 工具
+  title: 数据录入
   order: 3
 ---
-# EditableItem
-编辑项组件
+
+# EditableItem 可编辑项
 ## 何时使用
 当你需要一个可以编辑的文本字段，并希望用户能够在视图中快速切换到编辑模式时使用。
 ## 代码演示

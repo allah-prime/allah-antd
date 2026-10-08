@@ -1,11 +1,12 @@
 ---
+title: FooterToolbar 底部工具栏
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 布局
+  order: 4
 ---
-# FooterToolbar
-浮动固定页脚
+
+# FooterToolbar 底部工具栏
 
 ## 何时使用
 

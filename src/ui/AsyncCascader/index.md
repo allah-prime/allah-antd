@@ -1,13 +1,14 @@
 ---
+title: AsyncCascader 异步级联
 toc: content
 group:
   title: 数据录入
-  order: 1
+  order: 3
 demo:
   cols: 2
 ---
 
-# 异步多级联动组件
+# AsyncCascader 异步级联
 
 ### 异步多级联动组件
 
@@ -170,3 +171,22 @@ export default () => {
 ```
 
 <API src="./index.tsx"></API>
+
+## AhProFormCascader 表单级联
+
+包了一层 `ProFormCascader`，用 `request` 拉第一级数据，展开时继续异步加载。不能靠它设置默认值；需要默认值时用弹窗选择。
+
+```jsx
+import React from 'react';
+import { AhProFormCascader } from '@allahjs/antd';
+
+export default () => (
+  <AhProFormCascader
+    name="region"
+    label="地区"
+    request={() => fetchRegions()}
+  />
+);
+```
+
+除 `request` 外，其余属性透传给 `ProFormCascader`。字段默认 `variant` 为 `borderless`，`changeOnSelect` 为 `true`。

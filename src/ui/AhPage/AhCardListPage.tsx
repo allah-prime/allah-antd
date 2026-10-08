@@ -278,7 +278,7 @@ const AhCardListPage = <T, F extends IBaseFilter>({
 
     if (searchLayout === 'plugin') {
       return (
-        <div className="ahWP_x_4 ahWP_y_2" ref={searchRef}>
+        <div style={{ padding: '8px 16px' }} ref={searchRef}>
           {searchDom}
         </div>
       );

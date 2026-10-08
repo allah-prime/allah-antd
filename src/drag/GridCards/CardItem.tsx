@@ -52,8 +52,8 @@ const CardItem: React.FC<CardItemProps> = ({
         opacity: !isDragging && isActive ? 0.5 : 1
       }}
       title={
-        <div className="ahWL_ah_sb">
-          <div className="ahWL_ah_czwy">
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
             <div {...(handleProps || {})} {...(listeners || {})} style={{ cursor: 'move' }}>
               <HolderOutlined />
             </div>
@@ -87,11 +87,15 @@ const CardItem: React.FC<CardItemProps> = ({
       }
     >
       <div
-        className={'ahWL_ah_ellipsis_3'}
         style={{
           width: '100%',
           fontSize: '14px',
           color: '#666',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          WebkitLineClamp: 3,
+          WebkitBoxOrient: 'vertical'
         }}
       >
         {item.description || '-'}

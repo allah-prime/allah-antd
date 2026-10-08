@@ -1,11 +1,12 @@
 ---
+title: PollingProgressIcon 轮询进度
 toc: content
 group:
-  title: 展示
-  order: 0
+  title: 工具
+  order: 5
 ---
-# PollingProgressIcon
-进度图标展示组件
+
+# PollingProgressIcon 轮询进度
 
 ## 何时使用
 `PollingProgressIcon` 组件用于展示一个进度图标，并根据任务的状态显示不同的图标（开始、进行中、成功）。它适用于需要展示任务进度或状态的场景，并且可以通过工具提示提供更多信息。

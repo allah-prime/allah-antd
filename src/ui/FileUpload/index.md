@@ -1,13 +1,12 @@
 ---
-
+title: FileUpload2 文件上传
 toc: content
 group:
   title: 数据录入
-  order: 1
+  order: 3
 ---
 
-# FileUpload2
-文件上传组件
+# FileUpload2 文件上传
 
 ## 何时使用
 `FileUpload2` 组件用于文件上传的场景，支持单个或多个文件的选择和上传。它允许用户选择文件，并在上传过程中显示上传进度。该组件也可以展示上传文件的预览，支持图片、PDF 和其他文档格式。
@@ -160,3 +159,30 @@ A: `FileUpload2` 组件会在文件选择之前检查文件大小。如果文件
 **Q: 如何自定义上传按钮的显示？**
 
 A: 可以通过 `customUploadRender` 属性自定义上传按钮的显示方式。传入一个函数，该函数接收 `isDisabled` 和 `fileList` 作为参数，并返回自定义的上传按钮组件。
+
+## FileImportModal 导入弹窗
+
+在 `FileUpload2` 外面套一层导入弹窗。文件上传完成后把 `fileId` 交给 `importReq`，并用 `useScheduleRequest` 跟进异步任务进度。
+
+```jsx
+import React from 'react';
+import { FileImportModal } from '@allahjs/antd';
+
+export default () => (
+  <FileImportModal
+    label="导入"
+    importReq={async (fileId) => {
+      return importService.start(fileId);
+    }}
+  />
+);
+```
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `importReq` | 上传完成后的导入请求，返回异步任务 | `(fileId: string) => Promise<IAsyncTaskScheduleVo>` | - |
+| `label` | 按钮文案 | `string` | - |
+| `uploadProps` | 传给 `FileUpload2` 的配置 | `IUploadProps` | - |
+| `icon` | 按钮图标 | `React.ReactNode` | - |
+| `type` | 按钮类型 | `ButtonType` | - |
+| `onClick` | 点击按钮时调用，返回 `true` 才打开弹窗 | `() => boolean` | - |

@@ -181,7 +181,14 @@ const AhModal: React.FC<IAhModalProps> = (props) => {
   const titleNode = useMemo(() => {
     if (typeof title === 'string') {
       return (
-        <div style={{ padding: 12, borderBottom: '1px solid #e8e8e8' }} className="ahWL_ah_sb">
+        <div
+          style={{
+            padding: 12,
+            borderBottom: '1px solid #e8e8e8',
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+        >
           <div>{title}</div>
           {titleExtra && <div>{titleExtra}</div>}
         </div>

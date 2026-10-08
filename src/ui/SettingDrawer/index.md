@@ -1,14 +1,12 @@
 ---
-nav:
-  title: 工具
-  order: 3
+title: SettingDrawer 设置抽屉
 toc: content
 group:
-  title: 工具
-  order: 3
+  title: 布局
+  order: 4
 ---
-# SettingDrawer
-环境配置抽屉
+
+# SettingDrawer 设置抽屉
 ### SettingDrawer 组件简介
 
 `SettingDrawer` 组件是一个用于配置环境的抽屉组件。它允许用户从下拉列表中选择服务器地址，并保存选择的地址。用户可以通过点击右侧的图标按钮打开或关闭这个抽屉。组件会在用户选择服务器地址后刷新页面，以应用新的设置。
