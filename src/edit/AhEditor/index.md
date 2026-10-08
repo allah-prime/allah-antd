@@ -8,9 +8,9 @@ group:
 
 通用富文本编辑器，基于 `@allahjs/tiptap`。默认公文风格（`renderMode="gov"`），也可传入 `normal` / `custom`。
 
-块编辑请使用 [AhNotion](/edits/ah-notion)；若必须在 `AhEditor` 上开启，可传 `renderMode="block"`（底层等价 `notion`）。
+块编辑请使用 [AhNotion](/edit/ah-notion)；若必须在 `AhEditor` 上开启，可传 `renderMode="block"`（底层等价 `notion`）。
 
-图片与文件上传由 `AhEditor` 统一注入 `imageUploader` / `fileUploader`（`AhAntdConfig` 的 `fileKeyRequest` + `uploadFile` + `generateSignUrlReq`）。持久化换签见 [AhNotion 文档](/edits/ah-notion#coskey-换签防止临时-url-过期)。
+图片与文件上传由 `AhEditor` 统一注入 `imageUploader` / `fileUploader`（`AhAntdConfig` 的 `fileKeyRequest` + `uploadFile` + `generateSignUrlReq`）。持久化换签见 [AhNotion 文档](/edit/ah-notion#coskey-换签防止临时-url-过期)。
 
 ## 数据格式
 

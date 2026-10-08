@@ -4,27 +4,29 @@ group:
   title: 数据录入
   order: 1
 ---
-# AhFormModal
-Ah表单弹窗
+# AhEditModal
+编辑弹窗
 
 ### 组件简介
 
-**英文名称**: AhFormModal  
-**中文名称**: Ah表单弹窗
+**英文名称**: AhEditModal  
+**中文名称**: 编辑弹窗
 
-**简介**: AhFormModal 是一个结合了表单和弹窗的组件，允许在弹窗内展示和编辑表单内容。它继承了 `AhModal` 的所有功能，并且可以通过 `modalProps` 属性来配置弹窗设置（例如 `open`、`title`、`maskClosable` 等）。这个组件适用于需要在弹窗中进行数据录入的场景。
+**简介**: AhEditModal 是一个固定左右分栏布局（左 16 编辑区 / 右 8 配置区）的弹窗外壳，基于 `AhModal`，适用于详情编辑类场景。组件本身不创建表单实例，表单由调用方在外层使用 antd `Form` 管理（见下方 FAQ）。
+
+> 与 `AhModalForm` 的区别：`AhModalForm` 基于 ProForm 自带表单状态机（对齐 pro-components 的 `ModalForm`，配合 `useAhModalForm` 使用）；`AhEditModal` 只是编辑弹窗的布局壳，表单完全自理。需要现成的表单弹窗用 `AhModalForm`，需要自定义左右分栏编辑布局用 `AhEditModal`。
 
 ## 何时使用
-当你需要在一个弹窗中展示并编辑表单内容时使用这个组件。它将表单和弹窗结合在一起，方便用户在弹窗中输入或修改数据。
+当你需要一个「左侧正文编辑 + 右侧元信息配置」的弹窗布局时使用这个组件。表单校验与提交由外层 antd `Form` 完成。
 
 ## 代码演示
 
 ### 示例 1: 基本用法
-这是一个最简单的使用示例，它展示了如何创建一个基本的 AhFormModal 弹窗，里面包含了一个表单内容。
+这是一个最简单的使用示例，它展示了如何创建一个基本的 AhEditModal 弹窗，里面包含了一个表单内容。
 
 ```jsx
 import React, { useState } from 'react';
-import AhFormModal from './';
+import AhEditModal from './';
 import { Button } from 'antd';
 
 const BasicExample = () => {
@@ -41,7 +43,7 @@ const BasicExample = () => {
     <div>
       <Button type="primary" onClick={handleOpen}>打开表单弹窗</Button>
       {visible && (
-        <AhFormModal
+        <AhEditModal
           modalProps={{ open: visible }}
           onCancel={handleClose}
           onOk={handleOk}
@@ -62,7 +64,7 @@ export default BasicExample;
 
 ```jsx
 import React, { useState } from 'react';
-import AhFormModal from './';
+import AhEditModal from './';
 import { Button } from 'antd';
 
 const CustomSizeExample = () => {
@@ -79,7 +81,7 @@ const CustomSizeExample = () => {
     <div>
       <Button type="primary" onClick={handleOpen}>打开自定义尺寸弹窗</Button>
       {visible && (
-        <AhFormModal
+        <AhEditModal
           modalProps={{ open: visible }}
           onCancel={handleClose}
           onOk={handleOk}
@@ -103,7 +105,7 @@ export default CustomSizeExample;
 ```jsx
 import React, { useState } from 'react';
 import { Button, DatePicker, Form, Input, Select, Space, Tag, Typography, message } from 'antd';
-import AhFormModal from './';
+import AhEditModal from './';
 
 const { TextArea } = Input;
 
@@ -151,7 +153,7 @@ const PolicyMarkingExample = () => {
       <Button type="primary" onClick={handleOpen}>政策法规信息标记</Button>
 
       <Form form={form} layout="vertical">
-        <AhFormModal
+        <AhEditModal
           width="88%"
           height="80vh"
           reqLoading={reqLoading}
@@ -252,7 +254,7 @@ export default PolicyMarkingExample;
 
 API
 
-AhFormModal
+AhEditModal
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

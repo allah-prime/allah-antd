@@ -12,7 +12,7 @@ group:
 
 AhPageContent 是用于展示表格数据的页面容器组件，支持分页、排序、搜索筛选等功能。
 
-卡片列表请见 [AhCardListPage](/uis/ah-card-list-page)。
+卡片列表请见 [AhCardListPage](/ui/ah-card-list-page)。
 
 ## 何时使用
 
@@ -118,7 +118,7 @@ A: 可以通过 `pageRef.current.refresh()` 或 `pageRef.current.asyncRefresh()`
 A: 可以通过 `pageRef.current.updateParams()` 或 `pageRef.current.setParams()` 方法更新搜索参数。
 
 **Q: 卡片列表和表格页面如何选择？**  
-A: 如果需要展示图文混排、复杂布局的内容，建议使用 [AhCardListPage](/uis/ah-card-list-page)；如果是结构化的数据展示，建议使用 `AhPageContent`。
+A: 如果需要展示图文混排、复杂布局的内容，建议使用 [AhCardListPage](/ui/ah-card-list-page)；如果是结构化的数据展示，建议使用 `AhPageContent`。
 
 **Q: 如何实现自定义的搜索表单？**  
 A: 可以通过以下两种方式：

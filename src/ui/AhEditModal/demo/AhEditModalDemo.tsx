@@ -16,8 +16,8 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 import SoleButton from '../../utils/SoleButton';
-import AhFormModal from '../../AhFormModal';
-import FormContent from '../../AhFormModal/FormContent';
+import AhEditModal from '../../AhEditModal';
+import FormContent from '../../AhEditModal/FormContent';
 import AhModal from '../../AhModal';
 import { modelSize } from '../..';
 
@@ -215,7 +215,7 @@ const formRender = () => (
   </>
 );
 
-const AhFormModalDemo = () => {
+const AhEditModalDemo = () => {
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const [width, setWidth] = useState('75%');
@@ -268,7 +268,7 @@ const AhFormModalDemo = () => {
       </Card>
 
       <Form>
-        <AhFormModal
+        <AhEditModal
           width={width}
           height="80vh"
           reqLoading={loadingData}
@@ -320,4 +320,4 @@ const AhFormModalDemo = () => {
   );
 };
 
-export default AhFormModalDemo;
+export default AhEditModalDemo;

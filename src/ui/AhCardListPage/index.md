@@ -12,7 +12,7 @@ group:
 
 AhCardListPage 是用于展示卡片列表的页面容器组件，支持无限滚动加载、自定义卡片渲染、搜索筛选等功能。
 
-表格页面请见 [AhPageContent](/uis/ah-page)。
+表格页面请见 [AhPageContent](/ui/ah-page)。
 
 ## 何时使用
 
@@ -76,7 +76,7 @@ A: 通过 `searchLayout` 属性可以设置搜索区域的布局，支持 `'div'
 A: 可以使用 `itemRender` 或 `itemsRender` 属性自定义渲染。批量场景建议优先使用 `itemsRender`。
 
 **Q: 卡片列表和表格页面如何选择？**  
-A: 如果需要展示图文混排、复杂布局的内容，建议使用 `AhCardListPage`；如果是结构化的数据展示，建议使用 [AhPageContent](/uis/ah-page)。
+A: 如果需要展示图文混排、复杂布局的内容，建议使用 `AhCardListPage`；如果是结构化的数据展示，建议使用 [AhPageContent](/ui/ah-page)。
 
 **Q: 如何处理卡片列表的无限加载？**  
 A: `AhCardListPage` 内置了无限滚动加载功能，只需要提供正确的 `request` 方法返回数据即可。可以通过 `noMoreRender` 属性自定义加载完成时的展示内容。

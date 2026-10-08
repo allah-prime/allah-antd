@@ -21,7 +21,6 @@ export { default as EditableItem } from './EditableItem';
 export { default as Ellipsis } from './Ellipsis';
 export { default as ExplainTips } from './ExplainTips';
 export { default as FileBox } from './FileBox';
-export { default as FileUpload } from './FileUpload';
 export { default as FileImportModal } from './FileUpload/FileImportModal';
 export { attachFileSuffix, default as FileUpload2, getBase64, previewFile, AhFileIcon } from './FileUpload/FileUpload2';
 export { default as FooterToolbar } from './FooterToolbar';
@@ -56,7 +55,6 @@ export { ahWL, ahWM, ahWP, ahWR } from './styles/baseStyles';
 export { default as TagList } from './TagGroup/TagList';
 export { default as TagOptions } from './TagGroup/TagOptions';
 export { default as TagManage } from './TagGroup/TagOptions/TagManage';
-export { default as TagSelect } from './TagGroup/TagSelect';
 export { default as TagSelect2 } from './TagGroup/TagSelect2';
 export { default as TagSwitch } from './TagGroup/TagSwitch';
 export { default as TagSelect3 } from './TagSelect3';
@@ -91,13 +89,10 @@ export { default as AhCardListPage } from './AhPage/AhCardListPage';
 export { default as AhPageContent } from './AhPage/AhPageContent';
 
 export type { IBuildKeysVo, IFileRelevanceVo, IUseType } from './FileUpload/type';
-export type { ISelectSearchProps, ISelectTreeProps } from './interface/component';
+export type { ISelectSearchProps } from './interface/component';
 export type { IItemListCardProps, ITemBarFunc, ItemBarProps } from './interface/item';
 export type { IListOptionsEvent, IListOptionsProps, IListSearchProps } from './interface/list';
-export type {
-    ITagSwitchProps, TagSelectOptionProps, TagSelectOptionType, TagSelectProps,
-    TagSelectState
-} from './interface/tag';
+export type { ITagSwitchProps } from './interface/tag';
 export type { ITagSelectProps } from './TagSelect3';
 export { default as TreeSelect } from './TreeSelect';
 export type { ITreeSelectProps } from './TreeSelect';
@@ -109,10 +104,10 @@ export { default as SortFilterAntd } from './AhFormFilter/SortFilterAntd';
 export { default as TagsFilter } from './AhFormFilter/TagsFilter';
 export { default as AhCheckbox } from './AhFormFilter/AhCheckbox';
 export { default as AhProFormSelect } from './AhFormFilter/AhProFormSelect';
-export { default as AhFormModal } from './AhFormModal';
-export { default as FormContent } from './AhFormModal/FormContent';
-export { default as FormReqLabel } from './AhFormModal/FormReqLabel';
-export { default as TitleInput } from './AhFormModal/TitleInput';
+export { default as AhEditModal } from './AhEditModal';
+export { default as FormContent } from './AhEditModal/FormContent';
+export { default as FormReqLabel } from './AhEditModal/FormReqLabel';
+export { default as TitleInput } from './AhEditModal/TitleInput';
 export { default as AhImageRender } from './AhImageRender';
 export { default as AhModal } from './AhModal';
 export { default as AhModalForm } from './AhModalForm';

@@ -16,10 +16,9 @@ order: 2
 
 ### 编辑器组件
 
-- [AhEditor](/edits/ah-editor) - 通用富文本编辑器，基于 @allahjs/tiptap，`renderMode` 支持 gov / normal / custom / block
-- [AhNotion](/edits/ah-notion) - **推荐** Notion 风格块编辑器
-- [Monaco](/edits/monaco) - Monaco 编辑器，基于 Monaco Editor，提供 VS Code 级别的编辑体验
-- [AhMarkdown](/edits/ah-markdown) - ~~已废弃~~，请改用 AhNotion
+- [AhEditor](/edit/ah-editor) - 通用富文本编辑器，基于 @allahjs/tiptap，`renderMode` 支持 gov / normal / custom / block
+- [AhNotion](/edit/ah-notion) - **推荐** Notion 风格块编辑器
+- [Monaco](/edit/monaco) - Monaco 编辑器，基于 Monaco Editor，提供 VS Code 级别的编辑体验
 
 > **业务约定**：富文本只用 `AhEditor`（传统编辑）和 `AhNotion`（块编辑）。
 
@@ -139,6 +138,6 @@ configMonacoLoader({
 
 各编辑器组件支持丰富的配置项，详情请参考各组件的文档：
 
-- [AhEditor 配置](/edits/ah-editor)
-- [AhNotion 配置](/edits/ah-notion)
-- [Monaco 配置](/edits/monaco#api)
+- [AhEditor 配置](/edit/ah-editor)
+- [AhNotion 配置](/edit/ah-notion)
+- [Monaco 配置](/edit/monaco#api)

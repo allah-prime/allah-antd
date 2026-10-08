@@ -1,5 +1,4 @@
 import { defineConfig } from 'dumi';
-import path from 'path';
 
 export default defineConfig({
   outputPath: 'docs-dist',
@@ -25,14 +24,7 @@ export default defineConfig({
       { type: 'mobile', dir: 'src/mobile' }
     ]
   },
-  // 安全网：个别 demo 若仍引用旧包名，映射到平铺后的目录
-  alias: {
-    '@theling/ui': path.resolve(__dirname, 'src/ui'),
-    '@theling/drag': path.resolve(__dirname, 'src/drag'),
-    '@theling/edit': path.resolve(__dirname, 'src/edit'),
-    '@theling/mobile': path.resolve(__dirname, 'src/mobile'),
-    '@theling/types': path.resolve(__dirname, 'src/types')
-  },
   base: '/allah-antd/',
-  publicPath: '/allah-antd/'
+  publicPath: '/allah-antd/',
+  plugins: ['./.dumi/plugins/atom-route-prefix.ts']
 });

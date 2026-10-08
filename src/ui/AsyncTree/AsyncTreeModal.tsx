@@ -5,7 +5,7 @@ import { Button, Col, Row, Tag, Tooltip } from 'antd';
 import React, { useState } from 'react';
 import useCustomFormItem from '../hooks/useCustomFormItem';
 import { modelSize } from '../utils/AhReactUtils';
-import '../AhFormModal/index.less';
+import '../AhEditModal/index.less';
 import AhModal from '../AhModal';
 import AsyncTreePlus, { defTextRender } from './AsyncTreePlus';
 import type { IAsyncTreeModalProps, IAsyncTreePlusFun } from './interface';

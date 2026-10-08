@@ -198,9 +198,11 @@ const CustomStyledEditor = () => {
 export default CustomStyledEditor;
 ```
 
+下面两段是配置写法，文档站不会执行。`https://your-cdn.com` 只是占位地址，真正跑起来会把全局 loader 指到一个不存在的 CDN，页面上所有编辑器都会加载失败。
+
 ### 示例 6: 使用自定义 CDN
 
-```tsx
+```tsx | pure
 import React from 'react';
 import { MonacoEditor, configMonacoCDN } from '..';
 
@@ -217,7 +219,7 @@ export default EditorWithCustomCDN;
 
 ### 示例 7: 组件级传入 loaderConfig
 
-```tsx
+```tsx | pure
 import React from 'react';
 import { MonacoEditor } from '..';
 

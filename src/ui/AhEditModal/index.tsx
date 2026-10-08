@@ -5,7 +5,7 @@ import FormContent from './FormContent';
 import './index.less';
 import AhModal, { IAhModalProps } from '../AhModal';
 
-export type IAhFormModalProps = IFormContentProps & {
+export type IAhEditModalProps = IFormContentProps & {
   /**
    * 覆盖弹窗设置
    */
@@ -33,11 +33,10 @@ export type IAhFormModalProps = IFormContentProps & {
 };
 
 /**
- * 自定义弹出编辑表单。
- * 这个是负载的左右布局，一般用在详情表单中使用，左侧为文本内容等需要进行编辑。
- * 关联操作的东西，右侧是一些配置的东西
+ * 编辑弹窗：固定左右分栏布局的弹窗外壳（左 16 编辑区 / 右 8 配置区）。
+ * 组件本身不创建表单实例，表单由调用方在外层使用 antd Form 管理。
  */
-const Index: React.FC<IAhFormModalProps> = props => {
+const AhEditModal: React.FC<IAhEditModalProps> = props => {
   const { modalProps = {}, open, visible } = props;
   const { onCancel: modalOnCancel, open: modalOpen, ...restModalProps } = modalProps;
   const mergedOpen = modalOpen ?? open ?? visible;
@@ -67,4 +66,4 @@ const Index: React.FC<IAhFormModalProps> = props => {
   );
 };
 
-export default Index;
+export default AhEditModal;

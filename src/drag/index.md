@@ -16,9 +16,9 @@ order: 3
 
 ### 拖拽组件
 
-- [ListCards](/drags/list-cards) - 卡片列表拖拽组件，支持卡片拖拽排序
-- [ListOptions](/drags/list-options) - 选项列表拖拽组件，支持选项拖拽排序
-- [DndKit](/drags/dnd-kit) - DndKit 封装组件，基于 @dnd-kit/core，提供更多拖拽功能
+- [ListCards](/drag/list-cards) - 卡片列表拖拽组件，支持卡片拖拽排序
+- [ListOptions](/drag/list-options) - 选项列表拖拽组件，支持选项拖拽排序
+- [DndKit](/drag/dnd-kit) - DndKit 封装组件，基于 @dnd-kit/core，提供更多拖拽功能
 
 ## 安装
 
@@ -133,6 +133,6 @@ DndKit 是一个基于 @dnd-kit/core 的封装组件，具有以下特性：
 
 各拖拽组件支持丰富的配置项，详情请参考各组件的文档：
 
-- [ListCards 配置](/drags/list-cards#api)
-- [ListOptions 配置](/drags/list-options#api)
-- [DndKit 配置](/drags/dnd-kit#api) 
+- [ListCards 配置](/drag/list-cards#api)
+- [ListOptions 配置](/drag/list-options#api)
+- [DndKit 配置](/drag/dnd-kit#api) 

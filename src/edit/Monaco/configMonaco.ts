@@ -1,7 +1,9 @@
 import loader from '@monaco-editor/loader';
 
-const DEFAULT_MONACO_VS_PATH = '/monaco/min/vs';
+const DEFAULT_MONACO_VS_PATH =
+  'https://cdn.jsdelivr.net/npm/monaco-editor@0.56.0/min/vs';
 let currentLoaderConfigSignature = '';
+let hasExplicitLoaderConfig = false;
 
 /**
  * Monaco 编辑器的 loader 配置类型
@@ -31,13 +33,24 @@ function normalizeMonacoLoaderConfig(config?: MonacoLoaderConfig): MonacoLoaderC
   };
 }
 
-function applyMonacoLoaderConfig(config?: MonacoLoaderConfig): MonacoLoaderConfig {
-  const normalizedConfig = normalizeMonacoLoaderConfig(config);
+function applyMonacoLoaderConfig(
+  config: MonacoLoaderConfig | undefined,
+  explicit: boolean
+): MonacoLoaderConfig {
+  if (!explicit && hasExplicitLoaderConfig && currentLoaderConfigSignature) {
+    return JSON.parse(currentLoaderConfigSignature) as MonacoLoaderConfig;
+  }
+
+  const normalizedConfig = normalizeMonacoLoaderConfig(explicit ? config : undefined);
   const nextSignature = JSON.stringify(normalizedConfig);
 
   if (nextSignature !== currentLoaderConfigSignature) {
     loader.config(normalizedConfig);
     currentLoaderConfigSignature = nextSignature;
+  }
+
+  if (explicit) {
+    hasExplicitLoaderConfig = true;
   }
 
   return normalizedConfig;
@@ -60,7 +73,7 @@ function applyMonacoLoaderConfig(config?: MonacoLoaderConfig): MonacoLoaderConfi
  * });
  */
 export function configMonacoCDN(vsPath: string): void {
-  applyMonacoLoaderConfig({ paths: { vs: vsPath } });
+  applyMonacoLoaderConfig({ paths: { vs: vsPath } }, true);
 }
 
 /**
@@ -74,9 +87,9 @@ export function configMonacoCDN(vsPath: string): void {
  * });
  */
 export function configMonacoLoader(config: MonacoLoaderConfig): void {
-  applyMonacoLoaderConfig(config);
+  applyMonacoLoaderConfig(config, true);
 }
 
 export function ensureMonacoLoaderConfig(config?: MonacoLoaderConfig): MonacoLoaderConfig {
-  return applyMonacoLoaderConfig(config);
+  return applyMonacoLoaderConfig(config, config != null);
 }

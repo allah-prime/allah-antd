@@ -2,7 +2,7 @@ import { ProForm, ProFormInstance, type ProFormProps } from '@ant-design/pro-com
 import { Button, Space } from 'antd';
 import { SizeType } from 'antd/es/config-provider/SizeContext';
 import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react';
-import '../AhFormModal/index.less';
+import '../AhEditModal/index.less';
 import AhModal, { IAhModalProps } from '../AhModal';
 import { modelSize } from '..';
 

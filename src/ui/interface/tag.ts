@@ -40,42 +40,6 @@ export type ITagSwitchProps = {
   leftKey?: string;
 };
 
-export interface TagSelectOptionProps {
-  value?: string | number;
-  style?: React.CSSProperties;
-  checked?: boolean;
-  onChange?: (value: string | number, state: boolean) => void;
-  disabled?: boolean;
-  children?: React.ReactNode;
-}
-
-export interface TagSelectOptionType extends React.FC<TagSelectOptionProps> {
-  isTagSelectOption?: boolean;
-}
-
-export interface TagSelectProps {
-  onChange?: (value: string[]) => void;
-  expandable?: boolean;
-  value?: string[] | number[];
-  defaultValue?: string[] | number[];
-  style?: React.CSSProperties;
-  hideCheckAll?: boolean;
-  actionsText?: {
-    expandText?: React.ReactNode;
-    collapseText?: React.ReactNode;
-    selectAllText?: React.ReactNode;
-  };
-  className?: string;
-  Option?: TagSelectOptionProps;
-  children: React.ReactElement<any> | React.ReactElement<any>[];
-  setting?: string;
-}
-
-export interface TagSelectState {
-  value: any[];
-  expand: boolean;
-}
-
 export interface ITagItem extends IOptions7<string> {
   color?: string;
 }

@@ -19,8 +19,5 @@ export {
 export { fileUpload } from './utils/fileUpload';
 export { default as AhEditor } from './AhEditor';
 export type { IAhEditorMode, IAhEditorProps, IAhEditorRenderMode } from './AhEditor';
-/** @deprecated 业务请使用 AhNotion */
-export { default as AhMarkdown } from './AhMarkdown';
-export type { IAhMarkdownProps } from './AhMarkdown';
 export { default as AhNotion } from './AhNotion';
 export type { IAhNotionProps } from './AhNotion';

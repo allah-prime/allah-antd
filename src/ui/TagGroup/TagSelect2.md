@@ -7,7 +7,7 @@ group:
 
 # TagSelect2
 
-标签选择器。完整示例见 [TagGroup / TagSelect2](/uis/tag-group)。
+标签选择器。完整示例见 [TagGroup / TagSelect2](/ui/tag-group)。
 
 ```jsx
 import React, { useState } from 'react';

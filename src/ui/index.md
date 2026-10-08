@@ -16,71 +16,64 @@ order: 1
 
 ### 通用组件
 
-- [AhProTable](/uis/ah-pro-table) - 高级表格组件，基于 ProTable 扩展，提供更多功能
-- [AhModal](/uis/ah-modal) - 模态框组件，提供更多功能和更好的用户体验
-- [AhModalForm](/uis/ah-modal-form) - 表单模态框组件，集成表单和模态框
-- [AhFormFilter](/uis/ah-form-filter) - 筛选表单组件，用于数据筛选
-- [AhFormModal](/uis/ah-form-modal) - 表单模态框组件，另一种实现方式
-- [AhPage](/uis/ah-page) - 表格页面容器组件（AhPageContent）
-- [AhCardListPage](/uis/ah-card-list-page) - 卡片列表页面容器组件
+- [AhProTable](/ui/ah-pro-table) - 高级表格组件，基于 ProTable 扩展，提供更多功能
+- [AhModal](/ui/ah-modal) - 模态框组件，提供更多功能和更好的用户体验
+- [AhModalForm](/ui/ah-modal-form) - 表单弹窗，基于 ProForm 自带表单状态机（对齐 pro 的 ModalForm，配 useAhModalForm）
+- [AhFormFilter](/ui/ah-form-filter) - 筛选表单组件，用于数据筛选
+- [AhEditModal](/ui/ah-edit-modal) - 编辑弹窗，左右分栏布局壳，表单由外层 antd Form 管理
+- [AhPage](/ui/ah-page) - 表格页面容器组件（AhPageContent）
+- [AhCardListPage](/ui/ah-card-list-page) - 卡片列表页面容器组件
 
 ### 数据展示
 
-- [AreaTable](/uis/area-table) - 区域表格组件，支持区域展示数据
-- [TagGroup](/uis/tag-group) - 标签组组件，用于展示标签组
-- [LongTag](/uis/long-tag) - 长标签组件，用于展示长文本标签
-- [AhImageRender](/uis/ah-image-render) - 图片渲染组件，支持图片预览
-- [AhFilePreview](/uis/ah-file-preview) - 文件预览组件，支持多种文件格式预览
-- [Ellipsis](/uis/ellipsis) - 文本省略组件，用于长文本省略
-- [Charts](/uis/charts) - 图表组件，用于数据可视化
-- [ListGroup](/uis/list-group) - 列表组组件，用于列表展示
-- [ActionTimeline](/uis/action-timeline) - 操作时间线组件，用于展示操作历史
-- [SensitiveInfo](/uis/sensitive-info) - 敏感信息展示组件，支持脱敏显示
+- [AreaTable](/ui/area-table) - 区域表格组件，支持区域展示数据
+- [TagGroup](/ui/tag-group) - 标签组组件，用于展示标签组
+- [LongTag](/ui/long-tag) - 长标签组件，用于展示长文本标签
+- [AhImageRender](/ui/ah-image-render) - 图片渲染组件，支持图片预览
+- [AhFilePreview](/ui/ah-file-preview) - 文件预览组件，支持多种文件格式预览
+- [Ellipsis](/ui/ellipsis) - 文本省略组件，用于长文本省略
+- [Charts](/ui/charts) - 图表组件，用于数据可视化
+- [ListGroup](/ui/list-group) - 列表组组件，用于列表展示
+- [SensitiveInfo](/ui/sensitive-info) - 敏感信息展示组件，支持脱敏显示
 
 ### 数据录入
 
-- [AsyncCascader](/uis/async-cascader) - 异步级联选择器，支持异步加载数据
-- [AsyncTree](/uis/async-tree) - 异步树组件，支持异步加载树节点
-- [SysTree](/uis/sys-tree) - 系统树组件，用于系统层级选择
-- [SelectSearch](/uis/select-search) - 搜索选择组件，支持搜索选择
-- [SelectTree](/uis/select-tree) - 树选择组件，支持树形选择
-- [DatePickerPlus](/uis/date-picker-plus) - 日期选择增强组件，提供更多功能
-- [PgyDatePickerPlus](/uis/pgy-date-picker-plus) - 蒲公英日期选择增强组件
-- [DayjsPicker](/uis/dayjs-picker) - Dayjs 日期选择组件，基于 Dayjs
-- [DebounceSelect](/uis/debounce-select) - 防抖选择组件，支持防抖搜索
-- [FileUpload](/uis/file-upload) - 文件上传组件，支持文件上传
-- [FileBox](/uis/file-box) - 文件盒子组件，用于文件管理
-- [IconSelect](/uis/icon-select) - 图标选择组件，支持选择图标
-- [EditableItem](/uis/editable-item) - 可编辑项组件，支持行内编辑
-- [ApiParameterEditor](/uis/api-parameter-editor) - API参数编辑器组件
+- [AsyncCascader](/ui/async-cascader) - 异步级联选择器，支持异步加载数据
+- [AsyncTree](/ui/async-tree) - 异步树组件，支持异步加载树节点
+- [SelectSearch](/ui/select-search) - 搜索选择组件，支持搜索选择
+- [DatePickerPlus](/ui/date-picker-plus) - 日期选择增强组件，提供更多功能
+- [DayjsPicker](/ui/dayjs-picker) - Dayjs 日期选择组件，基于 Dayjs
+- [DebounceSelect](/ui/debounce-select) - 防抖选择组件，支持防抖搜索
+- [FileUpload2](/ui/file-upload) - 文件上传组件，支持文件上传
+- [FileBox](/ui/file-box) - 文件盒子组件，用于文件管理
+- [IconSelect](/ui/icon-select) - 图标选择组件，支持选择图标
+- [EditableItem](/ui/editable-item) - 可编辑项组件，支持行内编辑
+- [ApiParameterEditor](/ui/api-parameter-editor) - API参数编辑器组件
 
 ### 布局组件
 
-- [StandardFormRow](/uis/standard-form-row) - 标准表单行组件，用于表单布局
-- [FooterToolbar](/uis/footer-toolbar) - 底部工具栏组件，用于底部操作
-- [PageLoading](/uis/page-loading) - 页面加载组件，用于页面加载状态
-- [CardGroup](/uis/card-group) - 卡片组组件，用于卡片布局
-- [ItemBar](/uis/item-bar) - 项目栏组件，用于项目展示
-- [DragItemBar](/uis/drag-item-bar) - 可拖拽项目栏组件，支持拖拽排序
-- [ItemListCard](/uis/item-list-card) - 列表卡片组件，用于列表展示
-- [SettingDrawer](/uis/setting-drawer) - 设置抽屉组件，用于系统设置
+- [FooterToolbar](/ui/footer-toolbar) - 底部工具栏组件，用于底部操作
+- [PageLoading](/ui/page-loading) - 页面加载组件，用于页面加载状态
+- [CardGroup](/ui/card-group) - 卡片组组件，用于卡片布局
+- [ItemBar](/ui/item-bar) - 项目栏组件，用于项目展示
+- [DragItemBar](/ui/drag-item-bar) - 可拖拽项目栏组件，支持拖拽排序
+- [ItemListCard](/ui/item-list-card) - 列表卡片组件，用于列表展示
+- [SettingDrawer](/ui/setting-drawer) - 设置抽屉组件，用于系统设置
 
 ### 功能组件
 
-- [Authorized](/uis/authorized) - 权限控制组件，用于权限控制
-- [UserMonitor](/uis/user-monitor) - 用户监控组件，用于用户行为监控
-- [WaterMark](/uis/water-mark) - 水印组件，用于添加水印
-- [InfoLog](/uis/info-log) - 信息日志组件，用于日志展示
-- [ExplainTips](/uis/explain-tips) - 说明提示组件，用于提示说明
-- [PollingProgressIcon](/uis/polling-progress-icon) - 轮询进度图标组件，用于显示轮询状态
+- [UserMonitor](/ui/user-monitor) - 用户监控组件，用于用户行为监控
+- [InfoLog](/ui/info-log) - 信息日志组件，用于日志展示
+- [ExplainTips](/ui/explain-tips) - 说明提示组件，用于提示说明
+- [PollingProgressIcon](/ui/polling-progress-icon) - 轮询进度图标组件，用于显示轮询状态
 
 ### 登录组件
 
-- [Login](/uis/login) - 登录组件，提供完整的登录功能
+- [Login](/ui/login) - 登录组件，提供完整的登录功能
 
 ### 开发工具
 
-- [PageDev](/uis/page-dev) - 页面开发工具组件，用于页面开发辅助
+- [PageDev](/ui/page-dev) - 页面开发工具组件，用于页面开发辅助
 
 ## 安装
 

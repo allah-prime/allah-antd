@@ -84,16 +84,3 @@ export interface ISelectSearchProps {
    */
   mode?: 'multiple' | 'tags';
 }
-
-export interface ISelectTreeProps {
-  currentMapData: (ac: string) => void;
-  asyncTreeData: (pcode?: string) => PromiseLike<any>;
-  // 要更改的父节点
-  treePcode?: string;
-  // 标题
-  defLabel?: string;
-  serviceProvince?: (ac: string) => void;
-  acCount?: (ac: string) => void;
-  dateVisit?: (ac: string) => void;
-  queries?: (ac: string) => void;
-}

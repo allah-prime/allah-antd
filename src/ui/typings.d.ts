@@ -13,6 +13,5 @@ declare module '*.module.less';
 
 interface Window {
   WebKitMutationObserver?: any;
-  reloadAuthorized: () => void;
   AMap: any;
 }
