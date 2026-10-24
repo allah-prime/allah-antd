@@ -32,7 +32,7 @@ group:
 
 示例代码：
 
-```jsx
+```jsx | pure
 const tableConfig = useItemTable<IAssistThesaurus, IThesaurusListFilter>({
   request: AssistThesaurusService.list,
   defValue: IThesaurusListDefFilter,
@@ -41,13 +41,13 @@ const tableConfig = useItemTable<IAssistThesaurus, IThesaurusListFilter>({
 
 筛选条件：
 
-```jsx
+```jsx | pure
 <PolicyItemsSearch onFilterChange={tableConfig.updateParams} />
 ```
 
 表格：
 
-```jsx
+```jsx | pure
 <AhProTable
   actionRef={tableConfig.actionRef}
   params={tableConfig.params}
@@ -65,20 +65,20 @@ const tableConfig = useItemTable<IAssistThesaurus, IThesaurusListFilter>({
 
 引入轮询 hooks：
 
-```jsx
+```jsx | pure
 const { scheduleRequest, importLoading, setImportLoading, setImportDisabled, pollingProgress } =
   useScheduleRequest();
 ```
 
 开始轮询：
 
-```jsx
+```jsx | pure
 await scheduleRequest.run(res.redisKey);
 ```
 
 结束轮询，可以手动结束，也可以自动结束：
 
-```jsx
+```jsx | pure
 scheduleRequest.cancel();
 ```
 
@@ -101,7 +101,7 @@ scheduleRequest.cancel();
 
 ### 基本使用
 
-```jsx
+```jsx | pure
 const modalForm = useAhModalForm({
   id: currentId,
   infoRequest: (id) => userApi.getUserInfo(id),
@@ -113,7 +113,7 @@ const modalForm = useAhModalForm({
 
 ### 多请求使用
 
-```jsx
+```jsx | pure
 const modalForm = useAhModalForm({
   id: currentId,
   infoRequest: (id) => userApi.getUserInfo(id),

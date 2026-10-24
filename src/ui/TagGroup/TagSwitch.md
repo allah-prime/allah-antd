@@ -5,7 +5,7 @@
 ```jsx
 import React from 'react';
 import {Space} from 'antd';
-import TagSwitch from './index';
+import TagSwitch from './TagSwitch';
 
 const defValue = [
   {
@@ -69,7 +69,7 @@ export default () => {
 ```jsx
 import React from 'react';
 import {Space} from 'antd';
-import TagSwitch from './index';
+import TagSwitch from './TagSwitch';
 
 const defValue = [];
 
