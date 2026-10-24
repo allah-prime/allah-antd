@@ -1,9 +1,11 @@
 saveExact: true
+minimumReleaseAge: 0
 minimumReleaseAgeExclude:
   - '@allahjs/eslint@1.0.1'
   - father@4.6.36
   - '@allahjs/tiptap@2.3.0'
-  - '@allahjs/utils@2.0.0'
+  - '@allahjs/utils@2.0.1'
+
 allowBuilds:
   '@parcel/watcher': true
   '@swc/core': true
