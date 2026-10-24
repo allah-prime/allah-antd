@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "downlevelIteration": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "baseUrl": "./",
+    "lib": ["esnext", "dom"],
+    "paths": {
+      "@@/*": [".dumi/tmp/*"],
+      "@allahjs/antd": ["src"],
+      "@allahjs/antd/*": ["src/*", "*"]
+    }
+  },
+  "include": ["src", "docs", "example", ".dumirc.ts", "typings.d.ts"],
+  "exclude": ["node_modules", "dist", "docs-dist", "es", "lib", "**/demo/**", "**/demos/**"]
+}

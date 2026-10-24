@@ -1,0 +1,97 @@
+.sensitive-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  
+  &-content {
+    letter-spacing: 0.5px;
+    user-select: none;
+    cursor: default;
+    
+    .sensitive-info-visible & {
+      user-select: text;
+    }
+  }
+  
+  &-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  &:hover &-actions {
+    opacity: 1;
+  }
+  
+  &-toggle,
+  &-copy {
+    color: rgba(0, 0, 0, 0.45);
+    border: none;
+    box-shadow: none;
+    
+    &:hover {
+      color: #1890ff;
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+    
+    &:focus {
+      color: #1890ff;
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+  
+  &-disabled {
+    color: rgba(0, 0, 0, 0.25);
+    cursor: not-allowed;
+    
+    .sensitive-info-content {
+      cursor: not-allowed;
+    }
+    
+    .sensitive-info-toggle,
+    .sensitive-info-copy {
+      color: rgba(0, 0, 0, 0.25);
+      cursor: not-allowed;
+      
+      &:hover {
+        color: rgba(0, 0, 0, 0.25);
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+// 暗色主题适配
+[data-theme='dark'] .sensitive-info {
+  &-toggle,
+  &-copy {
+    color: rgba(255, 255, 255, 0.45);
+    
+    &:hover {
+      color: #1890ff;
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+    
+    &:focus {
+      color: #1890ff;
+      background-color: rgba(255, 255, 255, 0.04);
+    }
+  }
+  
+  &-disabled {
+    color: rgba(255, 255, 255, 0.25);
+    
+    .sensitive-info-toggle,
+    .sensitive-info-copy {
+      color: rgba(255, 255, 255, 0.25);
+      
+      &:hover {
+        color: rgba(255, 255, 255, 0.25);
+        background-color: transparent;
+      }
+    }
+  }
+}

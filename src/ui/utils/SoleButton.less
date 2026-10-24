@@ -1,0 +1,35 @@
+@import "../ahAntDef";
+
+@SoleButton: SoleButton;
+.@{SoleButton} {
+
+  outline: none;
+  position: relative;
+  display: inline-block;
+  font-weight: 400;
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  user-select: none;
+  touch-action: manipulation;
+
+  font-size: 14px;
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 4px;
+
+  &-default {
+    background-color: #ffffff;
+    border-color: @border-color-base;
+  }
+
+  &-default:hover {
+    color: @primary-color;
+    background-color: #fafafa;
+    border-color: @primary-color;
+  }
+}
