@@ -85,6 +85,13 @@
       height: 100%;
     }
   }
+
+  // 表体高度链补齐：ProTable 卡片内容层也需 100%，
+  // 空数据等纯 CSS 撑满场景依赖完整链路（有数据时表体走 JS 像素高度不受影响）
+  .ant-pro-table > .ant-pro-card,
+  .ant-pro-card > .ant-pro-card-body {
+    height: 100%;
+  }
   height: 100%;
   .ant-spin-spinning {
 
@@ -129,6 +136,14 @@
     }
     .ant-table-body > table {
       height: 100%;
+    }
+    // 空态占位撑满表体并垂直居中（默认只有一行高、顶对齐）
+    .ant-table-placeholder,
+    .ant-table-placeholder > td {
+      height: 100%;
+    }
+    .ant-table-placeholder .ant-empty {
+      margin-block: 0;
     }
     .ant-spin-nested-loading {
       .table-full-height();
@@ -318,6 +333,11 @@
   > div {
     display: flex;
     align-items: center;
+  }
+
+  // 底部操作按钮（footerRender）默认 8px 间距，免去每个页面手写 marginRight/Space
+  .ah-antd-pro-table-footer-extra {
+    gap: 8px;
   }
 
   // 分页是 mini（24px）。默认按钮 32px 会撑满 38px 底栏，视觉上贴顶
