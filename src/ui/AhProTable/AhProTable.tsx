@@ -177,7 +177,9 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
         '.ant-pro-table-list-toolbar'
       );
       const toolbarHeight = toolbarEl?.offsetHeight ?? 0;
-      const theadHeight = size === 'small' ? 39 : 46; // 表头高度
+      // 实测表头高度（antd 不同版本/主题下表头实际高度可能大于约定值，硬编码会导致表体高度偏差）
+      const theadEl = containerRef.current?.querySelector('.ant-table-thead') as HTMLElement | null;
+      const theadHeight = theadEl ? theadEl.offsetHeight : size === 'small' ? 39 : 46;
       const footerHeight = showFooter ? FOOTER_HEIGHT : 0;
       const rowSelectionBarHeight = rowSelection && isSelected ? 46 : 0;
       // 横向条在 body 内，不要再扣条高，否则表格与 footer 之间会空一截

@@ -125,14 +125,23 @@
         .ant-table {
           height: 100%;
           .ant-table-container {
+            // flex 列布局：表体精确吸收「容器 - 表头」高度，
+            // 空态与有数据态几何一致（此前 body height:100% 不扣表头会向下溢出）
             height: 100%;
+            display: flex;
+            flex-direction: column;
           }
         }
       }
     }
+    .ant-table-header {
+      flex-shrink: 0;
+    }
     .ant-table-body {
-      height: 100% !important;
-      max-height: 100% !important;
+      flex: 1 1 auto;
+      min-height: 0;
+      height: auto !important;
+      max-height: none !important;
     }
     .ant-table-body > table {
       height: 100%;
