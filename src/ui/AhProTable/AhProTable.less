@@ -86,6 +86,21 @@
     }
   }
 
+  // 根容器 flex 列：工具栏（headerTitle/toolBarRender）占自然高度，
+  // 表格区（spin 链）flex 撑满剩余空间。
+  // 此前 .ant-spin-nested-loading 被强制 height:100%（=根高），
+  // 与工具栏相加必然向下溢出（实测 41px），且空态表头被行分布拉高。
+  &.ah-antd-pro-table-has-pagination,
+  &.ah-antd-pro-table-no-pagination {
+    display: flex;
+    flex-direction: column;
+    > .ant-spin-nested-loading {
+      flex: 1 1 auto;
+      min-height: 0;
+      height: auto;
+    }
+  }
+
   // 表体高度链补齐：ProTable 卡片内容层也需 100%，
   // 空数据等纯 CSS 撑满场景依赖完整链路（有数据时表体走 JS 像素高度不受影响）
   .ant-pro-table > .ant-pro-card,
