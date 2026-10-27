@@ -140,11 +140,11 @@
     .ant-table-header {
       flex-shrink: 0;
     }
+    // 表体与有数据态共用 JS 实测像素高度（--ah-table-body-y，已扣工具栏/表头/底栏），
+    // 空态几何与有数据完全一致（此前 height:100% 不扣表头，空态向下溢出实测 59px）
     .ant-table-body {
-      flex: 1 1 auto;
-      min-height: 0;
-      height: auto !important;
-      max-height: none !important;
+      height: var(--ah-table-body-y, 100%) !important;
+      max-height: var(--ah-table-body-y, 100%) !important;
     }
     .ant-table-body > table {
       height: 100%;
@@ -240,6 +240,8 @@
   }
 
   .ant-table-thead > tr > th {
+    // 空态下表头文本会异常折行（行盒成倍叠加，表头 61/105px），锁定单行
+    white-space: nowrap;
     color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.65)) !important;
     font-size: 14px !important;
   }
@@ -386,20 +388,5 @@
 .ah-antd-pro-bottom-border-radius {
   .ah-antd-pro-table .ant-pro-card {
     border-radius: var(--ant-border-radius, 8px);
-  }
-}
-
-// ProTable 根 flex 列：工具栏（headerTitle/toolBarRender）占自然高度，
-// 表格区（spin 链）flex 撑满剩余空间。
-// 此前 .ant-spin-nested-loading 被强制 height:100%（=根高），
-// 与工具栏相加必然向下溢出（实测 41px），且空态表头被行分布拉高。
-.ah-antd-pro-table-has-pagination,
-.ah-antd-pro-table-no-pagination {
-  display: flex;
-  flex-direction: column;
-  > .ant-spin-nested-loading {
-    flex: 1 1 auto;
-    min-height: 0;
-    height: auto;
   }
 }
