@@ -21,19 +21,20 @@
   overflow: hidden;
 }
 // 表头第一列添加20px padding
+// 第一列统一 16px 缩进：与搜索条（.ah-page-header-search padding-left:16px）
+// 和 antd 单元格标准 padding-inline 对齐，表头/数据/搜索区三线一致
 .ant-table-thead {
   > tr {
     > th:first-child {
-      padding-left:20px !important;
+      padding-left: 16px !important;
     }
   }
 }
 
-// 表格内容第一列添加20px padding
 .ant-table-tbody {
   > tr {
     > td:first-child {
-      padding-left: 20px !important;
+      padding-left: 16px !important;
     }
   }
 }
@@ -262,13 +263,13 @@
 .ah-antd-pro-table-small {
   .ant-table-thead > tr > th {
     &:first-child {
-      padding-left: var(--ant-padding-xs, 8px) !important;
+      padding-left: 16px !important;
     }
   }
 
   .ant-table-body > table > tbody > tr > td {
     &:first-child {
-      padding-left: var(--ant-padding-xs, 8px) !important;
+      padding-left: 16px !important;
     }
   }
 }

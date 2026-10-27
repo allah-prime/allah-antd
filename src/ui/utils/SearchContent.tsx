@@ -33,7 +33,7 @@ const SearchContent: React.FC<ISearchContentProps> = ({
           showExpand
         })}
       {showExpand && (
-        <Space style={{ marginLeft: 8 }}>
+        <Space>
           <IconFont type={iconFontType} style={{ fontSize: 15 }} />
           <span
             style={{
