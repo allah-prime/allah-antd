@@ -1,6 +1,6 @@
 import { CheckOutlined, DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Input, Popover, message } from 'antd';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { IAhFilterView, IAhFilterViewsConfig } from '../ahAntdTypes';
 import './filterBar.less';
 
@@ -215,7 +215,7 @@ const AhFilterViewBar = ({
   );
 
   return (
-    <div className="ah-view-bar">
+    <>
       <Popover
         trigger="click"
         placement="bottomLeft"
@@ -261,6 +261,36 @@ const AhFilterViewBar = ({
         <Button size="small" onClick={onClear}>
           清除变更
         </Button>
+      )}
+    </>
+  );
+};
+
+type IAhFilterHeaderBarProps = {
+  /** 功能名称，显示在视图名称左侧 */
+  title?: ReactNode;
+  /** 功能解释，显示在视图栏右侧 */
+  description?: ReactNode;
+  /** 自定义右侧渲染，位于描述之后 */
+  rightRender?: () => ReactNode;
+  /** 视图控件（AhFilterViewBar），无视图时可不传 */
+  children?: ReactNode;
+};
+
+/**
+ * 头部顶栏：[功能名称][视图控件 ...] ……… [功能描述][自定义右侧]
+ */
+export const AhFilterHeaderBar = ({ title, description, rightRender, children }: IAhFilterHeaderBarProps) => {
+  const right = rightRender?.();
+  return (
+    <div className="ah-view-bar">
+      {title && <div className="ah-view-bar-title">{title}</div>}
+      {children}
+      {(description || right) && (
+        <div className="ah-view-bar-aside">
+          {description && <span className="ah-view-bar-desc">{description}</span>}
+          {right}
+        </div>
       )}
     </div>
   );

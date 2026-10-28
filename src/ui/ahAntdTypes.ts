@@ -303,6 +303,18 @@ export type IAhPageContentProps<T, F> = IUseAhPageConfigProps<T> & {
    */
   filterViews?: IAhFilterViewsConfig | false;
   /**
+   * 功能名称（div 新布局）：显示在视图栏最左侧、视图名称的左边
+   */
+  title?: React.ReactNode;
+  /**
+   * 功能解释（div 新布局）：显示在视图栏右侧
+   */
+  description?: React.ReactNode;
+  /**
+   * 自定义头部右侧渲染（div 新布局）：位于视图栏最右侧，排在 description 之后
+   */
+  headerRightRender?: () => React.ReactNode;
+  /**
    * 查询触发模式：instant 即时触发（默认，行为不变）；submit 表单与关键词变更只暂存，点「查询」统一提交
    */
   searchMode?: 'instant' | 'submit';

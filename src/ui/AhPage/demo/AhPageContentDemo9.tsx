@@ -1,4 +1,5 @@
 import type { IBaseFilter, ITablePage } from '@allahjs/utils';
+import { Button, message } from 'antd';
 import { AhPageContent, type IAhFilterField, type IAhSortField } from '../../index';
 import {
   SALES_RECORDS,
@@ -80,6 +81,13 @@ const request = async (params: DemoFilter): Promise<ITablePage<SaleRow>> => {
 export default () => (
   <div style={{ height: 560 }}>
     <AhPageContent<SaleRow, DemoFilter>
+      title="销售明细"
+      description="按门店、分类、支付方式与销售时间筛选；视图可保存复用"
+      headerRightRender={() => (
+        <Button size="small" onClick={() => message.info('导出功能待接入')}>
+          导出
+        </Button>
+      )}
       filterFields={filterFields}
       sortSearch={{ fields: sortFields }}
       defParams={{ pageNum: 1, pageSize: 10 }}

@@ -39,6 +39,9 @@ AhPageContent 是用于展示表格数据的页面容器组件，支持分页、
 | onError | 请求失败回调；默认 `message.error` 提示并保留旧数据 | `(e: unknown) => void` | - |
 | filterFields | 声明式筛选字段（配置即表单）。`type`: `select`/`multiSelect`/`input`/`dateRange`；`defaultVisible` 为外露 chip。传入后左栏由配置渲染，未传时沿用 `searchForm` | `IAhFilterField[]` | - |
 | filterViews | 筛选视图管理。默认 localStorage（`storageKey` 隔离）；传 `views` 受控，配合 `onSave/onDelete/onSelect` 接后端；`false` 关闭视图栏 | `IAhFilterViewsConfig \| false` | 传 `filterFields` 时自动开启，否则需显式传入 |
+| title | 功能名称（div 新布局）。显示在视图栏最左侧、视图名称的左边，右侧以分隔线隔开；无视图时单独显示 | `ReactNode` | - |
+| description | 功能解释（div 新布局）。显示在视图栏右侧，位于 `headerRightRender` 之前 | `ReactNode` | - |
+| headerRightRender | 自定义头部右侧渲染（div 新布局）。位于视图栏最右侧，排在 `description` 之后，可放按钮等 | `() => ReactNode` | - |
 | searchCollapsible | **已废弃**：div 布局不再提供展开收起；仅显式传 `true` 时保留旧版标题 + 展开收起结构 | `boolean` | - |
 | showReset | 是否显示「清除变更」（新布局，位于视图栏）/「重置」按钮（旧版结构）；一键还原到所选视图快照 | `boolean` | `true` |
 | needSearch | 是否需要搜索区域 | `boolean` | `true` |
@@ -120,7 +123,7 @@ AhPageContent 是用于展示表格数据的页面容器组件，支持分页、
 
 div 布局默认是「视图栏 + 左右两栏」：
 
-- 顶部视图栏：视图下拉、「保存为新视图」、「更新当前视图」、「清除变更」（即重置，回到所选视图快照）
+- 顶部视图栏：功能名称 `title`（最左）、视图下拉、「保存为新视图」、「更新当前视图」、「清除变更」（即重置，回到所选视图快照），右侧为功能解释 `description` 与自定义内容 `headerRightRender`
 - 左栏：「筛选 N个条件」弹层（字段 + 值 + 删除 + 添加条件）与外露 chip，由 `filterFields` 配置循环生成
 - 右栏：关键词搜索与「排序 · N个条件」弹层（多条排序，顺序即优先级）
 - 左右各占一半，超出各自换行；视图默认存 localStorage，传 `filterViews.views` 则受控

@@ -22,7 +22,7 @@ import {
   stableStringify,
   writeUrlParams
 } from './filterUtils';
-import AhFilterViewBar, { useFilterViews } from './AhFilterViewBar';
+import AhFilterViewBar, { AhFilterHeaderBar, useFilterViews } from './AhFilterViewBar';
 import AhFilterConditionPopover, { AhFilterChips } from './AhFilterConditionPopover';
 import AhSortConditionPopover from './AhSortConditionPopover';
 import type { IAhSortField } from '../ahAntdTypes';
@@ -102,7 +102,10 @@ const AhPageContent = <T, F extends IBaseFilter>({
   searchCollapsible,
   showReset = true,
   filterFields,
-  filterViews
+  filterViews,
+  title,
+  description,
+  headerRightRender
 }: IAhPageContentProps<T, F>) => {
   const formRef = useRef<ProFormInstance>(undefined);
 
@@ -698,25 +701,29 @@ const AhPageContent = <T, F extends IBaseFilter>({
     const showLightFilter = !hasFilterFields || !!searchFormNode || !!sortConfig;
     return (
       <div className="ah-filter-header ah-page-header-search">
-        {viewsApi.enabled && (
-          <AhFilterViewBar
-            views={viewsApi.views}
-            activeId={viewsApi.activeId}
-            defaultViewName={(filterViews || undefined)?.defaultViewName}
-            dirty={filtersDirty}
-            showClear={showReset}
-            onCreate={handleCreateView}
-            onUpdate={handleUpdateView}
-            onRename={(id, name) => {
-              const target = viewsApi.views.find((view) => view.id === id);
-              if (target) {
-                viewsApi.save({ ...target, name });
-              }
-            }}
-            onDelete={viewsApi.remove}
-            onSelect={handleSelectView}
-            onClear={() => handleReset(viewsApi.activeView?.params)}
-          />
+        {(viewsApi.enabled || title || description || headerRightRender) && (
+          <AhFilterHeaderBar title={title} description={description} rightRender={headerRightRender}>
+            {viewsApi.enabled && (
+              <AhFilterViewBar
+                views={viewsApi.views}
+                activeId={viewsApi.activeId}
+                defaultViewName={(filterViews || undefined)?.defaultViewName}
+                dirty={filtersDirty}
+                showClear={showReset}
+                onCreate={handleCreateView}
+                onUpdate={handleUpdateView}
+                onRename={(id, name) => {
+                  const target = viewsApi.views.find((view) => view.id === id);
+                  if (target) {
+                    viewsApi.save({ ...target, name });
+                  }
+                }}
+                onDelete={viewsApi.remove}
+                onSelect={handleSelectView}
+                onClear={() => handleReset(viewsApi.activeView?.params)}
+              />
+            )}
+          </AhFilterHeaderBar>
         )}
         <div className="ah-filter-row">
           <div className="ah-filter-row-left">

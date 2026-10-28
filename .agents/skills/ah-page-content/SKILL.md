@@ -26,7 +26,23 @@ request: (params: F) => Promise<ITablePage<T>>   // F extends IBaseFilter
 
 ### 形态一：声明式筛选（推荐）
 
-新布局 = 顶部视图栏 + 左（筛选条件）右（关键词/排序）两栏，Coding/Jira 风格。三个配置各管一块：
+新布局 = 顶部头部栏 + 左（筛选条件）右（关键词/排序）两栏，Coding/Jira 风格。头部栏结构：`[title 功能名称][视图控件…]……[description 功能解释][headerRightRender 自定义右侧]`。三个配置各管一块：
+
+**0. `title` / `description` / `headerRightRender` —— 头部栏（div 新布局）**
+
+```tsx
+<AhPageContent
+  title="销售明细"
+  description="按门店、分类、支付方式与销售时间筛选；视图可保存复用"
+  headerRightRender={() => <Button size="small" onClick={onExport}>导出</Button>}
+  ...
+/>
+```
+
+- `title`：功能名称，显示在视图栏最左侧、视图名称左边；**无视图时也可单独显示**（三者传其一即渲染头部栏）。
+- `description`：功能解释文案，显示在头部栏右侧。
+- `headerRightRender`：`(() => ReactNode)`，头部栏最右侧自定义区域（放导出/设置等按钮），排在 description 之后。
+- 仅 div 新布局生效；card/plugin 与旧版结构忽略。
 
 **1. `filterFields: IAhFilterField[]` —— 声明式筛选条件（配置即表单）**
 
@@ -116,6 +132,7 @@ const request = async (params: XFilter): Promise<ITablePage<XRow>> =>
 | Prop | 说明 |
 |---|---|
 | `request` / `columns` | 必填。**ProColumns**，render 签名 `(_dom, row, index)`，取值一律 `row.xxx` |
+| `title` / `description` / `headerRightRender` | 头部栏（div 新布局）：功能名称（最左）/ 功能解释（右侧）/ 自定义右侧渲染 `() => ReactNode`，传其一即显示头部栏 |
 | `filterFields` | 声明式筛选字段（形态一核心） |
 | `sortSearch` | `true` / `{ fields }` 多条件排序 / `{ options }` 旧版单选 |
 | `filterViews` | 视图管理配置；`false` 关闭；传 `filterFields` 时自动开启 |
