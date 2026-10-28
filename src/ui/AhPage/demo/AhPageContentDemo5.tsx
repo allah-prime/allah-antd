@@ -2,45 +2,53 @@ import { IAhPageContentFunc, AhPageContent } from '../../index';
 import { Button, Form, Segmented, Space } from 'antd';
 import { useRef } from 'react';
 import { ProFormSelect } from '@ant-design/pro-components';
+import { SALES_RECORDS, STORE_OPTIONS, paginate } from './demoData';
 
 const columns = [
   {
-    title: '条目名称',
-    dataIndex: 'standardItem',
-    key: 'code',
+    title: '商品名称',
+    dataIndex: 'productName',
+    key: 'productName',
     width: '20%',
     ellipsis: true
   },
   {
-    title: '短id',
-    dataIndex: 'shortId',
-    key: 'code',
+    title: '商品编码',
+    dataIndex: 'barcode',
+    key: 'barcode',
     width: '20%',
     ellipsis: true
   },
   {
-    title: '编码',
-    dataIndex: 'scopeCode',
-    key: 'code',
+    title: '分类',
+    dataIndex: 'category',
+    key: 'category',
+    width: '20%'
+  },
+  {
+    title: '销售金额（元）',
+    dataIndex: 'amount',
+    key: 'amount',
+    width: '20%'
+  },
+  {
+    title: '所属门店',
+    dataIndex: 'store',
+    key: 'store',
     width: '20%',
     ellipsis: true
   }
 ];
 
-const request = (params: { pageNum: any; pageSize: any }) => {
-  return fetch('https://api.jyfwyun.com/cloud-service/cross/search', {
-    headers: {
-      'content-type': 'application/json;charset=UTF-8'
-    },
-    referrer: 'https://jyfwyun.com/',
-    body: `{"s":"1649664274429","searchType":"item","pageNum":${params.pageNum},"busiCombosObj":{},"pageSize": ${params.pageSize} ,"industryTypes":[],"searchSchema":"nlp","ac":"110000"}`,
-    method: 'POST',
-    mode: 'cors'
-  }).then(async (res) => {
-    const data = await res.json();
-    return data.result.data;
-  });
-};
+const request = (params: { pageNum: any; pageSize: any; keyword?: string; category?: string }) =>
+  paginate(
+    SALES_RECORDS,
+    params,
+    (row) =>
+      (!params.keyword || row.productName.includes(params.keyword)) &&
+      (!params.category || params.category === '全部' || row.category === params.category)
+  );
+
 export default () => {
   const pageRef = useRef<IAhPageContentFunc<any, any>>(undefined);
   return (
@@ -53,8 +61,8 @@ export default () => {
         <Button
           onClick={() => {
             pageRef.current?.updateParams({
-              keyword: '测试2',
-              test1: 'Map'
+              keyword: '洗衣',
+              category: '日用百货'
             });
           }}
         >
@@ -67,28 +75,14 @@ export default () => {
         defParams={{
           pageSize: 10,
           pageNum: 1,
-          keyword: '测试',
-          test1: 'Satellite',
-          test2: undefined
+          keyword: '牛奶',
+          category: '全部'
         }}
         searchForm={[
-          <Form.Item name="test1" key="test1">
-            <Segmented options={['Map', 'Transit', 'Satellite']} />
+          <Form.Item name="category" key="category">
+            <Segmented options={['全部', '乳品饮料', '休闲零食', '粮油调味', '日用百货']} />
           </Form.Item>,
-          <ProFormSelect
-            name="test2"
-            key="test2"
-            options={[
-              {
-                label: '张三',
-                value: '1'
-              },
-              {
-                label: '张2',
-                value: '2'
-              }
-            ]}
-          />
+          <ProFormSelect name="store" key="store" options={STORE_OPTIONS} />
         ]}
         containerHeight={500}
         request={request}

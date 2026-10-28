@@ -77,10 +77,16 @@ export {
 } from './utils/AhReactUtils';
 export {
     type ISearchContentProps, type IAhCardListPageFunc, type IAhCardListPageProps,
-    type IAhPageContentFunc, type IAhPageContentProps
+    type IAhPageContentFunc, type IAhPageContentProps,
+    type IAhFilterField, type IAhSortField, type IAhFilterView, type IAhFilterViewsConfig
 } from './ahAntdTypes';
 export { default as AhCardListPage } from './AhPage/AhCardListPage';
 export { default as AhPageContent } from './AhPage/AhPageContent';
+export {
+    createFilterItem,
+    pickEffectiveParams,
+    stableStringify
+} from './AhPage/filterUtils';
 
 export type { IBuildKeysVo, IFileRelevanceVo, IUseType } from './FileUpload/type';
 export type { ISelectSearchProps } from './interface/component';

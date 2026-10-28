@@ -1,44 +1,44 @@
 import { AhPageContent } from '../../index';
+import { SALES_RECORDS, paginate } from './demoData';
 
 const columns = [
   {
-    title: '条目名称',
-    dataIndex: 'standardItem',
-    key: 'code',
+    title: '商品名称',
+    dataIndex: 'productName',
+    key: 'productName',
+    width: '25%',
+    ellipsis: true
+  },
+  {
+    title: '商品编码',
+    dataIndex: 'barcode',
+    key: 'barcode',
     width: '20%',
     ellipsis: true
   },
   {
-    title: '短id',
-    dataIndex: 'shortId',
-    key: 'code',
-    width: '20%',
-    ellipsis: true
+    title: '分类',
+    dataIndex: 'category',
+    key: 'category',
+    width: '15%'
   },
   {
-    title: '编码',
-    dataIndex: 'scopeCode',
-    key: 'code',
-    width: '20%',
+    title: '销售金额（元）',
+    dataIndex: 'amount',
+    key: 'amount',
+    width: '15%'
+  },
+  {
+    title: '所属门店',
+    dataIndex: 'store',
+    key: 'store',
+    width: '25%',
     ellipsis: true
   }
 ];
 
-const request = (params: { pageNum: any; pageSize: any }) => {
-  return fetch('https://api.jyfwyun.com/cloud-service/cross/search', {
-    headers: {
-      'content-type': 'application/json;charset=UTF-8'
-    },
-    referrer: 'https://jyfwyun.com/',
-    referrerPolicy: 'strict-origin-when-cross-origin',
-    body: `{"s":"1649664274429","searchType":"item","pageNum":${params.pageNum},"busiCombosObj":{},"pageSize": ${params.pageSize} ,"industryTypes":[],"searchSchema":"nlp","ac":"110000"}`,
-    method: 'POST',
-    mode: 'cors'
-  }).then(async res => {
-    const data = await res.json();
-    return data.result.data;
-  });
-};
+const request = (params: { pageNum: any; pageSize: any }) => paginate(SALES_RECORDS, params);
+
 export default () => (
   <div
     style={{

@@ -30,15 +30,23 @@ AhPageContent 是用于展示表格数据的页面容器组件，支持分页、
 | request | 数据请求方法 | `(params) => Promise<{ records: any[], total: number }>` | - |
 | searchLayout | 搜索区域布局 | `'div' \| 'card' \| 'plugin'` | `'div'` |
 | containerHeight | 容器高度 | `number` | `window.innerHeight` |
-| timeSearch | 是否显示时间搜索 | `boolean` | `true` |
+| timeSearch | 是否显示时间筛选。`true` 单字段（field/timeName）；传数组可配置多个日期区间 | `boolean \| Array<{ field: string; label?: string }>` | `true` |
+| field | 时间字段名称 | `string` | `'creTimeObj'` |
+| timeName | 时间字段显示名称 | `string` | `'创建时间'` |
+| sortSearch | 排序筛选。div 新布局下 `true` 为「排序 · N个条件」多条排序（默认更新/创建时间）；`fields` 自定义可排序字段（`sort` 值 false 降序、true 升序，key 顺序即优先级）；仅给 `options` 时回退旧版单选下拉 | `boolean \| { name?: string; label?: string; fields?: IAhSortField[]; options?: Array<{ label: string; value: string; sort: Record<string, boolean> }> }` | - |
+| searchMode | 查询触发模式：`instant` 即时触发（默认）；`submit` 条件只暂存，点「查询」统一提交 | `'instant' \| 'submit'` | `'instant'` |
+| syncUrl | 筛选条件同步到 URL query（replaceState，不产生历史栈）；刷新/分享/前进后退可还原 | `boolean \| { keys?: string[] }` | `false` |
+| onError | 请求失败回调；默认 `message.error` 提示并保留旧数据 | `(e: unknown) => void` | - |
+| filterFields | 声明式筛选字段（配置即表单）。`type`: `select`/`multiSelect`/`input`/`dateRange`；`defaultVisible` 为外露 chip。传入后左栏由配置渲染，未传时沿用 `searchForm` | `IAhFilterField[]` | - |
+| filterViews | 筛选视图管理。默认 localStorage（`storageKey` 隔离）；传 `views` 受控，配合 `onSave/onDelete/onSelect` 接后端；`false` 关闭视图栏 | `IAhFilterViewsConfig \| false` | 传 `filterFields` 时自动开启，否则需显式传入 |
+| searchCollapsible | **已废弃**：div 布局不再提供展开收起；仅显式传 `true` 时保留旧版标题 + 展开收起结构 | `boolean` | - |
+| showReset | 是否显示「清除变更」（新布局，位于视图栏）/「重置」按钮（旧版结构）；一键还原到所选视图快照 | `boolean` | `true` |
 | needSearch | 是否需要搜索区域 | `boolean` | `true` |
 | background | 背景颜色 | `string` | `'#fff'` |
 | rowSelection | 表格行选择配置 | `TableRowSelection` | - |
 | footerRender | 表格底部渲染方法 | `() => ReactNode` | - |
 | pageRef | 页面组件引用 | `MutableRefObject<IAhPageContentFunc<T, F>>` | - |
 | onRowClick | 行点击事件 | `(record: T) => void` | - |
-| field | 时间字段名称 | `string` | `'creTimeObj'` |
-| timeName | 时间字段显示名称 | `string` | `'创建时间'` |
 | subHeight | 需要减去的高度 | `number` | `160` |
 | xScroll | 表格横向滚动宽度（可选覆盖；像素列宽自动累加，百分比列宽默认不设） | `number` | - |
 | tableProps | 表格的额外配置，可传递给内部 AhProTable 组件 | `IAhProTableProps` | - |
@@ -97,6 +105,27 @@ AhPageContent 是用于展示表格数据的页面容器组件，支持分页、
 建议配合 `ellipsis: true`；固定列可用 `fixed: 'left' | 'right'`。注意：不要覆盖为 `scroll.x = 'max-content'`，否则列省略会失效。
 
 <code src="./demo/AhPageContentDemo7.tsx"></code>
+
+### 筛选增强：提交制 / URL 同步 / 多日期 / 自定义排序 / 失败保留
+
+- `searchMode="submit"`：筛选条件与关键词只暂存，点「查询」统一提交，适合慢后端批量组条件
+- `syncUrl`：筛选写入 URL，刷新页面、分享链接、浏览器前进后退均可还原
+- `timeSearch` 传数组配置多个日期区间；`sortSearch` 传对象自定义排序选项
+- `createFilterItem<F>(name, node)` 在编译期校验表单项 name 必须属于 Filter 类型
+- 视图栏「清除变更」一键还原全部筛选；「模拟请求失败」开关演示失败提示与旧数据保留
+
+<code src="./demo/AhPageContentDemo8.tsx"></code>
+
+### 筛选视图管理：声明式筛选条件 / 多条件排序 / 视图
+
+div 布局默认是「视图栏 + 左右两栏」：
+
+- 顶部视图栏：视图下拉、「保存为新视图」、「更新当前视图」、「清除变更」（即重置，回到所选视图快照）
+- 左栏：「筛选 N个条件」弹层（字段 + 值 + 删除 + 添加条件）与外露 chip，由 `filterFields` 配置循环生成
+- 右栏：关键词搜索与「排序 · N个条件」弹层（多条排序，顺序即优先级）
+- 左右各占一半，超出各自换行；视图默认存 localStorage，传 `filterViews.views` 则受控
+
+<code src="./demo/AhPageContentDemo9.tsx"></code>
 
 ## FAQ
 
@@ -171,6 +200,38 @@ A: 可以通过 `tableProps` 属性设置 `pagination: false` 来禁用分页：
 
 **Q: 如何优化页面的性能？**  
 A: 可以通过以下几种方式：
-1. 使用 `debounceTime` 控制搜索防抖时间
+1. 使用 `debounceTime` 控制搜索防抖
 2. 合理设置 `pageSize` 分页大小
 3. 使用 `asyncRefresh` 代替 `refresh` 进行异步刷新
+
+**Q: 后端不支持 keyword/时间筛选参数怎么办？**  
+A: 内置时间筛选默认发送 `creTimeObj={startDay,endDay}`，后端未实现该参数的项目建议设置 `timeSearch={false}`（ERP 项目规范即如此），需要的日期区间用 `searchForm` 自行接入——自塞的日期区间字段（Dayjs 数组）会被组件自动转换为 `{startDay,endDay}`。
+
+**Q: 如何让用户组合多个条件后一次查询？**  
+A: 设置 `searchMode="submit"`，表单项与关键词变更只暂存，点「查询」（或回车）统一提交。
+
+**Q: 如何保留/还原用户的筛选状态？**  
+A: 设置 `syncUrl`，筛选条件（含页码）写入 URL query；刷新、分享链接、前进后退都会还原。传 `{ keys: [...] }` 可只同步指定参数。
+
+**Q: 一键清空全部筛选？**  
+A: 表头默认带「重置」按钮（`showReset` 控制），会把关键词、表单、折叠区暂存值全部还原到初始状态，页码回到第 1 页。启用视图栏（`filterFields` / `filterViews`）后，该入口变为视图栏的「清除变更」，还原目标是当前所选视图的快照。
+
+**Q: 请求失败的表现？**  
+A: 默认 `message.error` 提示并保留上一次成功数据（表格不清空、分页不丢）；传 `onError` 可接管提示逻辑。
+
+**Q: 表单项 name 拼写如何防错？**  
+A: 使用 `createFilterItem<F>(name, node)` 包裹表单项，name 不在 F 类型中会直接编译报错：
+```tsx | pure
+import { createFilterItem } from '@allahjs/antd';
+
+searchForm={[
+  createFilterItem<MyFilter>('store', <ProFormSelect name="store" options={...} />)
+]}
+```
+
+**Q: 本次升级有哪些行为变化？**  
+A: 三点（均为修复性质）：
+1. 空筛选值不再发送：`undefined`/`null`/空字符串/空数组的参数会被剔除后再发给后端
+2. `pageRef.current.setParams()` 现在会同步通知受控父组件（`setParams` 回调），与 `updateParams` 行为对齐
+3. 关键词防抖从"请求层兜底"提前到"参数层"：连续输入只触发一次参数更新（回车/清空立即触发），父组件不再每键重渲染
+4. 内置排序清空后不再残留 `sort` 参数；列头排序与内置排序并存时按"列排序优先"合并而非互相覆盖

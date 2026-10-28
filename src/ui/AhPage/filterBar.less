@@ -1,0 +1,335 @@
+// 视图栏
+.ah-view-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  .ah-view-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ant-color-text, rgba(0, 0, 0, 0.88));
+    cursor: pointer;
+  }
+
+  .ah-view-title-caret {
+    font-size: 11px;
+    color: var(--ant-color-text-quaternary, rgba(0, 0, 0, 0.25));
+  }
+}
+
+.ah-view-list {
+  min-width: 200px;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.ah-view-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ant-color-fill-tertiary, rgba(0, 0, 0, 0.04));
+  }
+
+  &-active {
+    color: var(--ant-color-primary, #1677ff);
+  }
+
+  &-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-actions {
+    display: none;
+    gap: 8px;
+    color: var(--ant-color-text-tertiary, rgba(0, 0, 0, 0.45));
+  }
+
+  &:hover &-actions {
+    display: inline-flex;
+  }
+}
+
+.ah-view-save {
+  display: flex;
+  gap: 8px;
+  width: 260px;
+}
+
+// 筛选行：左右各占一半，各自换行
+.ah-filter-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+
+  &-left,
+  &-right {
+    display: flex;
+    flex: 1 1 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &-right {
+    justify-content: flex-end;
+  }
+}
+
+// 触发按钮（筛选 / 排序）
+.ah-bar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--ant-color-border, #d9d9d9);
+  border-radius: 6px;
+  background: var(--ant-color-bg-container, #fff);
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ant-color-text, rgba(0, 0, 0, 0.88));
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover,
+  &-open {
+    border-color: var(--ant-color-primary, #1677ff);
+  }
+
+  &-count {
+    color: var(--ant-color-primary, #1677ff);
+    font-weight: 600;
+  }
+
+  &-sort-icon {
+    color: var(--ant-color-primary, #1677ff);
+  }
+
+  &-caret {
+    width: 0;
+    height: 0;
+    margin-left: 8px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid var(--ant-color-text-quaternary, rgba(0, 0, 0, 0.25));
+  }
+}
+
+// 外露条件 chip
+.ah-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding-left: 10px;
+  border-radius: 6px;
+  background: var(--ant-color-fill-tertiary, rgba(0, 0, 0, 0.04));
+  white-space: nowrap;
+
+  &-label {
+    color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.65));
+  }
+
+  .ant-select,
+  .ant-input-affix-wrapper,
+  .ant-picker {
+    background: transparent;
+  }
+}
+
+// 条件弹层
+.ah-cond-pop {
+  &-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  &-title {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  &-close {
+    cursor: pointer;
+  }
+}
+
+.ah-cond-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  &-value {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &-remove {
+    font-size: 20px;
+    color: var(--ant-color-text-quaternary, #9ca3af);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--ant-color-text-tertiary, rgba(0, 0, 0, 0.45));
+    }
+  }
+}
+
+.ah-sort-seg {
+  flex: 1;
+}
+
+.ah-cond-add {
+  margin-top: 4px;
+  background: #222;
+
+  &:not(:disabled):hover {
+    background: #444 !important;
+  }
+}
+
+.ah-sort-add {
+  padding-left: 0;
+}
+
+// 菜单类值控件：chip 触发器
+.ah-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--ant-color-fill-tertiary, rgba(0, 0, 0, 0.04));
+  font-family: inherit;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ant-color-fill-secondary, rgba(0, 0, 0, 0.06));
+  }
+
+  &-value {
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--ant-color-text, rgba(0, 0, 0, 0.88));
+  }
+}
+
+// 菜单类值控件：弹层行内的块状触发器
+.ah-menu-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 32px;
+  padding: 0 11px;
+  border: 1px solid var(--ant-color-border, #d9d9d9);
+  border-radius: 6px;
+  background: var(--ant-color-bg-container, #fff);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+
+  > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-empty {
+    color: var(--ant-color-text-secondary, rgba(0, 0, 0, 0.65));
+  }
+
+  &:hover {
+    border-color: var(--ant-color-primary, #1677ff);
+  }
+}
+
+// 菜单浮层
+.ah-menu {
+  min-width: 180px;
+  max-width: 320px;
+
+  &-count {
+    padding: 2px 8px 6px;
+    font-size: 12px;
+    color: var(--ant-color-text-tertiary, rgba(0, 0, 0, 0.45));
+  }
+
+  &-list {
+    max-height: 260px;
+    overflow: auto;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    &:hover {
+      background: var(--ant-color-fill-tertiary, rgba(0, 0, 0, 0.04));
+    }
+
+    &-active {
+      color: var(--ant-color-primary, #1677ff);
+    }
+
+    &-name {
+      flex: 1;
+    }
+  }
+
+  &-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  &-empty {
+    padding: 8px;
+    text-align: center;
+    color: var(--ant-color-text-quaternary, rgba(0, 0, 0, 0.25));
+  }
+}
+
+// 排序字段下拉项
+.ah-sort-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  &-type {
+    font-size: 12px;
+    color: var(--ant-color-text-tertiary, rgba(0, 0, 0, 0.45));
+  }
+}

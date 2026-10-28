@@ -1,4 +1,4 @@
-import { DoubleRightOutlined } from '@ant-design/icons';
+import { DoubleRightOutlined, FilterOutlined } from '@ant-design/icons';
 import { Divider, Space } from 'antd';
 import React, { useState } from 'react';
 import IconFont from '../IconSelect/IconFont';
@@ -12,7 +12,7 @@ const SearchContent: React.FC<ISearchContentProps> = ({
   searchForm,
   searchExtra,
   title = '筛选条件',
-  iconFontType = 'icon-shaixuantiaojian2',
+  iconFontType,
   titleExtra,
   showExpand = true,
   showOpenHide = true,
@@ -21,6 +21,11 @@ const SearchContent: React.FC<ISearchContentProps> = ({
 }) => {
   // 筛选条件（样式开关）
   const [onOff, setOnOff] = useState<boolean>(true);
+  const titleIcon = iconFontType ? (
+    <IconFont type={iconFontType} style={{ fontSize: 15 }} />
+  ) : (
+    <FilterOutlined style={{ fontSize: 15 }} />
+  );
   return (
     <div className={`ah-search-header ${className}`}>
       {headerRender &&
@@ -34,7 +39,7 @@ const SearchContent: React.FC<ISearchContentProps> = ({
         })}
       {showExpand && (
         <Space>
-          <IconFont type={iconFontType} style={{ fontSize: 15 }} />
+          {titleIcon}
           <span
             style={{
               fontSize: 15,
@@ -47,22 +52,18 @@ const SearchContent: React.FC<ISearchContentProps> = ({
           {showOpenHide && (
             <>
               <Divider orientation="vertical" />
-              {onOff ? (
-                <DoubleRightOutlined
-                  className="ah-search-on"
-                  onClick={() => {
-                    setOnOff(false);
-                  }}
-                />
-              ) : (
-                <DoubleRightOutlined
-                  className="ah-search-off"
-                  style={{ transform: 'rotate(90deg)' }}
-                  onClick={() => {
-                    setOnOff(true);
-                  }}
-                />
-              )}
+              <button
+                type="button"
+                aria-expanded={onOff}
+                aria-label={onOff ? '收起筛选条件' : '展开筛选条件'}
+                className={onOff ? 'ah-search-toggle ah-search-on' : 'ah-search-toggle ah-search-off'}
+                style={onOff ? undefined : { transform: 'rotate(90deg)' }}
+                onClick={() => {
+                  setOnOff((prev) => !prev);
+                }}
+              >
+                <DoubleRightOutlined />
+              </button>
             </>
           )}
           {titleExtra}

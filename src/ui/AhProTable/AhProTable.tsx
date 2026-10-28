@@ -4,7 +4,7 @@ import { ActionType, ProColumns, ProTable, ProTableProps } from '@ant-design/pro
 import type { IBaseFilter } from '@allahjs/utils';
 import { useRequest } from 'ahooks';
 import { Pagination, TablePaginationConfig, Tooltip } from 'antd';
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useCssTokenSync } from '../utils';
 import { useScrollbarDetection } from './useScrollbarDetection';
 import './AhProTable.less';
@@ -61,6 +61,12 @@ export type IAhProTableProps<T, U, ValueType> = ProTableProps<T, U, ValueType> &
    * 是否为单独页面
    */
   alonePage?: boolean;
+  /**
+   * 内部参数变化上行回调（当前仅在分页变化时触发）。
+   * 外层可据此同步 params，避免持有陈旧页码。
+   * 注意：刻意不用泛型 U，避免参与 AhProTable 的 U 推断
+   */
+  onParamsChange?: (params: Record<string, unknown>) => void;
 };
 
 type IParams = ParamsType &
@@ -87,6 +93,7 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
     searchHeight,
     containerStyle,
     alonePage = true,
+    onParamsChange,
     ...rest
   } = props;
 
@@ -126,7 +133,25 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
   const [autoScrollY, setAutoScrollY] = useState<number>(0);
   const calcAutoScrollYRef = useRef<() => void>(() => {});
 
-  const { loading, data, runAsync } = useRequest(request!, {
+  // 请求序号守卫：仅最新请求的结果写入 data 通道（分页 total/空态），
+  // 旧响应后到时挂起不落地，避免 total 与表格实际数据不一致。ProTable 侧自身另有 abort 丢弃。
+  const requestSeqRef = useRef(0);
+  const seqGuardedRequest = useMemo(() => {
+    if (!request) {
+      return undefined;
+    }
+    const rawRequest = request;
+    return async (...args: Parameters<typeof rawRequest>) => {
+      const seq = ++requestSeqRef.current;
+      const res = await rawRequest(...args);
+      if (seq !== requestSeqRef.current) {
+        return await new Promise<never>(() => {});
+      }
+      return res;
+    };
+  }, [request]);
+
+  const { loading, data, runAsync } = useRequest(seqGuardedRequest!, {
     manual: true,
     onSuccess: (res) => {
       if (autoPagination) {
@@ -399,11 +424,14 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
                     pageSize
                   });
                   // 修改参数发送请求
-                  setParams({
+                  const nextParams = {
                     ...params,
                     pageNum: page,
                     pageSize
-                  });
+                  };
+                  setParams(nextParams);
+                  // 上行同步：外层据此消除陈旧页码（相等守卫在外层做）
+                  onParamsChange?.(nextParams as Record<string, unknown>);
                 }}
                 showQuickJumper
                 size="small"

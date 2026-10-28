@@ -2,32 +2,36 @@ import { AhPageContent } from '../../index';
 
 const columns = [
   {
-    title: '条目名称',
-    dataIndex: 'standardItem',
-    key: 'code',
+    title: '商品名称',
+    dataIndex: 'productName',
+    key: 'productName',
     width: '20%',
     ellipsis: true
   },
   {
-    title: '短id',
-    dataIndex: 'shortId',
-    key: 'code',
+    title: '商品编码',
+    dataIndex: 'barcode',
+    key: 'barcode',
     width: '20%',
     ellipsis: true
   },
   {
-    title: '编码',
-    dataIndex: 'scopeCode',
-    key: 'code',
+    title: '所属门店',
+    dataIndex: 'store',
+    key: 'store',
     width: '20%',
     ellipsis: true
   }
 ];
 
-const request = async (params: any): Promise<any> => {
+const request = async (params: { pageNum?: number; pageSize?: number }): Promise<any> => {
   return {
-    data: {} as any,
-    records: []
+    records: [],
+    list: [],
+    total: 0,
+    size: params.pageSize || 10,
+    current: params.pageNum || 1,
+    pages: 0
   };
 };
 export default () => (

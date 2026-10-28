@@ -7,19 +7,26 @@
     display: flex;
     justify-content: space-between;
   }
-  .ah-search-on {
+  // 折叠开关：真按钮（键盘可达），视觉与原图标一致
+  .ah-search-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     padding: 2px;
+    border: none;
     font-size: 12px;
+    line-height: 1;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .ah-search-on {
     background-color: #edeeef;
     transform: rotate(-90deg);
     cursor: pointer;
   }
   .ah-search-off {
-    padding: 2px;
-    font-size: 12px;
     background-color: #e4eefd;
     color: #108ee9;
-    transform: rotate(-90deg);
     cursor: pointer;
   }
 }

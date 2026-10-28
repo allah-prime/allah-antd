@@ -38,6 +38,10 @@ export type LightFilterProps<T extends ILightFilterValues = ILightFilterValues> 
   variant?: ILightFilterVariant;
   ignoreRules?: boolean;
   footerRender?: LightFilterFooterRender;
+  /**
+   * 重置信号：数值递增时清空内部值与折叠区暂存值（配合外部 form.resetFields 使用）
+   */
+  resetSignal?: number;
   placement?: TooltipPlacement;
   popoverProps?: Omit<
     PopoverProps,
@@ -55,6 +59,7 @@ type ILightFilterContainerProps = {
   collapseLabel?: React.ReactNode;
   variant?: ILightFilterVariant;
   footerRender?: LightFilterFooterRender;
+  resetSignal?: number;
   placement?: TooltipPlacement;
   popoverProps?: Omit<
     PopoverProps,
@@ -72,6 +77,7 @@ const LightFilterContainer: React.FC<ILightFilterContainerProps> = (props) => {
     variant = 'borderless',
     values,
     footerRender,
+    resetSignal,
     placement,
     popoverProps
   } = props;
@@ -88,6 +94,14 @@ const LightFilterContainer: React.FC<ILightFilterContainerProps> = (props) => {
       ...values
     }));
   }, [values]);
+
+  // 重置信号：清空折叠区暂存值（表单本体由外部 resetFields 处理）
+  useEffect(() => {
+    if (resetSignal === undefined || resetSignal === null || resetSignal === 0) {
+      return;
+    }
+    setMoreValues({});
+  }, [resetSignal]);
 
   const collapseLabelNode = useMemo(() => {
     if (collapseLabel) {
@@ -132,11 +146,15 @@ const LightFilterContainer: React.FC<ILightFilterContainerProps> = (props) => {
     if (v === undefined || v === null) {
       return false;
     }
+    // 空字符串与"未筛选"等价，不算有效值
+    if (typeof v === 'string' && v === '') {
+      return false;
+    }
     // 数组需要检查长度
     if (Array.isArray(v)) {
       return v.length > 0;
     }
-    // 其他值（0, false, '' 等）都是有效筛选值
+    // 其他值（0, false 等）都是有效筛选值
     return true;
   });
 
@@ -277,6 +295,7 @@ function LightFilter<T extends ILightFilterValues = ILightFilterValues>(
     variant,
     ignoreRules,
     footerRender,
+    resetSignal,
     popoverProps,
     children,
     ...rest
@@ -288,6 +307,14 @@ function LightFilter<T extends ILightFilterValues = ILightFilterValues>(
   }));
   const innerFormRef = useRef<ProFormInstance | undefined>(undefined);
   const formRef = userFormRef ?? innerFormRef;
+
+  // 重置信号：清空内部值状态（isEffective 高亮随之熄灭）
+  useEffect(() => {
+    if (resetSignal === undefined || resetSignal === null || resetSignal === 0) {
+      return;
+    }
+    setValues({});
+  }, [resetSignal]);
 
   return (
     <ProForm
@@ -317,6 +344,7 @@ function LightFilter<T extends ILightFilterValues = ILightFilterValues>(
           popoverProps={popoverProps}
           values={values || {}}
           footerRender={footerRender}
+          resetSignal={resetSignal}
           onValuesChange={(newValues: ILightFilterRecord) => {
             const newAllValues = {
               ...values,
