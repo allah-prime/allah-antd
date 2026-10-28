@@ -73,12 +73,23 @@
   width: 260px;
 }
 
+// 新版头部：上下内边距对称，内容在条带内垂直居中
+.ah-page-header-search.ah-filter-header {
+  padding-block: 8px;
+}
+
 // 筛选行：左右各占一半，各自换行
 .ah-filter-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
+
+  // LightFilter 首个标签（如「创建时间」）自带 paddingInline 8px，
+  // 负 margin 抵消，使文字与表格第一列内容（16px）左对齐；hover 背景照常显示
+  .ah-filter-row-left .ah-light-filter-item:first-child .ant-pro-core-field-label {
+    margin-inline-start: -8px;
+  }
 
   &-left,
   &-right {
