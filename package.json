@@ -47,7 +47,8 @@
     "dayjs": "^1.11.19",
     "lodash": "4.18.1",
     "monaco-editor": "0.56.0",
-    "rc-menu": "9.16.1"
+    "rc-menu": "9.16.1",
+    "react-resizable": "4.0.2"
   },
   "peerDependencies": {
     "antd": ">=6.0.0",

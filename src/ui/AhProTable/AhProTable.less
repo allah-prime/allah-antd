@@ -42,16 +42,12 @@
 .ah-antd-pro-table-container {
   display: flex;
   flex-direction: column;
-  border-radius: var(--ant-border-radius, 8px);
+  border-radius: var(--ah-table-radius, var(--ant-border-radius, 8px));
   overflow: hidden;
 
   // 无纵轴占位时：去掉 antd 表头为滚动条预留的 15px，避免固定「操作」列与内容错位
   &.ah-no-v-scrollbar {
     .ant-table-header {
-      colgroup col:last-child {
-        width: 0 !important;
-      }
-
       .ant-table-cell-scrollbar {
         display: none !important;
         width: 0 !important;
@@ -181,7 +177,7 @@
     border: 1px solid var(--ant-color-border-secondary, #f0f0f0);
 
     .ant-pro-card-body {
-      border-radius: var(--ant-border-radius, 8px);
+      border-radius: var(--ah-table-radius, var(--ant-border-radius, 8px));
     }
 
     .ah-table-footer {
@@ -211,7 +207,7 @@
 
   .ah-antd-pro-hide-boottom-border {
     .ant-table-header {
-      border-radius: var(--ant-border-radius, 8px) var(--ant-border-radius, 8px) 0 0;
+      border-radius: var(--ah-table-radius, var(--ant-border-radius, 8px)) var(--ah-table-radius, var(--ant-border-radius, 8px)) 0 0;
     }
 
     .ant-table-cell {
@@ -219,7 +215,7 @@
     }
 
     .ant-pro-card {
-      border-radius: var(--ant-border-radius, 8px) var(--ant-border-radius, 8px) 0 0;
+      border-radius: var(--ah-table-radius, var(--ant-border-radius, 8px)) var(--ah-table-radius, var(--ant-border-radius, 8px)) 0 0;
     }
   }
 
@@ -256,6 +252,21 @@
       // antd 在设了 scroll.y 时常用 overflow-y: scroll（总显示纵轴），改为 auto
       overflow-x: auto !important;
       overflow-y: auto !important;
+
+      // 横向溢出时，即使系统使用自动隐藏滚动条，也能看到拖动入口。
+      &::-webkit-scrollbar {
+        height: 10px;
+        width: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: var(--ant-color-text-quaternary, rgba(0, 0, 0, 0.25));
+        border: 2px solid transparent;
+        border-radius: 5px;
+        background-clip: padding-box;
+      }
+      &::-webkit-scrollbar-track {
+        background: var(--ant-color-fill-quaternary, #fafafa);
+      }
     }
   }
 }
@@ -366,7 +377,7 @@
   border: 1px solid var(--ant-color-border-secondary, #f0f0f0);
 
   .ah-antd-pro-table .ant-pro-card-body {
-    border-radius: var(--ant-border-radius, 8px);
+    border-radius: var(--ah-table-radius, var(--ant-border-radius, 8px));
   }
 
   .ah-antd-pro-table-footer {
@@ -388,6 +399,81 @@
 
 .ah-antd-pro-bottom-border-radius {
   .ah-antd-pro-table .ant-pro-card {
-    border-radius: var(--ant-border-radius, 8px);
+    border-radius: var(--ah-table-radius, var(--ant-border-radius, 8px));
+  }
+}
+
+// antd 的表头单元格默认使用独立的 headerBorderRadius，统一跟随容器配置。
+.ah-antd-pro-table-container {
+  .ant-table-wrapper {
+    .ant-table,
+    .ant-table-header,
+    .ant-table-header > table,
+    .ant-table-content > table {
+      border-radius: var(--ah-table-radius) var(--ah-table-radius) 0 0;
+    }
+  }
+
+  .ant-table-wrapper .ant-table-container {
+    border-start-start-radius: var(--ah-table-radius);
+    border-start-end-radius: var(--ah-table-radius);
+
+    > .ant-table-content,
+    > .ant-table-header {
+      > table > thead > tr:first-child {
+        > :first-child {
+          border-start-start-radius: var(--ah-table-radius);
+        }
+        > :last-child {
+          border-start-end-radius: var(--ah-table-radius);
+        }
+      }
+    }
+  }
+}
+
+.ah-antd-pro-table-container .ant-table-thead > tr > th {
+  position: relative;
+}
+
+.ah-table-resize-handle {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 0;
+  width: 12px;
+  height: 1.6em;
+  transform: translateY(-50%);
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  z-index: 3;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    width: 1px;
+    background: transparent;
+  }
+
+  &:hover::after,
+  &:active::after {
+    background: var(--ant-color-primary, #1677ff);
+  }
+}
+
+.ah-table-horizontal-scroll {
+  flex: none;
+  height: 14px;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  &::-webkit-scrollbar { height: 12px; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--ant-color-text-quaternary, rgba(0, 0, 0, 0.25));
+    border: 2px solid transparent;
+    border-radius: 6px;
+    background-clip: padding-box;
   }
 }

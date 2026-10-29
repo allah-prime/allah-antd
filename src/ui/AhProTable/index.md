@@ -124,3 +124,7 @@ A: 通过 `params` 属性传入请求参数，组件会自动合并分页参数�
 
 **Q: 底部内容如何自定义？**  
 A: 使用 `footerRender` 属性可以在表格底部右侧添加自定义内容。
+
+### 拖动调整列宽
+
+默认支持拖动表头右边缘调整列宽，最小宽度为 64px。设置 `resizableColumns={false}` 可关闭；AhPageContent 可通过 `tableProps={{ resizableColumns: false }}` 关闭。调整结果在当前组件挂载期间保留。
