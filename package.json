@@ -1,6 +1,6 @@
 {
   "name": "@allahjs/antd",
-  "version": "0.0.1",
+  "version": "0.2.3",
   "description": "基于 antd v6 封装的 React 业务组件库",
   "homepage": "https://allah-prime.github.io/allah-antd/",
   "repository": {

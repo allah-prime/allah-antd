@@ -477,3 +477,8 @@
     background-clip: padding-box;
   }
 }
+
+/* 横向条已经挪到表体下方。表体仍可被同步 scrollLeft，但不要再画出原生横条。 */
+.ah-antd-pro-table-container .ant-table-body.has-horizontal-scrollbar {
+  overflow-x: hidden !important;
+}

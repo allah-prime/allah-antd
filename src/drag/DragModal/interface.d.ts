@@ -49,6 +49,8 @@ export interface BaseDragModalProps {
   footerStyle?: React.CSSProperties;
   /** 标题的样式 */
   headerStyle?: React.CSSProperties;
+  /** 顶部拖拽条高度，单位 px。默认 56 */
+  headerHeight?: number;
   /** 对话框z-index */
   zIndex?: number;
   /** 对话框最小宽度 */
@@ -85,6 +87,8 @@ export interface BaseDragModalProps {
   destroyOnClose?: boolean;
   /** 自定义左侧标题区域渲染方法 */
   titleRender?: () => React.ReactNode;
+  /** 标题栏右侧、全屏/关闭之前的自定义控件（图标按钮等） */
+  extraControls?: React.ReactNode;
 }
 
 /**
@@ -133,6 +137,7 @@ export interface ModalControlsProps {
   isPinnedIcon: boolean;
   isFullscreen: boolean;
   closable: boolean;
+  extraControls?: React.ReactNode;
   onPinClick: (e: React.MouseEvent) => void;
   onFullscreenClick: (e: React.MouseEvent) => void;
   onCloseClick: (e: React.MouseEvent) => void;

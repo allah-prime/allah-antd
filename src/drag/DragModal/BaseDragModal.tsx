@@ -34,6 +34,7 @@ const BaseDragModal: React.FC<BaseDragModalProps> = ({
   bodyStyle,
   footerStyle,
   headerStyle,
+  headerHeight = 56,
   zIndex = 1000,
   minWidth = 300,
   height,
@@ -47,7 +48,8 @@ const BaseDragModal: React.FC<BaseDragModalProps> = ({
   onResize,
   onResizeEnd,
   destroyOnClose = false,
-  titleRender
+  titleRender,
+  extraControls
 }) => {
   // ─── 位置：完全受控，来自外部 ──────────────────────────────
   const position: Position = externalPosition ?? { x: 0, y: 0 };
@@ -404,19 +406,37 @@ const BaseDragModal: React.FC<BaseDragModalProps> = ({
         ref={modalRef}
         id={domId}
         className={`ah-drag-modal ${isPinned ? 'pinned' : ''} ${isResizing ? 'resizing' : ''} ${isFullscreen ? 'fullscreen' : ''} ${wrapClassName || ''}`}
-        style={{ ...getModalStyle(), ...wrapStyle }}
+        style={{
+          ...getModalStyle(),
+          ...wrapStyle,
+          ['--ah-drag-header-height' as string]: `${headerHeight}px`,
+        }}
         onClick={(e) => e.stopPropagation()}
         onMouseEnter={() => setIsBlurred(true)}
         onMouseLeave={() => {
           if (!isDragging && !isResizing) setIsBlurred(false);
         }}
       >
-        <div className="ah-drag-modal-header" style={headerStyle}>
+        <div
+          className="ah-drag-modal-header"
+          style={{
+            ...headerStyle,
+            height: headerHeight,
+            minHeight: headerHeight,
+            boxSizing: 'border-box',
+          }}
+        >
           <div
             ref={setNodeRef}
             {...listeners}
             {...attributes}
             className={`ah-drag-modal-title-area ${isDragging ? 'dragging' : ''} ${isFullscreen ? 'no-drag' : ''}`}
+            style={{
+              height: headerHeight,
+              minHeight: headerHeight,
+              padding: '0 24px',
+              boxSizing: 'border-box',
+            }}
           >
             {titleRender ? titleRender() : <div className="ah-drag-modal-title">{title}</div>}
           </div>
@@ -425,6 +445,7 @@ const BaseDragModal: React.FC<BaseDragModalProps> = ({
             isPinnedIcon={isPinnedIcon}
             isFullscreen={isFullscreen}
             closable={closable}
+            extraControls={extraControls}
             onPinClick={togglePin}
             onFullscreenClick={toggleFullscreen}
             onCloseClick={handleClose}
