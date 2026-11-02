@@ -305,3 +305,4 @@ const DragModalProvider: React.FC<DragModalProviderProps> = ({
 };
 
 export default DragModalProvider;
+export { ButtonComponent as DragModalControlButton } from './components/ModalControls';

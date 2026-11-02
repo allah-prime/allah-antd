@@ -38,13 +38,14 @@ const ModalControls: React.FC<ModalControlsProps> = ({
   isPinnedIcon,
   isFullscreen,
   closable,
+  extraControls,
   onPinClick,
   onFullscreenClick,
   onCloseClick
 }) => {
   return (
     <div className="ah-drag-modal-controls">
-      <Space onClick={e => e.stopPropagation()}>
+      <Space size={4} onClick={e => e.stopPropagation()}>
         {isPinnedIcon && (
           <ButtonComponent
             icon={isPinned ? <PushpinFilled /> : <PushpinOutlined />}
@@ -54,6 +55,7 @@ const ModalControls: React.FC<ModalControlsProps> = ({
             className="ah-drag-modal-pin"
           />
         )}
+        {extraControls}
         <ButtonComponent
           icon={isFullscreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
           title={isFullscreen ? '退出全屏' : '全屏显示'}

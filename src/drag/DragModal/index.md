@@ -295,6 +295,7 @@ export default () => {
 | bodyStyle | 对话框内容样式 | CSSProperties | - |
 | footerStyle | 页脚内容样式 | CSSProperties | - |
 | headerStyle | 标题样式 | CSSProperties | - |
+| headerHeight | 顶部拖拽条高度（px） | number | 56 |
 | zIndex | 对话框z-index | number | 1000 |
 | minWidth | 对话框最小宽度 | number | 300 |
 | minHeight | 对话框最小高度 | number | 200 |

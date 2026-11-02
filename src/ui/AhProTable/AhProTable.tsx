@@ -8,6 +8,7 @@ import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from
 import { useCssTokenSync } from '../utils';
 import { useScrollbarDetection } from './useScrollbarDetection';
 import './AhProTable.less';
+import { ResizableHeaderCell } from './ResizeHandle';
 
 /** 底部操作区固定高度 */
 const FOOTER_HEIGHT = 38;
@@ -21,6 +22,8 @@ export type IAhProTableProps<T, U, ValueType> = ProTableProps<T, U, ValueType> &
    * 是否自动分页，默认true
    */
   autoPagination?: boolean;
+  /** 是否允许拖动表头边缘调整列宽，默认 true；最小宽度 64px。 */
+  resizableColumns?: boolean;
   /**
    * 右下角的渲染
    */
@@ -80,6 +83,7 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
 ) {
   const {
     pagination: propsPagination,
+    resizableColumns = true,
     showRefresh = true,
     request,
     params: propsParams,
@@ -96,6 +100,22 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
     onParamsChange,
     ...rest
   } = props;
+
+  const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
+  const resizeColumns = <V,>(columns: ProColumns<T, V>[], parent = ''): ProColumns<T, V>[] =>
+    columns.map((column, index): ProColumns<T, V> => {
+      const key = `${parent}/${String(column.key ?? (Array.isArray(column.dataIndex) ? column.dataIndex.join('.') : column.dataIndex) ?? index)}`;
+      if (column.children?.length) return { ...column, children: resizeColumns(column.children, key) };
+      return {
+        ...column,
+        width: columnWidths[key] ?? column.width,
+        onHeaderCell: (headerColumn) => ({
+          ...column.onHeaderCell?.(headerColumn),
+          'data-column-key': key,
+          onColumnResize: (width: number, widths: Record<string, number>) => setColumnWidths({ ...widths, [key]: width })
+        })
+      };
+    });
 
   let { className = 'ah-antd-pro-table', tableClassName = 'ah-antd-pro-table-dom' } = props;
 
@@ -281,15 +301,61 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
     return `calc(100% - ${searchHeight}px)`;
   };
 
+  const horizontalBarRef = useRef<HTMLDivElement>(null);
+  const [horizontalWidth, setHorizontalWidth] = useState(0);
+  useEffect(() => {
+    const container = containerRef.current;
+    const bar = horizontalBarRef.current;
+    if (!container || !bar) return;
+    let body: HTMLElement | null = null;
+    let table: Element | null = null;
+    const update = () => {
+      if (!body) return;
+      setHorizontalWidth(body.scrollWidth > body.clientWidth + 1 ? body.scrollWidth : 0);
+      bar.scrollLeft = body.scrollLeft;
+    };
+    const fromBody = () => { if (body) bar.scrollLeft = body.scrollLeft; };
+    const fromBar = () => { if (body) body.scrollLeft = bar.scrollLeft; };
+    const observer = new ResizeObserver(update);
+    const bind = () => {
+      const next = container.querySelector<HTMLElement>('.ant-table-body, .ant-table-content');
+      const nextTable = next?.querySelector('table') ?? null;
+      if (next !== body || nextTable !== table) {
+        body?.removeEventListener('scroll', fromBody);
+        observer.disconnect();
+        body = next;
+        table = nextTable;
+        if (body) {
+          observer.observe(body);
+          body.addEventListener('scroll', fromBody);
+        }
+        if (table) observer.observe(table);
+      }
+      if (body) update();
+      else setHorizontalWidth(0);
+    };
+    const mutations = new MutationObserver(bind);
+    mutations.observe(container, { childList: true, subtree: true });
+    bar.addEventListener('scroll', fromBar);
+    bind();
+    return () => {
+      mutations.disconnect();
+      observer.disconnect();
+      body?.removeEventListener('scroll', fromBody);
+      bar.removeEventListener('scroll', fromBar);
+    };
+  }, [effectiveScrollY, data?.records?.length, columnWidths, props.columns?.length]);
+
   // 动态样式 - 现在可以直接使用 token，因为 CSS 变量已经同步
   const tableContainerStyle = {
     borderRadius: round ? token.borderRadius : 0,
     border: showBorder ? `1px solid ${token.colorBorderSecondary}` : 'none',
     backgroundColor: token.colorBgContainer,
     height: getBodyHeight(),
+    ['--ah-table-radius']: `${round ? token.borderRadius : 0}px`,
     ['--ah-footer-height']: `${FOOTER_HEIGHT}px`,
     ['--ah-table-body-y']:
-      effectiveScrollY > 0 ? `${effectiveScrollY}px` : 'auto',
+      effectiveScrollY > 0 ? `${Math.max(0, effectiveScrollY - (horizontalWidth ? 14 : 0))}px` : 'auto',
     ...containerStyle,
     // AhPageContent 会传入 display:block，这里改成 column，让 footer 贴容器底
     display: containerStyle?.display === 'none' ? 'none' : 'flex',
@@ -370,8 +436,8 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
           content:
             effectiveScrollY > 0
               ? {
-                  height: effectiveScrollY,
-                  maxHeight: effectiveScrollY,
+                  height: Math.max(0, effectiveScrollY - (horizontalWidth ? 14 : 0)),
+                  maxHeight: Math.max(0, effectiveScrollY - (horizontalWidth ? 14 : 0)),
                   overflowX: 'auto',
                   overflowY: 'auto'
                 }
@@ -394,13 +460,24 @@ function AhProTable<T extends Record<string, unknown>, U extends IParams = IPara
             : false
         }
         scroll={
-          effectiveScrollY > 0
-            ? { ...(scroll ?? {}), y: effectiveScrollY }
-            : scroll
+          {
+            ...(scroll ?? {}),
+            ...(resizableColumns && scroll?.x == null ? { x: '100%' } : {}),
+            ...(Object.keys(columnWidths).length ? { x: Math.max(typeof scroll?.x === 'number' ? scroll.x : 0, Object.values(columnWidths).reduce((sum, width) => sum + width, rowSelection ? 50 : 0)) } : {}),
+            ...(effectiveScrollY > 0 ? { y: Math.max(0, effectiveScrollY - (horizontalWidth ? 14 : 0)) } : {})
+          }
         }
         size={size === 'middle' ? 'medium' : size}
         {...rest}
+        components={resizableColumns ? {
+          ...props.components,
+          header: { ...props.components?.header, cell: ResizableHeaderCell }
+        } : props.components}
+        columns={resizableColumns ? resizeColumns(props.columns ?? []) : props.columns}
       />
+      <div ref={horizontalBarRef} className="ah-table-horizontal-scroll" style={{ display: horizontalWidth ? 'block' : 'none' }}>
+        <div style={{ width: horizontalWidth, height: 1 }} />
+      </div>
       {!showFooter && !round && <div style={{ height: 4 }} />}
       {showFooter && (
         <div className="ah-antd-pro-table-footer" style={footerStyle}>
