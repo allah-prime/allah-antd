@@ -46,7 +46,7 @@ export interface IUploadProps {
    */
   busiScene?: string;
   /**
-   * 文件数量限制
+   * 文件数量限制，默认最多选择 10 个文件
    */
   maxNum?: number;
   /**
@@ -54,7 +54,7 @@ export interface IUploadProps {
    */
   listType?: UploadProps['listType'];
   /**
-   * 是否支持多选
+   * 是否支持多选，默认开启
    */
   multiple?: boolean;
   /**

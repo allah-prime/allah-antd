@@ -139,7 +139,8 @@ const FileUpload2: React.FC<IUploadProps> = props => {
   const {
     fileSize = 2048000,
     maxNum = 10,
-    multiple,
+    // 文件选择默认支持多选；如需单选可显式传入 multiple={false}
+    multiple = true,
     selectText = '选择文件',
     listType = 'picture-card',
     value,
@@ -324,6 +325,7 @@ const FileUpload2: React.FC<IUploadProps> = props => {
     },
     listType,
     multiple,
+    maxCount: maxNum,
     fileList,
     disabled,
     ...uploadProps
