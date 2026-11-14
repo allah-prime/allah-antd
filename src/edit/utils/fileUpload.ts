@@ -1,7 +1,7 @@
 import { IFileObjVo } from '../../types';
 import type { TFileUpload2Config } from '../../types';
 import { cryptoUtils } from '@allahjs/utils';
-import { message } from 'antd';
+import { ahMessage as message } from '../../ui/utils/ahAppMessage';
 import type { IProgressInfo, IUploadProps } from '../../types';
 import { IFileUpload2UsageType } from '@allahjs/utils';
 

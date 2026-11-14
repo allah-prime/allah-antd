@@ -1,5 +1,6 @@
 import { CheckOutlined, DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Input, Popover, message } from 'antd';
+import { Button, Input, Popover } from 'antd';
+import { ahMessage as message } from '../utils/ahAppMessage';
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { IAhFilterView, IAhFilterViewsConfig } from '../ahAntdTypes';
 import './filterBar.less';
