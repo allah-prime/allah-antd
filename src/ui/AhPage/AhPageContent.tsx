@@ -695,15 +695,45 @@ const AhPageContent = <T, F extends IBaseFilter>({
     </LightFilter>
   );
 
-  /** 新版 div 布局：视图栏 + 左（筛选条件）右（搜索与排序）各占一半、各自换行 */
+  /** 新版 div 布局：有筛选时左条件、右搜索；没有左侧内容时关键词和排序收到标题行右侧 */
   const renderNewSearch = () => {
     const hasFilterFields = !!filterFields?.length;
-    // 声明式字段模式下日期区间由 dateRange 字段承担，LightFilter 仅承载手写 searchForm/旧排序
-    const showLightFilter = !hasFilterFields || !!searchFormNode || !!sortConfig;
+    const lightList = hasFilterFields ? [] : timeFields;
+    // 日期区间、手写 searchForm 或旧版排序至少有一项才占左侧；没有 filterFields 不再单独占半行
+    const showLightFilter = lightList.length > 0 || !!searchFormNode || !!sortConfig;
+    const leftEmpty = !hasFilterFields && !showLightFilter;
+    const sortNode = sortFields && (
+      <AhSortConditionPopover
+        fields={sortFields}
+        value={conditionValues.sort as Record<string, boolean> | undefined}
+        onChange={(next) => handleConditionChange({ sort: next })}
+      />
+    );
+    const submitNode = searchMode === 'submit' && (
+      <Button type="primary" onClick={doSubmitQuery}>
+        查询
+      </Button>
+    );
+    const foldedRight = leftEmpty
+      ? () => (
+          <>
+            {headerRightRender?.()}
+            {keywordNode}
+            {sortNode}
+            {submitNode}
+          </>
+        )
+      : headerRightRender;
+    const showHeader =
+      viewsApi.enabled ||
+      !!title ||
+      !!description ||
+      !!headerRightRender ||
+      (leftEmpty && !!(keywordNode || sortNode || submitNode));
     return (
       <div className="ah-filter-header ah-page-header-search">
-        {(viewsApi.enabled || title || description || headerRightRender) && (
-          <AhFilterHeaderBar title={title} description={description} rightRender={headerRightRender}>
+        {showHeader && (
+          <AhFilterHeaderBar title={title} description={description} rightRender={foldedRight}>
             {viewsApi.enabled && (
               <AhFilterViewBar
                 views={viewsApi.views}
@@ -726,43 +756,35 @@ const AhPageContent = <T, F extends IBaseFilter>({
             )}
           </AhFilterHeaderBar>
         )}
-        <div className="ah-filter-row">
-          <div className="ah-filter-row-left">
-            {hasFilterFields && (
-              <>
-                <AhFilterConditionPopover
-                  fields={filterFields!}
-                  conditions={conditions}
-                  values={conditionValues}
-                  onChange={handleConditionChange}
-                  onConditionsChange={setConditions}
-                />
-                <AhFilterChips
-                  fields={filterFields!}
-                  conditions={conditions}
-                  values={conditionValues}
-                  onChange={handleConditionChange}
-                />
-              </>
-            )}
-            {showLightFilter && renderLightFilter(hasFilterFields ? [] : timeFields)}
+        {!leftEmpty && (
+          <div className="ah-filter-row">
+            <div className="ah-filter-row-left">
+              {hasFilterFields && (
+                <>
+                  <AhFilterConditionPopover
+                    fields={filterFields!}
+                    conditions={conditions}
+                    values={conditionValues}
+                    onChange={handleConditionChange}
+                    onConditionsChange={setConditions}
+                  />
+                  <AhFilterChips
+                    fields={filterFields!}
+                    conditions={conditions}
+                    values={conditionValues}
+                    onChange={handleConditionChange}
+                  />
+                </>
+              )}
+              {showLightFilter && renderLightFilter(lightList)}
+            </div>
+            <div className="ah-filter-row-right">
+              {keywordNode}
+              {sortNode}
+              {submitNode}
+            </div>
           </div>
-          <div className="ah-filter-row-right">
-            {keywordNode}
-            {sortFields && (
-              <AhSortConditionPopover
-                fields={sortFields}
-                value={conditionValues.sort as Record<string, boolean> | undefined}
-                onChange={(next) => handleConditionChange({ sort: next })}
-              />
-            )}
-            {searchMode === 'submit' && (
-              <Button type="primary" onClick={doSubmitQuery}>
-                查询
-              </Button>
-            )}
-          </div>
-        </div>
+        )}
       </div>
     );
   };
