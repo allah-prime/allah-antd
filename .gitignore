@@ -7,3 +7,6 @@ node_modules
 .idea
 docs-dist
 .pnpm-store
+# playwright
+playwright-report
+test-results
