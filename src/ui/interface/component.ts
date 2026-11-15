@@ -54,9 +54,27 @@ export interface ISelectSearchProps {
    */
   onChange?: (value: string | string[], option: any | any[]) => void;
   /**
-   * 选项
+   * 选项；异步模式下可作为首次加载前的初始选项
    */
   options: IOptions7<string>[];
+  /**
+   * 异步获取选项的方法，传入后进入异步模式：面板内搜索框输入时防抖调用，挂载及 refreshDepend 变化时以空关键字自动请求一次
+   * @param search 搜索关键字
+   */
+  fetchOptions?: (search: string) => Promise<IOptions7<string>[]>;
+  /**
+   * 异步搜索的防抖毫秒数，默认 800
+   */
+  debounceTimeout?: number;
+  /**
+   * 依赖刷新的字段，变化时以空关键字重新请求
+   */
+  refreshDepend?: any[];
+  /**
+   * 异步模式下根据 value 反查选项（用于默认值回显 label）：当前列表解析不了 value 时自动调用，返回的选项会合并进列表
+   * @param value 解析不了的 value 数组
+   */
+  fetchByValue?: (value: string | string[]) => Promise<IOptions7<string>[]>;
   /**
    * 自定义item渲染
    * @param item
