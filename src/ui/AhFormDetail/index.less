@@ -1,0 +1,115 @@
+// AhFormDetail 详情表单——read/edit 双模式单元格样式
+
+// 统一列宽：antd v6 bordered 模式默认 table-layout: auto（value 列随内容伸缩导致参差），
+// 固定为 fixed 后 label 列按 labelWidth 定宽、value 列均分剩余宽度。
+// 注意：table 必须有确定宽度（width: 100%）fixed 才会生效，antd v6 只给了 min-width
+.ant-descriptions.ah-form-detail-uniform.ant-descriptions-bordered {
+  > .ant-descriptions-view > table {
+    width: 100%;
+    table-layout: fixed;
+  }
+}
+
+// antd v6 会把单元格内容包一层 inline/flex <span>（垂直布局为
+// .ant-descriptions-item-container > span.ant-descriptions-item-content），
+// 包裹会让块级内容收缩到 min-content（read/edit 单元格撑不满），改为 block 让内容正常撑满
+.ant-descriptions.ah-form-detail-uniform .ant-descriptions-item-content > span,
+.ant-descriptions.ah-form-detail-uniform span.ant-descriptions-item-content {
+  display: block;
+}
+
+// read/edit 单元格行高对齐：Form.Item 控件区固定 32px，
+// 单元格上下内边距收成 11px（11 + 32 + 11 = 54px），查看/编辑切换时行高不跳动
+.ant-descriptions.ah-form-detail-uniform.ant-descriptions-bordered
+  .ant-descriptions-item-content:has(> span > .ah-form-detail-cell),
+.ant-descriptions.ah-form-detail-uniform.ant-descriptions-bordered
+  .ant-descriptions-item-content:has(> span > .ah-form-detail-edit) {
+  padding-block: 11px;
+}
+
+// read 模式单元格：ProField 格式化文本 + 悬停显示编辑铅笔
+.ah-form-detail-cell {
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+
+  // read 模式同样由 Form.Item 承载（字段常驻注册），去默认下边距并占满宽度
+  .ant-form-item {
+    flex: 1;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+
+  .ah-form-detail-edit-icon {
+    flex-shrink: 0;
+    margin-left: 8px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--ant-color-primary, #1677ff);
+    }
+  }
+
+  &:hover .ah-form-detail-edit-icon {
+    opacity: 1;
+  }
+}
+
+// edit 模式单元格：只包含编辑控件，确认/取消在详情顶部的操作栏
+.ah-form-detail-edit {
+  .ah-form-detail-edit-control {
+    min-width: 0;
+    text-align: left;
+
+    .ant-form-item {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// 有边框模式：查看态是裸文本（无盒子），需要吸收编辑控件自身的左侧空间
+// （约 11px 内边距 + 1px 边框），使输入框内文字与查看态文字左对齐；
+// 无边框模式的查看态本身是带 11px 内边距的灰盒，输入框直接覆盖原盒位置即可，不做偏移
+.ant-descriptions.ah-form-detail-uniform.ant-descriptions-bordered .ah-form-detail-edit {
+  margin-inline-start: -12px;
+}
+
+// 无边框模式：label 与内容间距 4px + 查看态「输入框式」阴影盒（对齐简道云弹窗风格）。
+// 垂直布局下 label 是 th、内容是 td（各带 .ant-descriptions-item），间距由单元格 padding 控制：
+// th 底 4px + td 顶 0 → label 与值盒间距 4px；td 底 16px 提供相邻项之间的呼吸感。
+// table 需要确定宽度（width: 100%）fixed 布局才会生效，否则列宽随 read/edit 内容变化
+.ant-descriptions.ah-form-detail-uniform:not(.ant-descriptions-bordered) {
+  > .ant-descriptions-view > table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .ant-descriptions-item {
+    padding-block: 0 16px;
+  }
+
+  th.ant-descriptions-item {
+    padding-block: 0 4px;
+  }
+
+  // 查看态值盒：与编辑态输入框同尺寸（32px 高、同宽、6px 圆角），浅灰背景；
+  // min-height 而非固定高——textarea 多行等内容自然撑高
+  .ah-form-detail-cell {
+    position: relative; // 铅笔悬浮定位基准
+    min-height: 32px;
+    padding: 0 11px;
+    background: var(--ant-color-fill-tertiary, rgba(0, 0, 0, 0.04));
+    border-radius: 6px;
+
+    // 铅笔悬浮在灰盒右缘、不占布局宽度——read 盒与 edit 输入框足迹完全一致
+    .ah-form-detail-edit-icon {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      margin-left: 0;
+      transform: translateY(-50%);
+    }
+  }
+}

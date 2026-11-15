@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import React from 'react';
 import { Skeleton } from 'antd';
 import { IFormColumns } from '@allahjs/utils';
 import AhImagePreview from '../AhImageRender/AhImagePreview';
 import { buildNewFormItemPropsVer } from '@allahjs/utils';
+import { getFieldValueByColumn } from './editUtils';
 
 /**
  * 按照 title 类型的列对数据进行分组
@@ -73,9 +74,9 @@ export const renderItemContent = <T extends Record<string, any>>(
   emptyText: string = '暂无数据',
   primaryKey: string = 'id'
 ): React.ReactNode => {
-  const { dataIndex, renderFunKey, valueType, valueEnum, fieldProps } = column;
+  const { renderFunKey, valueType, valueEnum, fieldProps } = column;
 
-  const value = record?.[dataIndex as keyof T];
+  const value = getFieldValueByColumn(record, column);
 
   // render 是一个函数的key
   if (renderFunKey) {
@@ -150,13 +151,15 @@ export const renderItemContent = <T extends Record<string, any>>(
  * @param data 数据源
  * @param emptyText 空值显示文本
  * @param primaryKey 主键字段名，用于文件类型的渲染
+ * @param renderCell 单元格渲染钩子：传入时每个单元格由调用方定制（如可编辑详情的 read/edit 双模式渲染）
  * @returns DescriptionsProps['items'] 类型的数组
  */
 export const generateDescriptionItems = <T extends Record<string, any>>(
   columns: IFormColumns<T>[],
   data: T | undefined,
   emptyText: string = '暂无数据',
-  primaryKey: string = 'id'
+  primaryKey: string = 'id',
+  renderCell?: (column: IFormColumns<T>) => React.ReactNode
 ) => {
   return columns
     .filter(item => {
@@ -166,10 +169,15 @@ export const generateDescriptionItems = <T extends Record<string, any>>(
     })
     .map(column => {
       const { title, dataIndex } = column;
+      const defaultChildren = renderCell
+        ? renderCell(column)
+        : data
+          ? renderItemContent(column, data, emptyText, primaryKey)
+          : emptyText;
       return {
         key: dataIndex as string,
         label: title as string,
-        children: data ? renderItemContent(column, data, emptyText, primaryKey) : emptyText
+        children: defaultChildren
       };
     });
 };
