@@ -194,7 +194,7 @@ A: 在 `options` 中设置 `disabled: true`，禁用的标签将不能被选中�
 
 ```jsx
 import React from 'react';
-import { TagList } from '@allahjs/antd';
+import TagList from './TagList';
 
 export default () => (
   <TagList

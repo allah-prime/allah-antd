@@ -1,8 +1,8 @@
-import { BlockOutlined, LinkOutlined, ReloadOutlined } from '@ant-design/icons';
-import { Divider, Spin, Tooltip } from 'antd';
+import { LinkOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Button, Empty, Flex, Spin, Tooltip, theme } from 'antd';
 import type { PropsWithChildren } from 'react';
+import type { IItemListCardProps } from '../../interface/item';
 import './index.less';
-import { IItemListCardProps } from '../../interface/item';
 
 const ItemListCard = <T,>({
   title,
@@ -18,63 +18,92 @@ const ItemListCard = <T,>({
   style,
   listStyle
 }: PropsWithChildren<IItemListCardProps<T>>): React.ReactElement => {
-  if (disabled) {
-    // 使得addClick不会被触发
-    addClick = () => {};
-  }
+  const { token } = theme.useToken();
+  const showActions = refresh || (!disabled && (addClick || relFun));
+  const divider = `1px solid ${token.colorBorderSecondary}`;
 
   return (
-    <div className="ah_itemListCard" style={style}>
-      <div className="ah_header">
-        <div className="ah_title">
+    <div
+      className="ah_itemListCard"
+      style={{
+        backgroundColor: token.colorBgContainer,
+        border: divider,
+        borderRadius: token.borderRadiusLG,
+        color: token.colorText,
+        ...style
+      }}
+    >
+      <Flex
+        className="ah_header"
+        align="center"
+        justify="space-between"
+        wrap
+        gap={8}
+        style={{ borderBottom: divider }}
+      >
+        <Flex className="ah_title" align="center" wrap gap={8}>
           <span>{title}</span>
-          {/*自定义*/}
           {titleIconRender}
-          {addClick &&
-            !disabled && [
-              <Divider key={1} orientation="vertical" />,
-              <Tooltip key={2} title="关联">
-                <BlockOutlined style={{ color: '#9096a0' }} onClick={addClick} />
-              </Tooltip>
-            ]}
-          {relFun &&
-            !disabled && [
-              <Divider key={1} orientation="vertical" />,
-              <Tooltip key={2} title="关联">
-                <LinkOutlined spin={refreshLoading} style={{ color: '#9096a0' }} onClick={relFun} />
-              </Tooltip>
-            ]}
-          {refresh && [
-            <Divider key={1} orientation="vertical" />,
-            <Tooltip key={2} title="刷新">
-              <ReloadOutlined
-                spin={refreshLoading}
-                style={{ color: '#9096a0' }}
-                onClick={refresh}
-              />
-            </Tooltip>
-          ]}
-        </div>
-        <div className="ah_extra">{extra}</div>
-      </div>
-      <Spin spinning={refreshLoading}>
-        {data.length === 0 ? (
-          <div />
-        ) : (
-          // <Empty image={Empty.PRESENTED_IMAGE_SIMPLE}  />
-          <div
-            className="ah_content"
-            style={
-              listStyle || {
-                maxHeight: 360,
-                overflowY: 'auto',
-                overflowX: 'hidden'
-              }
-            }
-          >
-            {children}
-          </div>
+        </Flex>
+        {(showActions || extra != null) && (
+          <Flex className="ah_extra" align="center" wrap gap={8}>
+            {extra}
+            {showActions && (
+              <Flex align="center" gap={4}>
+                {addClick && !disabled && (
+                  <Tooltip title="添加">
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<PlusOutlined />}
+                      aria-label="添加"
+                      onClick={addClick}
+                    />
+                  </Tooltip>
+                )}
+                {relFun && !disabled && (
+                  <Tooltip title="关联">
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<LinkOutlined />}
+                      aria-label="关联"
+                      onClick={relFun}
+                    />
+                  </Tooltip>
+                )}
+                {refresh && (
+                  <Tooltip title="刷新">
+                    <Button
+                      type="text"
+                      size="small"
+                      icon={<ReloadOutlined />}
+                      aria-label="刷新"
+                      loading={refreshLoading}
+                      onClick={refresh}
+                    />
+                  </Tooltip>
+                )}
+              </Flex>
+            )}
+          </Flex>
         )}
+      </Flex>
+      <Spin spinning={refreshLoading}>
+        <div
+          className="ah_content"
+          style={listStyle ?? { maxHeight: 360, overflowY: 'auto', overflowX: 'hidden' }}
+        >
+          {data.length > 0 ? (
+            children
+          ) : (
+            <div className="ah_empty">
+              {!refreshLoading && (
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无数据" />
+              )}
+            </div>
+          )}
+        </div>
       </Spin>
     </div>
   );

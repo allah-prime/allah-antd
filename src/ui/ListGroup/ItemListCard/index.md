@@ -34,6 +34,15 @@ const BasicExample = () => (
 export default BasicExample;
 ```
 
+#### 空列表
+
+```jsx
+import React from 'react';
+import { ItemListCard } from '../..';
+
+export default () => <ItemListCard title="空列表" />;
+```
+
 #### 包含操作按钮
 
 展示一个包含添加、关联和刷新按钮的 `ItemListCard`，并展示如何处理按钮的点击事件。
@@ -213,7 +222,7 @@ const DisabledExample = () => (
     data={data}
     disabled
     addClick={() => console.log('这不会被触发')}
-    refresh={() => console.log('这不会被触发')}
+    refresh={() => console.log('刷新列表')}
   >
     <List
       dataSource={data}
@@ -246,17 +255,17 @@ export default DisabledExample;
 | refreshLoading | 是否显示加载状态 | `boolean` | `false` |
 | titleIconRender | 标题右侧自定义图标 | `React.ReactNode \| React.ReactNode[]` | - |
 | extra | 头部右侧额外内容 | `React.ReactNode` | - |
-| disabled | 是否禁用操作按钮 | `boolean` | `false` |
+| disabled | 是否隐藏添加和关联按钮 | `boolean` | `false` |
 | style | 容器样式 | `React.CSSProperties` | - |
 | listStyle | 列表区域样式 | `React.CSSProperties` | `{ maxHeight: 360, overflowY: 'auto', overflowX: 'hidden' }` |
 | children | 子内容 | `React.ReactNode` | - |
 
 #### 注意事项
 
-- 当 `disabled` 为 `true` 时，所有操作按钮将不可点击
-- `refreshLoading` 会在整个卡片上显示 Spin 加载效果
+- 当 `disabled` 为 `true` 时，添加和关联按钮会隐藏，刷新仍可使用
+- `refreshLoading` 会在内容区显示加载状态，刷新按钮在加载期间不可重复点击
 - 操作按钮只有在传入对应回调函数时才会显示
-- 当 `data` 为空数组时，内容区域不会显示任何内容
+- 当 `data` 为空数组时，内容区显示「暂无数据」，加载期间显示加载动画
 
 ### FAQ
 
@@ -271,7 +280,7 @@ A: `titleIconRender` 是一个可以自定义的 React 组件，用于在标题�
 **Q: 操作按钮的显示逻辑是什么？**
 
 A: 操作按钮的显示基于传入的回调函数：
-- `addClick` - 显示添加按钮（方块图标）
+- `addClick` - 显示添加按钮（加号图标）
 - `relFun` - 显示关联按钮（链接图标）  
 - `refresh` - 显示刷新按钮（刷新图标）
 

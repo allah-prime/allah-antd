@@ -247,6 +247,11 @@
     height: 45px;
   }
 
+  // antd 的空态固定容器用负边距抵消单元格内边距，可能超出表体并触发横向滚动条。
+  .ant-table-placeholder > .ant-table-cell {
+    overflow: clip;
+  }
+
   .ah-antd-pro-table-dom {
     .ant-table-body {
       // antd 在设了 scroll.y 时常用 overflow-y: scroll（总显示纵轴），改为 auto

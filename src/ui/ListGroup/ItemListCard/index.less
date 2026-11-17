@@ -1,35 +1,35 @@
 .ah_itemListCard {
-  position: relative;
-  display: flex;
-  flex-direction: column;
   box-sizing: border-box;
+  min-width: 0;
   width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #fff;
-  border-radius: 2px;
 
   .ah_header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
+    padding: 8px 16px;
+  }
 
-    .ah_title {
-      color: rgba(0, 0, 0, .85);
-      font-weight: 500;
-      font-size: 16px;
-    }
+  .ah_title {
+    min-width: 0;
+    font-size: 14px;
+    font-weight: 600;
 
-    .ah_extra {
-      color: rgba(0, 0, 0, .85);
+    > span {
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
   }
 
+  .ah_extra {
+    min-width: 0;
+    margin-inline-start: auto;
+  }
+
   .ah_content {
-    margin-bottom: 8px;
-    border-radius: 3px;
-    width: 100%;
-    box-shadow: 0 0 0 .5px rgba(0, 0, 0, .08), 0 1px 3px 0 rgba(0, 0, 0, .08);
+    padding-inline: 16px;
+  }
+
+  .ah_empty {
+    display: grid;
+    min-height: 120px;
+    place-items: center;
   }
 }
