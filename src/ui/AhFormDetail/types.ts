@@ -1,13 +1,56 @@
 import React from 'react';
 import { DescriptionsProps, FormInstance } from 'antd';
 import { IFormColumns, ISizeType } from '@allahjs/utils';
+import type { IUploadProps } from '../../types';
+import type { IAsyncCascaderProps } from '../AsyncCascader/interface';
+import type { IAsyncTreeModalProps } from '../AsyncTree/interface';
+import type { ISelectSearchProps } from '../interface/component';
+
+export interface IAhFormDetailPickerContext<Value = any> {
+  value: Value | undefined;
+  select: (value: Value) => void;
+  close: () => void;
+}
+
+export type IAhFormDetailEditor<T = any> = {
+  renderValue?: (value: any, record: T) => React.ReactNode;
+} & (
+  | {
+      type: 'upload';
+      props?: Omit<IUploadProps, 'value' | 'onChange' | 'uploadRef' | 'uploadPendingOnly'>;
+      getRelId?: (record: T) => string | undefined;
+    }
+  | { type: 'asyncTree'; props: Omit<IAsyncTreeModalProps, 'value' | 'onChange'> }
+  | { type: 'asyncCascader'; props: Omit<IAsyncCascaderProps, 'value' | 'onChange'> }
+  | { type: 'selectSearch'; props: Omit<ISelectSearchProps, 'value' | 'onChange'> }
+  | {
+      type: 'modalSelect';
+      title: string;
+      renderPicker: (context: IAhFormDetailPickerContext) => React.ReactNode;
+      allowClear?: boolean;
+    }
+  | {
+      type: 'custom';
+      renderControl: (props: {
+        value: any;
+        onChange: (value: any) => void;
+        disabled: boolean;
+        record: T;
+      }) => React.ReactNode;
+    }
+);
+
+export interface IAhFormDetailColumn<T = any> extends IFormColumns<T> {
+  /** ERP 业务控件及其查看态格式 */
+  editor?: IAhFormDetailEditor<T>;
+}
 
 /**
  * AhFormDetail 组件属性接口
  */
 export interface IAhFormDetailProps<T = any> {
   /** 详情项配置数组，兼容 IFormColumns */
-  columns?: IFormColumns<T>[];
+  columns?: IAhFormDetailColumn<T>[];
   /** 数据源 */
   dataSource?: T;
   /**
@@ -43,7 +86,7 @@ export interface IAhFormDetailProps<T = any> {
   /**
    * 表单的请求
    */
-  formGroupReq?: (formId?: string) => Promise<IFormColumns<T>[]>;
+  formGroupReq?: (formId?: string) => Promise<IAhFormDetailColumn<T>[]>;
   /** 组件最小高度，用于在无数据时撑开容器，避免数据加载后突然撑高 */
   minHeight?: number | string;
   /** 无数据时的占位内容，可以是文本或自定义组件。默认使用 Skeleton 组件 */

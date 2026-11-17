@@ -2,21 +2,10 @@ import { arrayUtils } from '@allahjs/utils';
 import type { IAntTreeNode } from '@allahjs/utils';
 import { Tree } from 'antd';
 import type { EventDataNode } from 'antd/es/tree';
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { getAllChild } from './AsyncTreeMini';
 import { updateTreeData } from './index';
 import type { IAsyncTreePlusProps } from './interface';
-
-const nodeMaps = new Map<string, IAntTreeNode>();
-const parentKeys = new Set<string>();
-let itemKeys: string[] = [];
-
-// 重置上面的数据
-const resetData = () => {
-  nodeMaps.clear();
-  parentKeys.clear();
-  itemKeys.length = 0;
-};
 
 /**
  * 默认的文本渲染
@@ -54,12 +43,15 @@ const AsyncTreePlus: React.FC<IAsyncTreePlusProps> = props => {
   // 	是否自动展开父节点
   const [autoExpandParent, setAutoExpandParent] = useState<boolean>(true);
   const [treeData, setTreeData] = React.useState<IAntTreeNode[]>([]);
+  const nodeMaps = useRef(new Map<string, IAntTreeNode>()).current;
+  const parentKeys = useRef(new Set<string>()).current;
+  const itemKeys = useRef<string[]>([]);
 
   const valueStr = value?.join(';');
 
   const initValue = () => {
     // 如果两个数据相同，就展开对应的节点
-    if (arrayUtils.isEqual(value, itemKeys)) {
+    if (arrayUtils.isEqual(value, itemKeys.current)) {
       return;
     }
     autoExpandParentFunc();
@@ -84,7 +76,6 @@ const AsyncTreePlus: React.FC<IAsyncTreePlusProps> = props => {
       });
       setTreeData(res);
     });
-    return resetData;
   }, []);
 
   // 获取接口的数据
@@ -201,10 +192,10 @@ const AsyncTreePlus: React.FC<IAsyncTreePlusProps> = props => {
     setCheckedKeys(checkedKeysValue);
     // 循环数据，如果数据的父节点在选中的节点中，那么这个数据就不要了
     const newCheckedKeys = checkedKeysValue.filter((item: string) => {
-      const parent = nodeMaps.get(item)!.pcode;
+      const parent = nodeMaps.get(item)?.pcode;
       return !checkedKeysValue.includes(parent);
     });
-    itemKeys = newCheckedKeys;
+    itemKeys.current = newCheckedKeys;
     onChange?.(newCheckedKeys);
     // 从map中获取对应的数据，然后加到新数组中，再调用onItemChange传递出去
     const newCheckedData = newCheckedKeys.map((item: string) => nodeMaps.get(item));

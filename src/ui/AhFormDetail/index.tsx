@@ -2,8 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { EditOutlined } from '@ant-design/icons';
 import { Alert, Button, Descriptions, Form, Space } from 'antd';
-import { IFormColumns } from '@allahjs/utils';
-import { IAhFormDetailProps } from './types';
+import type { IUploadRef } from '@allahjs/utils';
+import type { IAhFormDetailColumn, IAhFormDetailProps } from './types';
 import AhAntdConfig from '../utils/AhAntdConfig';
 import {
   groupColumnsByTitle,
@@ -12,9 +12,24 @@ import {
   getContainerStyle,
   renderDefaultPlaceholder
 } from './utils';
-import { getColumnKey, formatFieldValue, setFieldValueByColumn, renderProFormField } from './editUtils';
+import {
+  getColumnKey,
+  getFieldValueByColumn,
+  getFieldPath,
+  hasFieldPath,
+  buildFieldRules,
+  formatFieldValue,
+  setFieldValueByColumn,
+  renderProFormField
+} from './editUtils';
+import { DetailEditor, renderEditorValue } from './editorFields';
 import './index.less';
-export type { IAhFormDetailProps } from './types';
+export type {
+  IAhFormDetailColumn,
+  IAhFormDetailEditor,
+  IAhFormDetailPickerContext,
+  IAhFormDetailProps
+} from './types';
 
 /** 不支持行内编辑的 valueType */
 const NOT_EDITABLE_VALUE_TYPES = ['image', 'title'];
@@ -54,13 +69,15 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
   const [loading, setLoading] = React.useState(false);
 
   // 当前的columns
-  const [currentColumns, setCurrentColumns] = useState<IFormColumns<T>[]>([]);
+  const [currentColumns, setCurrentColumns] = useState<IAhFormDetailColumn<T>[]>([]);
 
   // 多字段编辑状态：数据由表单实例统一管理（Form 即数据源），dirtyKeys 只追踪「动过哪些字段」
   const [form] = Form.useForm();
   const [editingKeys, setEditingKeys] = useState<Set<string>>(new Set());
   const [saving, setSaving] = useState(false);
   const dirtyKeysRef = useRef<Set<string>>(new Set());
+  const savingRef = useRef(false);
+  const uploadRefs = useRef(new Map<string, IUploadRef>());
 
   // 同步内部表单实例到外部 formRef
   useEffect(() => {
@@ -102,8 +119,8 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
 
   const currentData = data || dataSource;
 
-  /** 字段是否纳入表单管理（read/edit 双模式渲染）；image / title / renderFunKey 等纯展示类型走 renderItemContent */
-  const isFormColumn = (column: IFormColumns<T>): boolean => {
+  /** 判断字段是否参与行内编辑 */
+  const isFormColumn = (column: IAhFormDetailColumn<T>): boolean => {
     if (
       column.dataIndex === undefined ||
       column.dataIndex === null ||
@@ -111,22 +128,26 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
     ) {
       return false;
     }
-    if (NOT_EDITABLE_VALUE_TYPES.includes(column.valueType as string) || column.renderFunKey) {
+    if (
+      (!column.editor && NOT_EDITABLE_VALUE_TYPES.includes(column.valueType as string)) ||
+      column.renderFunKey ||
+      column.render
+    ) {
       return false;
     }
     return true;
   };
 
   /** 字段是否显示编辑铅笔（image / title 及无 dataIndex 的字段除外） */
-  const canEditColumn = (column: IFormColumns<T>): boolean => {
+  const canEditColumn = (column: IAhFormDetailColumn<T>): boolean => {
     if (!editable || saving) {
       return false;
     }
-    return isFormColumn(column);
+    return !column.disabled && !column.fieldProps?.disabled && isFormColumn(column);
   };
 
   /** 进入编辑态：切到该字段的 edit 模式（值已在表单 store 里，无需种子） */
-  const handleEdit = (column: IFormColumns<T>) => {
+  const handleEdit = (column: IAhFormDetailColumn<T>) => {
     if (saving || !currentData) {
       return;
     }
@@ -141,29 +162,54 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
 
   /** 取消编辑：表单还原为已保存的记录，丢弃全部草稿并退出编辑态 */
   const handleCancel = () => {
-    if (saving) {
+    if (savingRef.current) {
       return;
     }
-    if (currentData) {
-      form.setFieldsValue(currentData);
+    for (const column of currentColumns) {
+      if (editingKeys.has(getColumnKey(column))) {
+        form.setFieldValue(getFieldPath(column), getFieldValueByColumn(currentData, column));
+      }
     }
     dirtyKeysRef.current.clear();
+    uploadRefs.current.clear();
     setEditingKeys(new Set());
   };
 
-  /** 确认保存：原生校验全部脏字段 → 逐字段触发 onFieldSave → 全部成功才落库并退出编辑态 */
+  /** 校验脏字段并逐字段保存，全部成功后更新本地记录 */
   const handleSave = async () => {
-    if (saving || !currentData) {
+    if (savingRef.current || !currentData) {
       return;
     }
     const dirtyColumns = currentColumns.filter((col) => dirtyKeysRef.current.has(getColumnKey(col)));
+    savingRef.current = true;
     setSaving(true);
     try {
       // 字段全部常驻注册，原生校验即可覆盖任意脏字段（含当前未处于编辑态的）
-      await form.validateFields(dirtyColumns.map((col) => col.dataIndex as any));
+      if (dirtyColumns.length) {
+        await form.validateFields(dirtyColumns.map(getFieldPath));
+      }
       let newData = currentData;
       for (const col of dirtyColumns) {
-        const value = formatFieldValue(form.getFieldValue(col.dataIndex as any), col);
+        const path = getFieldPath(col);
+        let value = formatFieldValue(form.getFieldValue(path), col);
+        if (col.editor?.type === 'upload') {
+          const upload = uploadRefs.current.get(getColumnKey(col))?.current;
+          if (!upload) return;
+          try {
+            const relId = col.editor.getRelId
+              ? col.editor.getRelId(newData)
+              : newData[primaryKey] == null ? undefined : String(newData[primaryKey]);
+            const files = await upload.startUpload(relId);
+            value = files.map(({ originFileObj, ...file }) => file);
+            form.setFieldValue(path, value);
+          } catch (error) {
+            form.setFields([{
+              name: path,
+              errors: [error instanceof Error ? error.message : '附件上传失败，请重试']
+            }]);
+            return;
+          }
+        }
         // 未传 onFieldSave 时视为保存成功（纯前端模式）
         const ok = (await onFieldSave?.(value, col, newData)) ?? true;
         if (ok === false) {
@@ -174,19 +220,27 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
       onDataChange?.(newData);
       setData(newData);
       dirtyKeysRef.current.clear();
+      uploadRefs.current.clear();
       setEditingKeys(new Set());
     } catch {
       // 校验失败：停留编辑态。脏字段全部处于 edit 模式（字段常驻注册），
       // 各字段错误由 antd 直接内联显示在对应单元格下方
     } finally {
+      savingRef.current = false;
       setSaving(false);
     }
   };
 
   /** 渲染查看态单元格：read 模式 ProField + 悬停显示的铅笔 */
-  const renderViewCell = (column: IFormColumns<T>) => (
+  const renderViewCell = (column: IAhFormDetailColumn<T>) => (
     <div className="ah-form-detail-cell">
-      {renderProFormField(column, currentData!, 'read', fieldControlRender)}
+      {column.editor ? (
+        <div className="ah-form-detail-editor-value">
+          {renderEditorValue(column.editor, getFieldValueByColumn(currentData, column), currentData!, emptyText)}
+        </div>
+      ) : (
+        renderProFormField(column, currentData!, 'read', fieldControlRender)
+      )}
       {canEditColumn(column) &&
         (pencilRender ? (
           pencilRender(column, currentData!)
@@ -197,13 +251,32 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
   );
 
   /** 渲染编辑态单元格：只包含编辑控件，确认/取消在详情顶部的操作栏 */
-  const renderEditCell = (column: IFormColumns<T>) => (
-    <div className="ah-form-detail-edit">
-      <div className="ah-form-detail-edit-control">
-        {renderProFormField(column, currentData!, 'edit', fieldControlRender)}
+  const renderEditCell = (column: IAhFormDetailColumn<T>) => {
+    const key = getColumnKey(column);
+    let uploadRef = uploadRefs.current.get(key);
+    if (column.editor?.type === 'upload' && !uploadRef) {
+      uploadRef = { current: undefined };
+      uploadRefs.current.set(key, uploadRef);
+    }
+    return (
+      <div className="ah-form-detail-edit">
+        <div className="ah-form-detail-edit-control">
+          {column.editor ? (
+            <Form.Item name={getFieldPath(column)} rules={buildFieldRules(column)}>
+              <DetailEditor
+                editor={column.editor}
+                record={currentData!}
+                disabled={saving}
+                uploadRef={uploadRef}
+              />
+            </Form.Item>
+          ) : (
+            renderProFormField(column, currentData!, 'edit', fieldControlRender)
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   /** 渲染详情顶部的编辑操作栏：左侧提示，右侧取消/确认 */
   const renderEditBar = () => {
@@ -263,13 +336,7 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
         title={group.title}
         column={props.column || { xs: 1, sm: 1, md: 1, lg: 1, xl: 2, xxl: 3 }}
         bordered={props.bordered ?? true}
-        items={generateDescriptionItems(
-          group.columns,
-          currentData,
-          emptyText,
-          primaryKey,
-          editable ? renderCell : undefined
-        )}
+        items={generateDescriptionItems(group.columns, currentData, renderCell)}
         {...descriptionsProps}
         // 统一列宽：覆盖 antd v6 bordered 模式的 table-layout: auto，保证 value 列均分宽度
         className={
@@ -287,53 +354,45 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
   };
 
   /** 单个单元格渲染：表单字段走 read/edit 双模式，纯展示类型走 renderItemContent */
-  const renderCell = (column: IFormColumns<T>): React.ReactNode => {
-    if (!isFormColumn(column)) {
-      return currentData ? renderItemContent(column, currentData, emptyText, primaryKey) : emptyText;
+  const renderCell = (column: IAhFormDetailColumn<T>, index: number): React.ReactNode => {
+    if (!currentData) {
+      return emptyText;
+    }
+    if (column.render) {
+      return column.render(getFieldValueByColumn(currentData, column), currentData, index, form, {
+        type: 'read'
+      });
+    }
+    if (!editable || !isFormColumn(column)) {
+      if (column.editor) {
+        return renderEditorValue(column.editor, getFieldValueByColumn(currentData, column), currentData, emptyText);
+      }
+      return renderItemContent(column, currentData, emptyText, primaryKey);
     }
     return editingKeys.has(getColumnKey(column)) ? renderEditCell(column) : renderViewCell(column);
   };
 
-  const content = (
-    <div>
-      {renderEditBar()}
-      {renderGroupedDescriptions()}
-    </div>
+  return (
+    <Form
+      form={form}
+      component={false}
+      disabled={saving}
+      onValuesChange={editable ? collectDirtyKeys : undefined}
+    >
+      <div>
+        {renderEditBar()}
+        {renderGroupedDescriptions()}
+      </div>
+    </Form>
   );
 
-  // 开启编辑时用 Form 包一层（component=false 不产生额外 DOM），为常驻字段提供表单上下文；
-  // onValuesChange 追踪用户动过的字段（确认只校验、保存这些脏字段）
-  if (editable) {
-    return (
-      <Form
-        form={form}
-        component={false}
-        onValuesChange={(changedValues) => {
-          collectDirtyKeys(changedValues);
-        }}
-      >
-        {content}
-      </Form>
-    );
-  }
-
-  return content;
-
-  /** 把 onValuesChange 的 changedValues 展开为列 key（嵌套 dataIndex 展开为 a.b 形式） */
-  function collectDirtyKeys(changedValues: Record<string, any>, prefix = '') {
-    Object.keys(changedValues).forEach((key) => {
-      const value = changedValues[key];
-      const path = prefix ? `${prefix}.${key}` : key;
-      if (value && typeof value === 'object' && !Array.isArray(value) && !dayjsLike(value)) {
-        collectDirtyKeys(value, path);
-      } else {
-        dirtyKeysRef.current.add(path);
+  function collectDirtyKeys(changedValues: Record<string, unknown>) {
+    for (const column of currentColumns) {
+      const key = getColumnKey(column);
+      if (editingKeys.has(key) && hasFieldPath(changedValues, getFieldPath(column))) {
+        dirtyKeysRef.current.add(key);
       }
-    });
-  }
-
-  function dayjsLike(value: any) {
-    return value && typeof value === 'object' && typeof value.format === 'function';
+    }
   }
 };
 

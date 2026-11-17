@@ -103,10 +103,8 @@ export { default as SortFilterAntd } from './AhFormFilter/SortFilterAntd';
 export { default as TagsFilter } from './AhFormFilter/TagsFilter';
 export { default as AhCheckbox } from './AhFormFilter/AhCheckbox';
 export { default as AhProFormSelect } from './AhFormFilter/AhProFormSelect';
-export { default as AhEditModal } from './AhEditModal';
-export { default as FormContent } from './AhEditModal/FormContent';
-export { default as FormReqLabel } from './AhEditModal/FormReqLabel';
-export { default as TitleInput } from './AhEditModal/TitleInput';
+export { default as AhSplitEditLayout } from './AhSplitEditLayout';
+export type { IAhSplitEditLayoutProps } from './AhSplitEditLayout';
 export { default as AhImageRender } from './AhImageRender';
 export { default as AhModal } from './AhModal';
 export { default as AhModalForm } from './AhModalForm';
@@ -116,10 +114,13 @@ export { default as AhProTable } from './AhProTable/AhProTable';
     export type { ApiParameterEditorProps } from './ApiParameterEditor';
 
 export { default as ListCarousel } from './ListGroup/ListCarousel/ListCarousel';
-export { default as AhDetailModal } from './AhDetailModal';
-export type { IDetailColumn, IAhDetailModalProps } from './AhDetailModal';
 export { default as AhFilePreview } from './AhFilePreview';
 export { default as AhFormDetail } from './AhFormDetail';
-export type { IAhFormDetailProps } from './AhFormDetail';
+export type {
+  IAhFormDetailColumn,
+  IAhFormDetailEditor,
+  IAhFormDetailPickerContext,
+  IAhFormDetailProps
+} from './AhFormDetail';
 export { default as AhImagePreview } from './AhImageRender/AhImagePreview';
 

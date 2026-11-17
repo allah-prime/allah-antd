@@ -1,0 +1,35 @@
+.ah-split-edit-layout {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+
+  .ah-split-edit-layout-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .ah-split-edit-layout-header {
+    flex-shrink: 0;
+    padding: 24px 24px 0;
+  }
+
+  .ah-split-edit-layout-body {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 16px 24px;
+  }
+
+  .ah-split-edit-layout-footer {
+    flex-shrink: 0;
+    padding: 16px 24px;
+    border-top: 1px solid;
+  }
+
+  .ah-split-edit-layout-sidebar {
+    overflow: auto;
+    padding: 24px;
+    border-inline-start: 1px solid;
+  }
+}

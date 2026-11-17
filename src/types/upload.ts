@@ -15,6 +15,10 @@ export interface IUploadProps {
    * 上传之前的钩子
    */
   uploadRef?: IUploadRef;
+  /**
+   * 仅为新文件申请上传信息，保留已上传文件；适用于编辑草稿的确认与重试。
+   */
+  uploadPendingOnly?: boolean;
 
   style?: React.CSSProperties;
   /**

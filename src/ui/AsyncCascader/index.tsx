@@ -74,7 +74,7 @@ const Index: React.FC<IAsyncCascaderProps> = ({
     }
   };
 
-  const onValueChange = (v: any[], v2: any[]) => {
+  const onValueChange = (v: any[] = [], v2: any[] = []) => {
     setSelectItems(v);
     if (multiple) {
       // 二维数组打平

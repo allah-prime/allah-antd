@@ -3,16 +3,23 @@ import React from 'react';
 import dayjs from 'dayjs';
 import {
   ProFormCascader,
+  ProFormCheckbox,
+  ProFormColorPicker,
   ProFormDatePicker,
   ProFormDateRangePicker,
   ProFormDateTimePicker,
+  ProFormDateTimeRangePicker,
   ProFormDigit,
+  ProFormDigitRange,
   ProFormRadio,
+  ProFormRate,
   ProFormSelect,
+  ProFormSlider,
   ProFormSwitch,
   ProFormTextArea,
   ProFormText,
   ProFormTimePicker,
+  ProFormTimeRangePicker,
   ProFormTreeSelect
 } from '@ant-design/pro-components';
 import { IFormColumns, ProSchemaValueEnumObj } from '@allahjs/utils';
@@ -21,6 +28,23 @@ import { IFormColumns, ProSchemaValueEnumObj } from '@allahjs/utils';
 const DEFAULT_DATE_FORMAT = 'YYYY-MM-DD';
 /** datetime 类型默认格式 */
 const DEFAULT_DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+const DEFAULT_TIME_FORMAT = 'HH:mm:ss';
+
+export function getFieldPath(column: IFormColumns): (string | number)[] {
+  const path = Array.isArray(column.dataIndex) ? column.dataIndex : [column.dataIndex];
+  return path.map(part => typeof part === 'number' ? part : String(part));
+}
+
+export function hasFieldPath(value: unknown, path: (string | number)[]): boolean {
+  let current = value;
+  for (const part of path) {
+    if (!current || typeof current !== 'object' || !Object.prototype.hasOwnProperty.call(current, part)) {
+      return false;
+    }
+    current = (current as Record<string | number, unknown>)[part];
+  }
+  return true;
+}
 
 /**
  * 获取列的唯一标识（dataIndex 支持数组嵌套）
@@ -95,7 +119,7 @@ const normalizeValueEnum = <T extends Record<string, any>>(
 /**
  * 把列的校验配置（verRules + rules）转成 antd Form 的 rules
  */
-const buildFieldRules = <T extends Record<string, any>>(column: IFormColumns<T>): any[] | undefined => {
+export const buildFieldRules = <T extends Record<string, any>>(column: IFormColumns<T>): any[] | undefined => {
   const rules: any[] = [];
   const verRules = column.verRules;
   if (verRules) {
@@ -135,7 +159,11 @@ export const formatFieldValue = <T extends Record<string, any>>(
       const fieldFormat = column.fieldProps?.format;
       const format =
         (typeof fieldFormat === 'string' ? fieldFormat : undefined) ||
-        (column.valueType === 'datetime' ? DEFAULT_DATETIME_FORMAT : DEFAULT_DATE_FORMAT);
+        (column.valueType === 'datetime' || column.valueType === 'dateTimeRange'
+          ? DEFAULT_DATETIME_FORMAT
+          : column.valueType === 'time' || column.valueType === 'timeRange'
+            ? DEFAULT_TIME_FORMAT
+            : DEFAULT_DATE_FORMAT);
       return val.format(format);
     }
     return val;
@@ -215,9 +243,21 @@ export const renderProFormField = <T extends Record<string, any>>(
           request={request as any}
         />
       );
+    case 'checkbox':
+      return <ProFormCheckbox.Group {...commonProps} options={options as any} request={request as any} valueEnum={normalizeValueEnum(column.valueEnum, record)} />;
+    case 'password':
+      return <ProFormText.Password {...commonProps} />;
+    case 'rate':
+      return <ProFormRate {...commonProps} />;
+    case 'slider':
+      return <ProFormSlider {...commonProps} />;
+    case 'color':
+      return <ProFormColorPicker {...commonProps} />;
     case 'date':
     case 'datetime':
     case 'dateRange':
+    case 'dateTimeRange':
+    case 'timeRange':
     case 'time': {
       // edit 模式挂载即弹出选择面板（autoFocus 只聚焦输入框不会展开面板）；
       // read 模式为纯文本展示，不弹面板
@@ -232,13 +272,18 @@ export const renderProFormField = <T extends Record<string, any>>(
             ? ProFormDateTimePicker
             : valueType === 'dateRange'
               ? ProFormDateRangePicker
-              : ProFormTimePicker;
+              : valueType === 'dateTimeRange'
+                ? ProFormDateTimeRangePicker
+                : valueType === 'timeRange'
+                  ? ProFormTimeRangePicker
+                  : ProFormTimePicker;
       return <PickerField {...commonProps} fieldProps={pickerFieldProps} />;
     }
     case 'digit':
-    case 'digitRange':
     case 'second':
       return <ProFormDigit {...commonProps} />;
+    case 'digitRange':
+      return <ProFormDigitRange {...commonProps} />;
     case 'money': {
       const moneySymbol = fieldProps?.moneySymbol;
       return (
@@ -271,12 +316,18 @@ export const renderProFormField = <T extends Record<string, any>>(
         />
       );
     case 'cascader':
-      return <ProFormCascader {...commonProps} request={request as any} />;
+      return (
+        <ProFormCascader
+          {...commonProps}
+          fieldProps={{ options, ...mergedFieldProps }}
+          request={request as any}
+        />
+      );
     case 'treeSelect':
       return (
         <ProFormTreeSelect
           {...commonProps}
-          options={options as any}
+          fieldProps={{ treeData: options, ...mergedFieldProps }}
           request={request as any}
         />
       );

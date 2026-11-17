@@ -4,7 +4,8 @@ import { Skeleton } from 'antd';
 import { IFormColumns } from '@allahjs/utils';
 import AhImagePreview from '../AhImageRender/AhImagePreview';
 import { buildNewFormItemPropsVer } from '@allahjs/utils';
-import { getFieldValueByColumn } from './editUtils';
+import { getColumnKey, getFieldValueByColumn } from './editUtils';
+import type { IAhFormDetailColumn } from './types';
 
 /**
  * 按照 title 类型的列对数据进行分组
@@ -12,17 +13,17 @@ import { getFieldValueByColumn } from './editUtils';
  * @returns 分组后的数据结构数组
  */
 export const groupColumnsByTitle = <T extends Record<string, any>>(
-  columns: IFormColumns<T>[]
+  columns: IAhFormDetailColumn<T>[]
 ): Array<{
   title?: string;
-  columns: IFormColumns<T>[];
+  columns: IAhFormDetailColumn<T>[];
 }> => {
   const groups: Array<{
     title?: string;
-    columns: IFormColumns<T>[];
+    columns: IAhFormDetailColumn<T>[];
   }> = [];
 
-  let currentGroup: IFormColumns<T>[] = [];
+  let currentGroup: IAhFormDetailColumn<T>[] = [];
   let currentTitle: string | undefined;
 
   columns.forEach(column => {
@@ -149,17 +150,13 @@ export const renderItemContent = <T extends Record<string, any>>(
  * 生成单个分组的 Descriptions items 配置
  * @param columns 列配置数组
  * @param data 数据源
- * @param emptyText 空值显示文本
- * @param primaryKey 主键字段名，用于文件类型的渲染
- * @param renderCell 单元格渲染钩子：传入时每个单元格由调用方定制（如可编辑详情的 read/edit 双模式渲染）
+ * @param renderCell 单元格渲染函数
  * @returns DescriptionsProps['items'] 类型的数组
  */
 export const generateDescriptionItems = <T extends Record<string, any>>(
-  columns: IFormColumns<T>[],
+  columns: IAhFormDetailColumn<T>[],
   data: T | undefined,
-  emptyText: string = '暂无数据',
-  primaryKey: string = 'id',
-  renderCell?: (column: IFormColumns<T>) => React.ReactNode
+  renderCell: (column: IAhFormDetailColumn<T>, index: number) => React.ReactNode
 ) => {
   return columns
     .filter(item => {
@@ -167,19 +164,11 @@ export const generateDescriptionItems = <T extends Record<string, any>>(
       const newColumn = buildNewFormItemPropsVer({ value: data }, item);
       return newColumn.show;
     })
-    .map(column => {
-      const { title, dataIndex } = column;
-      const defaultChildren = renderCell
-        ? renderCell(column)
-        : data
-          ? renderItemContent(column, data, emptyText, primaryKey)
-          : emptyText;
-      return {
-        key: dataIndex as string,
-        label: title as string,
-        children: defaultChildren
-      };
-    });
+    .map((column, index) => ({
+      key: getColumnKey(column) || index,
+      label: column.title as string,
+      children: renderCell(column, index)
+    }));
 };
 
 /**

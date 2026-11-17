@@ -1,12 +1,12 @@
 ---
-title: AhFormDetail 详情表单
+title: AhFormDetail 详情与行内编辑
 toc: content
 group:
   title: 通用
   order: 1
 ---
 
-# AhFormDetail 详情表单
+# AhFormDetail 详情与行内编辑
 
 基于 Ant Design Descriptions 组件封装的详情展示组件，支持类似 ProDescriptions 的功能，包括多种数据类型展示、异步数据请求等。开启 `editable` 后支持简道云式的单字段编辑：详情即表单，字段值右侧悬停显示铅笔，点击即可编辑该字段。
 
@@ -22,11 +22,17 @@ group:
 
 <code src="./demo/RequestDemo.tsx"></code>
 
+## 图片与自定义渲染
+
+图片列使用 `valueType: 'image'`，通过 `fieldProps` 传入附件接口。自定义展示使用 `render(value, record, index, form, { type: 'read' })`，其中 `index` 是字段在当前分组可见列中的索引，`form` 为组件使用的表单实例。
+
+<code src="./demo/ImageRenderDemo.tsx"></code>
+
 ## 行内编辑
 
 传入 `editable` 开启编辑能力。开启后**所有可编辑字段常驻注册在表单里**，单元格通过 ProFormField 的 `read` / `edit` 双模式切换：字段值右侧悬停显示铅笔，点击后该字段切到 `edit` 模式变成编辑控件（占满单元格），同时详情顶部出现「数据编辑中」操作栏，右侧提供取消 / 确认按钮。
 
-**已进入编辑的字段在编辑其他字段时保持编辑态**，可同时编辑多个字段；编辑后的值立即显示。数据由表单实例统一管理（`setFieldsValue` 初始化）；点击 **确认** 时原生校验全部脏字段（未触碰的字段不阻塞）并逐字段触发 `onFieldSave`（按列顺序，任一返回 `false` 则中止并保留草稿），全部成功后一次性落库退出、所有字段回到 `read` 模式；点击 **取消** 丢弃全部草稿、所有字段还原为已保存的值。`valueType` 为 `image` / `title` 及配置了 `renderFunKey` 的字段不支持编辑（保持纯展示渲染）。
+已进入编辑的字段会保持编辑态，可以同时修改多个字段。点击 **确认** 时校验已修改的字段，再按列顺序调用 `onFieldSave`。全部成功后更新当前记录并退出编辑态；任一返回 `false` 或抛出异常时保留草稿，先前成功的远端更新可能已经生效。需要原子提交时，使用 `AhModalForm` 整表提交，并由后端事务处理。点击 **取消** 会丢弃当前本地草稿。`image`、`title` 或配置了 `render`、`renderFunKey` 的字段作为纯展示项。
 
 <code src="./demo/EditableDemo.tsx"></code>
 
@@ -38,11 +44,35 @@ group:
 
 <code src="./demo/VerticalDemo.tsx"></code>
 
+### 在详情弹窗中编辑
+
+搭配 `AhModal` 展示供应商详情。示例包含必填和手机号校验，确认后通过 `onDataChange` 更新外层数据。
+
+<code src="./demo/ModalEditableDemo.tsx"></code>
+
+### ERP 业务控件
+
+在 `IAhFormDetailColumn.editor` 配置附件、异步树、异步级联、搜索下拉、弹窗选择和自定义受控字段。查看态可用 `editor.renderValue(value, record)` 将业务主键转换成名称。普通 `treeSelect` 和 `cascader` 可直接使用列的 `valueType`。
+
+<code src="./demo/ErpEditorsDemo.tsx"></code>
+
+| editor.type | 配置与保存行为 |
+| --- | --- |
+| `upload` | 复用 `FileUpload2`，`props` 支持附件场景、大小、数量和上传接口。图片可用 `accept: 'image/*'` 和 `listType: 'picture-card'`。确认时先校验，再上传新增文件；已有附件保留，移除结果通过 `onFieldSave` 交给业务处理。默认以记录主键关联附件，用 `getRelId(record)` 自定义。 |
+| `asyncTree` | `props` 传给 `AsyncTreeModal`，保存选中节点值数组。 |
+| `asyncCascader` | `props` 传给 `AsyncCascader`，沿用控件的单选或多选值。 |
+| `selectSearch` | `props` 传给 `SelectSearch`，支持远程搜索和已选值反查。 |
+| `modalSelect` | 用 `title` 和 `renderPicker({ value, select, close })` 配置可搜索的列表或树表；`select` 只写入草稿，`close` 关闭选择弹窗。 |
+| `custom` | `renderControl({ value, onChange, disabled, record })` 接入遵循受控值契约的业务控件。 |
+
+附件上传和字段保存是独立请求。确认前取消会丢弃选中的本地文件；若确认后上传已成功而字段保存失败，当前草稿重试会复用已上传的附件。
+在示例中选择名为 `retry.txt` 的文件，可体验上传中断后重新确认。
+
 ## API
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| columns | 详情项配置数组，兼容 `IFormColumns` | `IFormColumns<T>[]` | - |
+| columns | 详情项配置数组，兼容 `IFormColumns`，可附加 `editor` | `IAhFormDetailColumn<T>[]` | - |
 | dataSource | 数据源 | `T` | - |
 | request | 异步获取数据 | `() => Promise<T>` | - |
 | formId | 表单组 id，配合全局 `formGroupReq` 拉取字段配置 | `string` | - |
@@ -67,4 +97,4 @@ label 列由 `labelWidth` 定宽（默认 `180`），value 列均分剩余宽度
 
 ### 编辑态支持的 valueType
 
-`text`、`textarea`、`select`、`radio`、`date`、`datetime`、`dateRange`、`time`、`digit`、`money`、`percent`、`switch`、`cascader`、`treeSelect`，未知类型回退为文本输入。编辑控件透传列配置的 `rules`、`verRules`、`fieldProps`、`disabled`、`valueEnum`、`options`、`request`；保存时 dayjs 值会按 `fieldProps.format`（date 默认 `YYYY-MM-DD`、datetime 默认 `YYYY-MM-DD HH:mm:ss`）转回字符串。
+`text`、`textarea`、`password`、`select`、`radio`、`checkbox`、`date`、`datetime`、`dateRange`、`dateTimeRange`、`time`、`timeRange`、`digit`、`digitRange`、`second`、`money`、`percent`、`switch`、`rate`、`slider`、`color`、`cascader`、`treeSelect`。未知类型使用文本输入。日期和时间值按 `fieldProps.format` 转回字符串，默认格式分别为 `YYYY-MM-DD`、`YYYY-MM-DD HH:mm:ss` 和 `HH:mm:ss`。

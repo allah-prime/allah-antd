@@ -8,7 +8,7 @@ group:
 
 # AhModalForm 表单弹窗
 
-这是一个基于 Ant Design ProForm 的模态表单组件，提供了更便捷的表单弹窗操作方式。
+基于 Ant Design ProForm 的整表单弹窗，适用于新增记录和整单编辑。校验通过后，`onFinish(values)` 接收整份表单数据。已有记录的详情查看和行内修改使用 `AhFormDetail`。
 
 ## 特性
 

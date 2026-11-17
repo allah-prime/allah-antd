@@ -31,11 +31,10 @@ order: 1
 - [AhPageContent 表格页面](/ui/ah-page) - 带搜索和分页的表格页容器
 - [AhCardListPage 卡片列表](/ui/ah-card-list-page) - 卡片列表页容器
 - [AhModal 模态框](/ui/ah-modal) - 增强版弹窗
-- [AhModalForm 表单弹窗](/ui/ah-modal-form) - 自带 ProForm 状态的弹窗，配合 `useAhModalForm`
-- [AhEditModal 编辑弹窗](/ui/ah-edit-modal) - 左右分栏的编辑壳，表单由外层 antd Form 管理
-- [AhDetailModal 详情弹窗](/ui/ah-detail-modal) - 按字段渲染详情内容
+- [AhModalForm 表单弹窗](/ui/ah-modal-form) - 新增与整单编辑，统一校验并提交表单
+- [AhSplitEditLayout 分栏编辑布局](/ui/ah-split-edit-layout) - 正文与配置分栏，表单由调用方管理
 - [AhFormFilter 筛选表单](/ui/ah-form-filter) - 固定条件加可增删条件的筛选器
-- [AhFormDetail 详情表单](/ui/ah-form-detail) - 基于 Descriptions 的详情展示
+- [AhFormDetail 详情与行内编辑](/ui/ah-form-detail) - 展示已有记录，可开启行内编辑并放入 AhModal
 
 ### 数据展示
 

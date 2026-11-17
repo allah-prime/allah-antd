@@ -34,10 +34,15 @@
   min-height: 32px;
 
   // read 模式同样由 Form.Item 承载（字段常驻注册），去默认下边距并占满宽度
-  .ant-form-item {
+  .ant-form-item,
+  .ah-form-detail-editor-value {
     flex: 1;
     min-width: 0;
     margin-bottom: 0;
+  }
+
+  .ah-form-detail-editor-value {
+    overflow-wrap: anywhere;
   }
 
   .ah-form-detail-edit-icon {

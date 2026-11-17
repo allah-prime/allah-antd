@@ -154,6 +154,7 @@ const FileUpload2: React.FC<IUploadProps> = props => {
   } = props;
 
   const [fileList, setFileList] = useState<any[]>(value || []);
+  const preparedFiles = React.useRef(new Map<string, IFileObjVoBase>());
 
   const [previewVisible, setPreviewVisible] = useState(false);
 
@@ -183,24 +184,25 @@ const FileUpload2: React.FC<IUploadProps> = props => {
   useImperativeHandle(uploadRef, () => ({
     // 开始上传
     startUpload: async (relId?: string) => {
-      if (fileList.length === 0) {
+      const pendingOnly = props.uploadPendingOnly;
+      const files: IFileObjVoBase[] = pendingOnly ? value ?? fileList : fileList;
+      if (files.length === 0) {
         return [];
       }
       const uploadConfig = AhAntdConfig.getUploadConfig();
       const fileKeyRequest = props.fileKeyRequest || uploadConfig.fileKeyRequest;
       const uploadRequest = props.uploadRequest || uploadConfig.uploadRequest;
-      const uploadLocalRequest = uploadConfig.uploadLocalRequest;
+      const uploadLocalRequest = props.uploadLocalRequest || uploadConfig.uploadLocalRequest;
       // 这里可以加自己的逻辑哦
       console.log('开始上传');
-      const uploadFiles = async () => {
+      const uploadFiles = async (files: IFileObjVoBase[]) => {
         const processedFiles = [];
-        for (let i = 0; i < fileList.length; i++) {
-          const item = fileList[i];
+        for (const item of files) {
           const videoDuration = await getVideoDuration(item);
           const processedItem = {
             ...item,
             usage: props.usage,
-            fileSize: item.size || 0,
+            fileSize: item.size ?? item.fileSize ?? 0,
             fileType: props.fileType,
             busiType: props.busiType,
             busiScene: props.busiScene,
@@ -214,11 +216,35 @@ const FileUpload2: React.FC<IUploadProps> = props => {
         return processedFiles;
       };
       // 获取cos的key
-      const newFiles = await fileKeyRequest!((await uploadFiles()) as any);
+      const pending = pendingOnly
+        ? files.filter(file => file.originFileObj && !file.oldFile && file.status !== 'success')
+        : files;
+      if (pendingOnly && pending.length === 0) {
+        return files;
+      }
+      const unprepared = pendingOnly
+        ? pending.filter(file => !preparedFiles.current.has(file.uid))
+        : pending;
+      if (!fileKeyRequest && unprepared.length > 0) {
+        throw new Error('请定义 fileKeyRequest 方法');
+      }
+      const requested = unprepared.length ? await uploadFiles(unprepared) : [];
+      const prepared = requested.length ? await fileKeyRequest!(requested) : [];
+      if (pendingOnly) {
+        if (prepared.length !== requested.length) {
+          throw new Error('附件申请结果与待上传文件不一致');
+        }
+        requested.forEach((file, index) => {
+          preparedFiles.current.set(file.uid, { ...file, ...prepared[index], uid: file.uid });
+        });
+      }
+      const newFiles = pendingOnly
+        ? files.map(file => preparedFiles.current.get(file.uid) ?? file)
+        : prepared;
       // 将这个数据，调用上传接口进行上传
       for (let i = 0; i < newFiles.length; i++) {
         const file = newFiles[i];
-        if (file.status === 'success') {
+        if (file.status === 'success' || (pendingOnly && (!file.originFileObj || file.oldFile))) {
           continue;
         }
         file.status = 'uploading';
@@ -249,6 +275,9 @@ const FileUpload2: React.FC<IUploadProps> = props => {
                 updatePercent(newFiles);
               });
             } else {
+              if (pendingOnly) {
+                throw new Error('请定义 uploadLocalRequest 方法');
+              }
               console.error('uploadLocalRequest 方法未定义，但 bucket 为 database');
             }
           } else {
@@ -285,6 +314,13 @@ const FileUpload2: React.FC<IUploadProps> = props => {
       setPreviewVisible(true);
     },
     onRemove: file => {
+      if (props.uploadPendingOnly) {
+        const remainingFiles = (value ?? fileList).filter(item => item.uid !== file.uid);
+        preparedFiles.current.delete(file.uid);
+        setFileList(remainingFiles);
+        onChange?.(remainingFiles);
+        return false;
+      }
       const index = fileList.indexOf(file as IFileObjVoBase);
       const newFileList = fileList.slice();
       newFileList.splice(index, 1);
@@ -300,7 +336,7 @@ const FileUpload2: React.FC<IUploadProps> = props => {
             fileSize / 1024 / 1000
           }M的文件（图片）进行上传，如果超出，请进行压缩或者拆分`
         });
-        return false;
+        return Upload.LIST_IGNORE;
       }
       return false;
     },
