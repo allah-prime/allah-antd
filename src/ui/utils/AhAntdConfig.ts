@@ -1,4 +1,4 @@
-import type { TFileUpload2Config } from '../../types';
+import type { TFileUploadConfig } from '../../types';
 import { fileUpload2Usage, IBaseFilter, IFormColumns, ITablePage } from '@allahjs/utils';
 import type { IAsyncTaskScheduleVo } from '@allahjs/utils';
 import type { MessageInstance } from 'antd/es/message/interface';
@@ -56,7 +56,7 @@ type IOtherConfig = {
 
 type TAhAntdConfig = {
   // 文件上传
-  upload?: TFileUpload2Config;
+  upload?: TFileUploadConfig;
   // 区域请求
   areaReq?: TAreaRequestConfig;
   // 通用的请求
@@ -90,7 +90,7 @@ class AhAntdConfig {
 
   private static hasLoggedVersion = false;
 
-  private static upload: TFileUpload2Config;
+  private static upload: TFileUploadConfig;
 
   private static areaReq: TAreaRequestConfig;
 
@@ -167,7 +167,7 @@ class AhAntdConfig {
     return this.instance;
   }
 
-  static getUploadConfig(): TFileUpload2Config {
+  static getUploadConfig(): TFileUploadConfig {
     this.getWinCacheKey();
     // @ts-ignore
     if (window && window[this.winCacheKey]) {

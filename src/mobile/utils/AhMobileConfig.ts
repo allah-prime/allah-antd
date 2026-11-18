@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { TFileUpload2Config } from '../../types';
+import type { TFileUploadConfig } from '../../types';
 import { IFormColumns } from '@allahjs/utils';
 import { IBaseFilter, IOptions7, ITablePage } from '@allahjs/utils';
 import { Toast } from 'antd-mobile';
@@ -49,7 +49,7 @@ export interface IAhMobileDebugConfig {
 
 export interface IAhMobileConfigProps {
   commReq?: ICommRequestConfig;
-  uploadConfig?: TFileUpload2Config;
+  uploadConfig?: TFileUploadConfig;
   winCacheKey?: string;
   debug?: boolean | IAhMobileDebugConfig;
 }
@@ -85,7 +85,7 @@ const normalizeDebugConfig = (
 class AhMobileConfig {
   private static instance: AhMobileConfig;
   private static hasLoggedVersion = false;
-  private static uploadConfig: TFileUpload2Config = {};
+  private static uploadConfig: TFileUploadConfig = {};
   private static winCacheKey: string = defWinCacheKey;
   private static debugConfig: IAhMobileDebugConfig = defaultDebugConfig;
 
@@ -145,7 +145,7 @@ class AhMobileConfig {
   /**
    * 获取上传配置 - 静态方法
    */
-  public static getUploadConfig(): TFileUpload2Config {
+  public static getUploadConfig(): TFileUploadConfig {
     AhMobileConfig.getWinCacheKey();
     // @ts-ignore
     if (typeof window !== 'undefined' && window[AhMobileConfig.winCacheKey]) {
@@ -158,7 +158,7 @@ class AhMobileConfig {
   /**
    * 设置上传配置 - 静态方法
    */
-  public static setUploadConfig(config: TFileUpload2Config): void {
+  public static setUploadConfig(config: TFileUploadConfig): void {
     AhMobileConfig.uploadConfig = { ...AhMobileConfig.uploadConfig, ...config };
     // 如果已经有实例，也更新实例中的配置
     if (typeof window !== 'undefined') {
@@ -193,7 +193,7 @@ class AhMobileConfig {
   /**
    * 设置上传配置 - 实例方法
    */
-  public setUploadConfig(config: TFileUpload2Config): void {
+  public setUploadConfig(config: TFileUploadConfig): void {
     AhMobileConfig.uploadConfig = { ...AhMobileConfig.uploadConfig, ...config };
   }
 
@@ -269,7 +269,7 @@ class AhMobileConfig {
   /**
    * 获取上传配置 - 实例方法
    */
-  public getUploadConfig(): TFileUpload2Config {
+  public getUploadConfig(): TFileUploadConfig {
     return AhMobileConfig.uploadConfig;
   }
 

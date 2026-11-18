@@ -51,7 +51,7 @@ export interface IWeChatUploadConfig {
 /**
  * 文件上传配置接口
  */
-export interface TFileUpload2Config {
+export interface TFileUploadConfig {
   /**
    * 获取文件的keys
    */

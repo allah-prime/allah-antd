@@ -117,13 +117,10 @@ const BuildUploadButton = ({
   if (disable) {
     return null;
   }
-  if (boxType === 'picture') {
+  if (boxType === 'picture' || boxType === 'text') {
     return (
       <div>
-        <Button>
-          <UploadOutlined />
-          点击上传
-        </Button>
+        <Button icon={<UploadOutlined />}>{selectText}</Button>
       </div>
     );
   }
@@ -135,7 +132,7 @@ const BuildUploadButton = ({
   );
 };
 
-const FileUpload2: React.FC<IUploadProps> = props => {
+const FileUpload: React.FC<IUploadProps> = props => {
   const {
     fileSize = 2048000,
     maxNum = 10,
@@ -403,7 +400,7 @@ const FileUpload2: React.FC<IUploadProps> = props => {
   );
 };
 
-export default FileUpload2;
+export default FileUpload;
 
 // 预览的方法
 export const previewFile = (file?: IFileObjVoBase, boxStyles?: any) => {

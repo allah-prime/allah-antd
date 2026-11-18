@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import AhModal from '../AhModal';
 import AsyncCascader from '../AsyncCascader';
 import AsyncTreeModal from '../AsyncTree/AsyncTreeModal';
-import FileUpload2 from '../FileUpload/FileUpload2';
+import FileUpload from '../FileUpload/FileUpload';
 import SelectSearch from '../SelectSearch';
 import type { IAhFormDetailEditor } from './types';
 
@@ -55,8 +55,7 @@ export function DetailEditor<T>({
   switch (editor.type) {
     case 'upload':
       return (
-        <FileUpload2
-          listType="text"
+        <FileUpload
           {...editor.props}
           disabled={disabled || editor.props?.disabled}
           value={value}
@@ -79,6 +78,10 @@ export function DetailEditor<T>({
         <AsyncCascader
           type="form"
           {...editor.props}
+          cascaderProps={{
+            ...editor.props.cascaderProps,
+            style: { width: '100%', marginLeft: 0, ...editor.props.cascaderProps?.style }
+          }}
           disabled={disabled || editor.props.disabled}
           value={value}
           onChange={onChange}

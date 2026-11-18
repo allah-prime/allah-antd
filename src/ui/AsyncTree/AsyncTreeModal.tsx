@@ -1,7 +1,7 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { domUtils } from '@allahjs/utils';
 import type { IAntTreeNode } from '@allahjs/utils';
-import { Button, Col, Row, Tag, Tooltip } from 'antd';
+import { Button, Col, Row, Space, Tag, Tooltip } from 'antd';
 import React, { useState } from 'react';
 import useCustomFormItem from '../hooks/useCustomFormItem';
 import { modelSize } from '../utils/AhReactUtils';
@@ -99,21 +99,14 @@ const AsyncTreeModal: React.FC<IAsyncTreeModalProps> = (props) => {
           <Col span={12}>{renderTag()}</Col>
         </Row>
       </AhModal>
-      {!props.disabled && (
-        <Tag
-          onClick={() => setVisible(true)}
-          style={{
-            background: '#fff',
-            borderStyle: 'dashed',
-            margin: '2px',
-            cursor: 'pointer'
-          }}
-        >
-          <PlusOutlined />
-          {props.addText || '新增'}
-        </Tag>
-      )}
-      {renderTag()}
+      <Space wrap size={8}>
+        {!props.disabled && (
+          <Button icon={<PlusOutlined />} onClick={() => setVisible(true)}>
+            {props.addText || '新增'}
+          </Button>
+        )}
+        {renderTag()}
+      </Space>
     </div>
   );
 };

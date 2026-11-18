@@ -41,6 +41,8 @@ export type IAhFormDetailEditor<T = any> = {
 );
 
 export interface IAhFormDetailColumn<T = any> extends IFormColumns<T> {
+  /** 字段占用的详情列数，filled 表示占满当前行剩余空间 */
+  span?: NonNullable<DescriptionsProps['items']>[number]['span'];
   /** ERP 业务控件及其查看态格式 */
   editor?: IAhFormDetailEditor<T>;
 }

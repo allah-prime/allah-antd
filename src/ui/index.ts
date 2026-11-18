@@ -20,7 +20,7 @@ export { default as Ellipsis } from './Ellipsis';
 export { default as ExplainTips } from './ExplainTips';
 export { default as FileBox } from './FileBox';
 export { default as FileImportModal } from './FileUpload/FileImportModal';
-export { attachFileSuffix, default as FileUpload2, getBase64, previewFile, AhFileIcon } from './FileUpload/FileUpload2';
+export { attachFileSuffix, default as FileUpload, getBase64, previewFile, AhFileIcon } from './FileUpload/FileUpload';
 export { default as FooterToolbar } from './FooterToolbar';
 export { default as useCustomFormItem } from './hooks/useCustomFormItem';
 export { default as useItemDetails } from './hooks/useItemDetails';

@@ -4,7 +4,7 @@ import type { IAsyncTaskScheduleVo } from '@allahjs/utils';
 import { Button, Progress, Typography } from 'antd';
 import React, { useRef, useState } from 'react';
 import useScheduleRequest from '../hooks/useScheduleRequest';
-import FileUpload2 from './FileUpload2';
+import FileUpload from './FileUpload';
 import { ButtonType } from 'antd/lib/button/buttonHelpers';
 import type { IUploadProps } from '../../types';
 
@@ -143,7 +143,7 @@ const FileImportModal: React.FC<IFileImportModalProps> = ({
         }}
       >
         <div style={{ height: 130, overflowY: 'auto' }}>
-          <FileUpload2
+          <FileUpload
             fileSize={8048000}
             uploadRef={uploadRef}
             onChange={(fileList) => {

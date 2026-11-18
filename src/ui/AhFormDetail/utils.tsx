@@ -167,6 +167,7 @@ export const generateDescriptionItems = <T extends Record<string, any>>(
     .map((column, index) => ({
       key: getColumnKey(column) || index,
       label: column.title as string,
+      span: column.span,
       children: renderCell(column, index)
     }));
 };

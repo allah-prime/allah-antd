@@ -96,7 +96,12 @@ test('树选择、级联、远程搜索下拉和多选字段保存后回显', as
   await page.getByPlaceholder('搜索', { exact: true }).fill('王');
   await page.locator('.ant-select-item-option-content').getByText('王平', { exact: true }).click();
 
+  const channelView = await field(page, '渠道').locator('.ah-form-detail-cell').boundingBox();
   const channels = await edit(page, '渠道');
+  const checkbox = await channels.locator('.ant-checkbox').first().boundingBox();
+  expect(channelView).not.toBeNull();
+  expect(checkbox).not.toBeNull();
+  expect(Math.abs(channelView!.x - checkbox!.x)).toBeLessThan(1);
   await channels.getByRole('checkbox', { name: '线下' }).check();
   await confirm(page);
   await expect(department.getByText('南通')).toBeVisible();
@@ -113,6 +118,13 @@ test('异步树弹窗和异步级联写入业务字段', async ({ page }) => {
   await tree.getByRole('button', { name: '完成选择' }).click();
 
   const region = await edit(page, '服务地区');
+  const delivery = await edit(page, '送货地区');
+  const regionBox = await region.locator('.ant-select').boundingBox();
+  const deliveryBox = await delivery.locator('.ant-select').boundingBox();
+  expect(regionBox).not.toBeNull();
+  expect(deliveryBox).not.toBeNull();
+  expect(Math.abs(regionBox!.x - deliveryBox!.x)).toBeLessThan(1);
+  expect(Math.abs(regionBox!.width - deliveryBox!.width)).toBeLessThan(1);
   await region.getByRole('combobox').click();
   await page.getByRole('menuitemcheckbox', { name: /^中国/ }).click();
   await page.getByRole('menuitemcheckbox', { name: /^江苏/ }).click();

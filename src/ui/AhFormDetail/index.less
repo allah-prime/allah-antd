@@ -1,5 +1,17 @@
 // AhFormDetail 详情表单——read/edit 双模式单元格样式
 
+.ant-descriptions.ah-form-detail-uniform:has(.ah-form-detail-group-title) {
+  > .ant-descriptions-header {
+    margin-bottom: 12px;
+  }
+
+  .ah-form-detail-group-title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+}
+
 // 统一列宽：antd v6 bordered 模式默认 table-layout: auto（value 列随内容伸缩导致参差），
 // 固定为 fixed 后 label 列按 labelWidth 定宽、value 列均分剩余宽度。
 // 注意：table 必须有确定宽度（width: 100%）fixed 才会生效，antd v6 只给了 min-width
@@ -77,7 +89,14 @@
 // 有边框模式：查看态是裸文本（无盒子），需要吸收编辑控件自身的左侧空间
 // （约 11px 内边距 + 1px 边框），使输入框内文字与查看态文字左对齐；
 // 无边框模式的查看态本身是带 11px 内边距的灰盒，输入框直接覆盖原盒位置即可，不做偏移
-.ant-descriptions.ah-form-detail-uniform.ant-descriptions-bordered .ah-form-detail-edit {
+.ant-descriptions.ah-form-detail-uniform.ant-descriptions-bordered
+  .ah-form-detail-edit:has(
+    .ant-input,
+    .ant-input-affix-wrapper,
+    .ant-input-number,
+    .ant-select,
+    .ant-picker
+  ) {
   margin-inline-start: -12px;
 }
 

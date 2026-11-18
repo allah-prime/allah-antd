@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { EditOutlined } from '@ant-design/icons';
-import { Alert, Button, Descriptions, Form, Space } from 'antd';
+import { Alert, Button, Descriptions, Form, Space, theme } from 'antd';
 import type { IUploadRef } from '@allahjs/utils';
 import type { IAhFormDetailColumn, IAhFormDetailProps } from './types';
 import AhAntdConfig from '../utils/AhAntdConfig';
@@ -47,6 +47,7 @@ const NOT_EDITABLE_VALUE_TYPES = ['image', 'title'];
  * @returns React.ReactElement
  */
 const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailProps<T>) => {
+  const { token } = theme.useToken();
   const {
     columns,
     dataSource,
@@ -333,7 +334,21 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
     return groups.map((group, index) => (
       <Descriptions
         key={group.title}
-        title={group.title}
+        title={group.title ? (
+          <Space className="ah-form-detail-group-title" size={8}>
+            <span
+              aria-hidden="true"
+              style={{
+                display: 'block',
+                width: 4,
+                height: 16,
+                borderRadius: 4,
+                background: token.colorPrimary
+              }}
+            />
+            <span>{group.title}</span>
+          </Space>
+        ) : undefined}
         column={props.column || { xs: 1, sm: 1, md: 1, lg: 1, xl: 2, xxl: 3 }}
         bordered={props.bordered ?? true}
         items={generateDescriptionItems(group.columns, currentData, renderCell)}

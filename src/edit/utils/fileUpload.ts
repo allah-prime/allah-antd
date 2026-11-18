@@ -1,5 +1,5 @@
 import { IFileObjVo } from '../../types';
-import type { TFileUpload2Config } from '../../types';
+import type { TFileUploadConfig } from '../../types';
 import { cryptoUtils } from '@allahjs/utils';
 import { ahMessage as message } from '../../ui/utils/ahAppMessage';
 import type { IProgressInfo, IUploadProps } from '../../types';
@@ -11,9 +11,9 @@ import { IFileUpload2UsageType } from '@allahjs/utils';
  */
 export const fileUpload = async (
   file: File,
-  fileKeyRequest: TFileUpload2Config['fileKeyRequest'],
-  uploadFile: TFileUpload2Config['uploadFile'],
-  generateSignUrlReq: TFileUpload2Config['generateSignUrlReq'],
+  fileKeyRequest: TFileUploadConfig['fileKeyRequest'],
+  uploadFile: TFileUploadConfig['uploadFile'],
+  generateSignUrlReq: TFileUploadConfig['generateSignUrlReq'],
   usage: IFileUpload2UsageType,
   permission?: IUploadProps['permission'],
   bucket?: string,

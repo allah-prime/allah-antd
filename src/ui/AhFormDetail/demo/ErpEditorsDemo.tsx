@@ -1,5 +1,5 @@
 import type { IAntTreeNode, IFileObjVoBase } from '@allahjs/utils';
-import { Button, InputNumber, Space, Typography } from 'antd';
+import { Button, InputNumber, Space, Typography, theme } from 'antd';
 import React, { useRef, useState } from 'react';
 import AhFormDetail from '../index';
 import type { IAhFormDetailColumn } from '../types';
@@ -32,11 +32,30 @@ const initialRecord = {
   contact: 'li',
   warehouse: undefined as (typeof warehouses)[number] | undefined,
   limits: { quantity: 8 },
-  channels: ['online']
+  channels: ['online'],
+  orderNumber: 'PO-20261118-001',
+  supplierName: '南通广兴包装',
+  deliveryDate: '2026-12-01',
+  quantity: 120,
+  unitPrice: 38.5,
+  taxRate: 13,
+  urgent: false,
+  paymentMethod: 'monthly',
+  remark: '到货前请联系仓库确认收货时间。'
 };
 
-export default function ErpEditorsDemo() {
+export default function ErpEditorsDemo({
+  layout = 'horizontal',
+  column = 1,
+  grouped = false
+}: {
+  layout?: 'horizontal' | 'vertical';
+  column?: number;
+  grouped?: boolean;
+}) {
+  const { token } = theme.useToken();
   const [record, setRecord] = useState(initialRecord);
+  const [submitted, setSubmitted] = useState<string>();
   const [transferCount, setTransferCount] = useState(0);
   const hasRejectedUpload = useRef(false);
   const columns: IAhFormDetailColumn<typeof initialRecord>[] = [
@@ -138,13 +157,83 @@ export default function ErpEditorsDemo() {
       dataIndex: 'channels',
       valueType: 'checkbox',
       options: [{ label: '线上', value: 'online' }, { label: '线下', value: 'offline' }]
-    }
+    },
+    {
+      title: '采购单号', dataIndex: 'orderNumber',
+      rules: [{ required: true, message: '请输入采购单号' }]
+    },
+    {
+      title: '供应商', dataIndex: 'supplierName',
+      rules: [{ required: true, message: '请输入供应商名称' }]
+    },
+    { title: '交货日期', dataIndex: 'deliveryDate', valueType: 'date' },
+    { title: '采购数量', dataIndex: 'quantity', valueType: 'digit' },
+    { title: '含税单价', dataIndex: 'unitPrice', valueType: 'money' },
+    { title: '税率', dataIndex: 'taxRate', valueType: 'percent' },
+    { title: '是否加急', dataIndex: 'urgent', valueType: 'switch' },
+    {
+      title: '付款方式', dataIndex: 'paymentMethod', valueType: 'radio',
+      options: [{ label: '月结', value: 'monthly' }, { label: '现付', value: 'cash' }]
+    },
+    { title: '备注', dataIndex: 'remark', valueType: 'textarea' }
   ];
+
+  const displayedColumns = grouped
+    ? [
+        { title: '基础信息', valueType: 'title' as const },
+        ...['orderNumber', 'supplierName', 'contact', 'department', 'responsibility', 'urgent']
+          .map(key => columns.find(item => item.dataIndex === key)!),
+        { title: '采购信息', valueType: 'title' as const },
+        ...['quantity', 'unitPrice', 'taxRate', 'paymentMethod', 'deliveryDate', 'channels']
+          .map(key => columns.find(item => item.dataIndex === key)!),
+        { ...columns.find(item => item.dataIndex === 'warehouse')!, span: 1 },
+        { ...columns.find(item => item.dataIndex === 'deliveryArea')!, span: 2 },
+        { ...columns.find(item => Array.isArray(item.dataIndex))!, span: 1 },
+        { ...columns.find(item => item.dataIndex === 'serviceArea')!, span: 2 },
+        { ...columns.find(item => item.dataIndex === 'remark')!, span: 3 },
+        { title: '附件', valueType: 'title' as const },
+        { ...columns.find(item => item.dataIndex === 'attachments')!, span: 3 }
+      ]
+    : columns;
 
   return (
     <Space orientation="vertical" size={16} style={{ width: '100%' }}>
-      <AhFormDetail dataSource={record} columns={columns} column={1} editable onDataChange={setRecord} />
+      <AhFormDetail
+        dataSource={record}
+        columns={displayedColumns}
+        column={column}
+        labelWidth={100}
+        bordered={layout !== 'vertical'}
+        descriptionsProps={{ layout }}
+        editable
+        onDataChange={setRecord}
+      />
+      <Space wrap size={8}>
+        <Button
+          type="primary"
+          onClick={() => setSubmitted(JSON.stringify(record, (_key, value) => value === undefined ? null : value, 2))}
+        >
+          提交已确认数据
+        </Button>
+        <Typography.Text type="secondary">修改字段后先点击确认，再提交查看完整 JSON。</Typography.Text>
+      </Space>
       <Typography.Text>模拟上传次数：{transferCount}</Typography.Text>
+      {submitted && (
+        <pre
+          aria-label="提交的 JSON 数据"
+          style={{
+            margin: 0,
+            padding: 16,
+            borderRadius: token.borderRadiusLG,
+            background: token.colorFillAlter,
+            color: token.colorText,
+            whiteSpace: 'pre-wrap',
+            overflowWrap: 'anywhere'
+          }}
+        >
+          {submitted}
+        </pre>
+      )}
     </Space>
   );
 }

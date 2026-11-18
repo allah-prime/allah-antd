@@ -56,9 +56,33 @@ group:
 
 <code src="./demo/ErpEditorsDemo.tsx"></code>
 
+#### 上下布局
+
+字段名在上方，内容在下方，使用无边框风格，每行两栏。修改字段并确认后，点击「提交已确认数据」查看完整 JSON。
+
+<code src="./demo/ErpVerticalDemo.tsx"></code>
+
+#### 三栏布局
+
+无边框上下布局，每行三栏，展示采购信息、附件、业务选择器和备注。各示例独立保存数据，提交结果显示在对应示例下方。
+
+<code src="./demo/ErpThreeColumnDemo.tsx"></code>
+
+#### 弹窗模式
+
+点击「打开采购详情」在弹窗内使用无边框上下三栏布局。可以同时修改多个字段，确认后提交查看 JSON。关闭后重新打开会保留当前数据。
+
+<code src="./demo/ErpModalDemo.tsx"></code>
+
+#### 分块与混合列宽
+
+用 `valueType: 'title'` 划分「基础信息」「采购信息」「附件」分块，标题下的字段使用同一份表单数据和确认操作。三栏布局中，字段设置 `span: 1` 和 `span: 2` 可组成 1∶2 的一行；备注和附件设置 `span: 3` 占满整行。弹窗示例也使用此布局。
+
+<code src="./demo/ErpGroupedDemo.tsx"></code>
+
 | editor.type | 配置与保存行为 |
 | --- | --- |
-| `upload` | 复用 `FileUpload2`，`props` 支持附件场景、大小、数量和上传接口。图片可用 `accept: 'image/*'` 和 `listType: 'picture-card'`。确认时先校验，再上传新增文件；已有附件保留，移除结果通过 `onFieldSave` 交给业务处理。默认以记录主键关联附件，用 `getRelId(record)` 自定义。 |
+| `upload` | 复用 `FileUpload`，`props` 支持附件场景、大小、数量和上传接口。图片可用 `accept: 'image/*'` 和 `listType: 'picture-card'`。确认时先校验，再上传新增文件；已有附件保留，移除结果通过 `onFieldSave` 交给业务处理。默认以记录主键关联附件，用 `getRelId(record)` 自定义。 |
 | `asyncTree` | `props` 传给 `AsyncTreeModal`，保存选中节点值数组。 |
 | `asyncCascader` | `props` 传给 `AsyncCascader`，沿用控件的单选或多选值。 |
 | `selectSearch` | `props` 传给 `SelectSearch`，支持远程搜索和已选值反查。 |

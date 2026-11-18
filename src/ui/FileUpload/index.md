@@ -1,15 +1,15 @@
 ---
-title: FileUpload2 文件上传
+title: FileUpload 文件上传
 toc: content
 group:
   title: 数据录入
   order: 3
 ---
 
-# FileUpload2 文件上传
+# FileUpload 文件上传
 
 ## 何时使用
-`FileUpload2` 组件用于文件上传的场景，支持单个或多个文件的选择和上传。它允许用户选择文件，并在上传过程中显示上传进度。该组件也可以展示上传文件的预览，支持图片、PDF 和其他文档格式。
+`FileUpload` 组件用于文件上传的场景，支持单个或多个文件的选择和上传。它允许用户选择文件，并在上传过程中显示上传进度。该组件也可以展示上传文件的预览，支持图片、PDF 和其他文档格式。
 
 组件默认开启多选，最多可选择 10 个文件；可通过 `multiple={false}` 切换为单选，并通过 `maxNum` 调整数量上限。
 
@@ -21,7 +21,7 @@ group:
 
 ```jsx
 import React from 'react';
-import FileUpload2 from './FileUpload2';
+import FileUpload from './FileUpload';
 
 const BasicUpload = () => {
   const handleChange = (fileList) => {
@@ -29,7 +29,7 @@ const BasicUpload = () => {
   };
 
   return (
-    <FileUpload2
+    <FileUpload
       fileSize={2048000}  // 最大文件大小2MB
       maxNum={5}          // 最多上传5个文件
       onChange={handleChange}
@@ -44,7 +44,7 @@ export default BasicUpload;
 
 ```jsx
 import React from 'react';
-import FileUpload2 from './FileUpload2';
+import FileUpload from './FileUpload';
 
 const FileTypeUpload = () => {
   const handleChange = (fileList) => {
@@ -52,7 +52,7 @@ const FileTypeUpload = () => {
   };
 
   return (
-    <FileUpload2
+    <FileUpload
       fileSize={1048576}  // 最大文件大小1MB
       maxNum={3}          // 最多上传3个文件
       accept=".jpg,.png,.pdf"  // 仅接受图片和PDF文件
@@ -68,7 +68,7 @@ export default FileTypeUpload;
 
 ```jsx
 import React from 'react';
-import FileUpload2 from './FileUpload2';
+import FileUpload from './FileUpload';
 
 const CustomUploadButton = ({ isDisabled, fileList }) => {
   return (
@@ -92,7 +92,7 @@ const CustomUpload = () => {
   };
 
   return (
-    <FileUpload2
+    <FileUpload
       fileSize={2048000}
       maxNum={5}
       customUploadRender={(isDisabled, fileList) => (
@@ -111,11 +111,11 @@ export default CustomUpload;
 
 ```tsx
 import { fileUpload2Usage } from '@allahjs/utils';
-import FileUpload2 from './FileUpload2'
+import FileUpload from './FileUpload'
 
 export default () => {
   return (
-    <FileUpload2 usage={fileUpload2Usage.NORMAL} listType="picture-card" />
+    <FileUpload usage={fileUpload2Usage.NORMAL} listType="picture-card" />
   )
 }
 ```
@@ -124,12 +124,12 @@ export default () => {
 
 ```tsx
 import { fileUpload2Usage } from '@allahjs/utils';
-import FileUpload2 from './FileUpload2';
+import FileUpload from './FileUpload';
 import { data } from './demo/config';
 
 export default () => {
   return (
-    <FileUpload2 value={data} usage={fileUpload2Usage.NORMAL} listType="picture" />
+    <FileUpload value={data} usage={fileUpload2Usage.NORMAL} listType="picture" />
   )
 }
 ```
@@ -139,24 +139,24 @@ export default () => {
 
 ```tsx
 import { fileUpload2Usage } from '@allahjs/utils';
-import FileUpload2 from './FileUpload2';
+import FileUpload from './FileUpload';
 
 export default () => {
   return (
-    <FileUpload2 usage={fileUpload2Usage.NORMAL} listType="text" />
+    <FileUpload usage={fileUpload2Usage.NORMAL} listType="text" />
   )
 }
 ```
 
 ## FAQ
 
-**Q: `FileUpload2` 组件支持哪些文件类型的预览？**
+**Q: `FileUpload` 组件支持哪些文件类型的预览？**
 
-A: `FileUpload2` 组件支持图片文件、PDF 文件以及其他类型的文件。对于图片文件，组件会直接显示预览；对于 PDF 文件，组件会显示内嵌的 PDF 阅读器；对于其他类型的文件，组件会提供下载链接。
+A: `FileUpload` 组件支持图片文件、PDF 文件以及其他类型的文件。对于图片文件，组件会直接显示预览；对于 PDF 文件，组件会显示内嵌的 PDF 阅读器；对于其他类型的文件，组件会提供下载链接。
 
 **Q: 组件如何处理文件大小限制？**
 
-A: `FileUpload2` 组件会在文件选择之前检查文件大小。如果文件超出设置的最大大小限制，将显示错误提示，并阻止文件上传。
+A: `FileUpload` 组件会在文件选择之前检查文件大小。如果文件超出设置的最大大小限制，将显示错误提示，并阻止文件上传。
 
 **Q: 如何自定义上传按钮的显示？**
 
@@ -164,7 +164,7 @@ A: 可以通过 `customUploadRender` 属性自定义上传按钮的显示方式�
 
 ## FileImportModal 导入弹窗
 
-在 `FileUpload2` 外面套一层导入弹窗。文件上传完成后把 `fileId` 交给 `importReq`，并用 `useScheduleRequest` 跟进异步任务进度。
+在 `FileUpload` 外面套一层导入弹窗。文件上传完成后把 `fileId` 交给 `importReq`，并用 `useScheduleRequest` 跟进异步任务进度。
 
 ```jsx
 import React from 'react';
@@ -184,7 +184,7 @@ export default () => (
 | --- | --- | --- | --- |
 | `importReq` | 上传完成后的导入请求，返回异步任务 | `(fileId: string) => Promise<IAsyncTaskScheduleVo>` | - |
 | `label` | 按钮文案 | `string` | - |
-| `uploadProps` | 传给 `FileUpload2` 的配置 | `IUploadProps` | - |
+| `uploadProps` | 传给 `FileUpload` 的配置 | `IUploadProps` | - |
 | `icon` | 按钮图标 | `React.ReactNode` | - |
 | `type` | 按钮类型 | `ButtonType` | - |
 | `onClick` | 点击按钮时调用，返回 `true` 才打开弹窗 | `() => boolean` | - |

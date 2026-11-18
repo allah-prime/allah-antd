@@ -59,7 +59,7 @@ order: 1
 - [DebounceSelect 防抖选择](/ui/debounce-select) - 带防抖的异步下拉
 - [DatePickerPlus 日期选择](/ui/date-picker-plus) - 带预设范围的日期选择
 - [DayjsPicker 日期时间](/ui/dayjs-picker) - 基于 dayjs 的 `DatePicker`、`TimePicker`、`Calendar`
-- [FileUpload2 文件上传](/ui/file-upload) - 文件上传，同页包含 `FileImportModal`
+- [FileUpload 文件上传](/ui/file-upload) - 文件上传，同页包含 `FileImportModal`
 - [IconSelect 图标选择](/ui/icon-select) - 从图标列表里选择
 - [EditableItem 可编辑项](/ui/editable-item) - 行内切换查看和编辑
 - [ApiParameterEditor API 参数](/ui/api-parameter-editor) - 树形编辑 API 参数
