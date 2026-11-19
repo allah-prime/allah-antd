@@ -28,11 +28,21 @@ group:
 
 <code src="./demo/ImageRenderDemo.tsx"></code>
 
+## JSON 配置与渲染器注册
+
+`columns` 支持纯 JSON 配置。普通字段通过 `valueType` 和 `options` 定义类型和选项，自定义字段用 `renderFunKey` 引用前端 `renderFunObj` 中的注册项。
+
+注册项可提供 `renderValue(value, record)` 自定义查看内容，也可提供 `renderControl({ value, onChange, disabled, record })` 接入行内编辑。只提供查看函数时，该字段只读。只提供编辑控件时，查看态使用字段默认展示。列上的 `render` 和 `editor` 优先于注册项。未注册的 key 沿用原有展示逻辑。
+
+替换 `dataSource` 或修改 `columns` 的配置会同步详情，并清理未确认的改动。即使 `formId` 相同，也可以切换记录。保存成功后的整条记录通过 `onDataChange` 返回。
+
+<code src="./demo/ConfigDemo.tsx"></code>
+
 ## 行内编辑
 
 传入 `editable` 开启编辑能力。开启后**所有可编辑字段常驻注册在表单里**，单元格通过 ProFormField 的 `read` / `edit` 双模式切换：字段值右侧悬停显示铅笔，点击后该字段切到 `edit` 模式变成编辑控件（占满单元格），同时详情顶部出现「数据编辑中」操作栏，右侧提供取消 / 确认按钮。
 
-已进入编辑的字段会保持编辑态，可以同时修改多个字段。点击 **确认** 时校验已修改的字段，再按列顺序调用 `onFieldSave`。全部成功后更新当前记录并退出编辑态；任一返回 `false` 或抛出异常时保留草稿，先前成功的远端更新可能已经生效。需要原子提交时，使用 `AhModalForm` 整表提交，并由后端事务处理。点击 **取消** 会丢弃当前本地草稿。`image`、`title` 或配置了 `render`、`renderFunKey` 的字段作为纯展示项。
+已进入编辑的字段会保持编辑态，可以同时修改多个字段。点击 **确认** 时校验已修改的字段，再按列顺序调用 `onFieldSave`。全部成功后更新当前记录并退出编辑态；任一返回 `false` 或抛出异常时保留草稿，先前成功的远端更新可能已经生效。需要原子提交时，使用 `AhModalForm` 整表提交，并由后端事务处理。点击 **取消** 会丢弃当前本地草稿。配置了 `render` 的字段仅用于展示。通过 `renderFunKey` 配置的字段需要注册 `renderControl` 才能编辑。
 
 <code src="./demo/EditableDemo.tsx"></code>
 
@@ -98,6 +108,7 @@ group:
 | --- | --- | --- | --- |
 | columns | 详情项配置数组，兼容 `IFormColumns`，可附加 `editor` | `IAhFormDetailColumn<T>[]` | - |
 | dataSource | 数据源 | `T` | - |
+| renderFunObj | 自定义字段渲染器注册表，键对应列的 `renderFunKey` | `Record<string, IAhFormDetailRenderer<T>>` | - |
 | request | 异步获取数据 | `() => Promise<T>` | - |
 | formId | 表单组 id，配合全局 `formGroupReq` 拉取字段配置 | `string` | - |
 | primaryKey | 数据唯一 id 的字段名，用于 `image` 类型渲染 | `string` | `id` |

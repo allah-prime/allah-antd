@@ -10,6 +10,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 const EDITABLE_URL = '/allah-antd/~demos/ahformdetail-demo-editabledemo';
 const REQUEST_URL = '/allah-antd/~demos/ahformdetail-demo-requestdemo';
+const CONFIG_URL = '/allah-antd/~demos/ahformdetail-demo-configdemo';
 
 /** 查看态各字段（read 模式）的预期文本 */
 const EXPECTED_VIEW = {
@@ -56,6 +57,67 @@ async function confirmBar(page: Page): Promise<void> {
   await page.locator('body').click({ position: { x: 5, y: 5 } });
   await page.locator('.ah-form-detail-edit-bar button', { hasText: '确' }).click();
 }
+
+test.describe('AhFormDetail JSON 配置', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto(CONFIG_URL);
+    await expect(page.getByText('SUP-001', { exact: true })).toBeVisible();
+  });
+
+  test('渲染选项与注册字段，复用校验、取消和保存', async ({ page }) => {
+    await expect(page.getByText('启用', { exact: true })).toBeVisible();
+    await expect(page.locator('.ant-tag')).toHaveText('手工录入');
+    await expect(page.getByText('南通', { exact: true })).toBeVisible();
+    await expect(page.getByText('常用供应商', { exact: true })).toBeVisible();
+    await expect(page.locator('.ah-form-detail-edit-icon')).toHaveCount(2);
+
+    await clickPencilByLabel(page, '供应商编码');
+    const input = page.getByRole('textbox', { name: '供应商编码' });
+    await expect(input).toHaveValue('SUP-001');
+    await input.fill('');
+    await confirmBar(page);
+    await expect(page.getByText('请输入供应商编码')).toBeVisible();
+    await page.locator('.ah-form-detail-edit-bar button', { hasText: '取' }).click();
+    await expect(page.getByText('SUP-001', { exact: true })).toBeVisible();
+
+    await clickPencilByLabel(page, '供应商编码');
+    await input.fill('SUP-002');
+    await confirmBar(page);
+    await expect(page.getByText('SUP-002', { exact: true })).toBeVisible();
+    await expect(page.locator('pre[aria-label="保存结果"]')).toContainText('"code": "SUP-002"');
+  });
+
+  test('相同 formId 下切换配置和数据，清空旧草稿及缺失字段', async ({ page }) => {
+    await clickPencilByLabel(page, '供应商编码');
+    await page.getByRole('textbox', { name: '供应商编码' }).fill('旧草稿');
+    await page.getByRole('button', { name: '切换新供应商' }).click();
+    await expect(page.getByText('新供应商', { exact: true })).toBeVisible();
+    await expect(page.getByText('供应商状态', { exact: true })).toBeVisible();
+    await expect(page.getByText('未分配编码', { exact: true })).toBeVisible();
+    await expect(page.getByText('南通', { exact: true })).toHaveCount(0);
+    await expect(page.locator('.ah-form-detail-edit-bar')).toHaveCount(0);
+    await clickPencilByLabel(page, '供应商编码');
+    await expect(page.getByRole('textbox', { name: '供应商编码' })).toHaveValue('');
+  });
+
+  test('忽略切换记录前启动的请求和保存结果', async ({ page }) => {
+    await page.getByRole('button', { name: '加载远程供应商' }).click();
+    await expect(page.locator('.ant-skeleton')).toBeVisible();
+    await page.getByRole('button', { name: '查看本地供应商' }).click();
+    await expect(page.getByText('本地供应商', { exact: true })).toBeVisible();
+
+    await clickPencilByLabel(page, '供应商编码');
+    await page.getByRole('textbox', { name: '供应商编码' }).fill('过期编码');
+    await confirmBar(page);
+    await expect(page.locator('.ah-form-detail-edit-bar .ant-btn-loading')).toBeVisible();
+    await page.getByRole('button', { name: '切换新供应商' }).click();
+    // 等待示例中的两个模拟请求完成，再确认当前记录未被覆盖。
+    await page.waitForTimeout(1300);
+    await expect(page.getByText('新供应商', { exact: true })).toBeVisible();
+    await expect(page.getByText('未分配编码', { exact: true })).toBeVisible();
+    await expect(page.locator('pre[aria-label="保存结果"]')).toHaveCount(0);
+  });
+});
 
 test.describe('AhFormDetail 单字段编辑', () => {
   test.beforeEach(async ({ page }) => {

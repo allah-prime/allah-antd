@@ -40,6 +40,11 @@ export type IAhFormDetailEditor<T = any> = {
     }
 );
 
+/** 由 JSON 字段的 renderFunKey 引用的查看与编辑渲染器 */
+export type IAhFormDetailRenderer<T = any> = Partial<
+  Pick<Extract<IAhFormDetailEditor<T>, { type: 'custom' }>, 'renderValue' | 'renderControl'>
+>;
+
 export interface IAhFormDetailColumn<T = any> extends IFormColumns<T> {
   /** 字段占用的详情列数，filled 表示占满当前行剩余空间 */
   span?: NonNullable<DescriptionsProps['items']>[number]['span'];
@@ -55,6 +60,8 @@ export interface IAhFormDetailProps<T = any> {
   columns?: IAhFormDetailColumn<T>[];
   /** 数据源 */
   dataSource?: T;
+  /** 将字段的 renderFunKey 映射到自定义渲染器 */
+  renderFunObj?: Record<string, IAhFormDetailRenderer<T>>;
   /**
    * 数据的唯一id的字段 默认是id
    */

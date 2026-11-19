@@ -120,7 +120,8 @@ export type {
   IAhFormDetailColumn,
   IAhFormDetailEditor,
   IAhFormDetailPickerContext,
-  IAhFormDetailProps
+  IAhFormDetailProps,
+  IAhFormDetailRenderer
 } from './AhFormDetail';
 export { default as AhImagePreview } from './AhImageRender/AhImagePreview';
 

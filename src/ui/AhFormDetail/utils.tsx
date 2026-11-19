@@ -55,12 +55,6 @@ export const groupColumnsByTitle = <T extends Record<string, any>>(
   return groups;
 };
 
-const renderFunObj: any = {
-  tag: (value: any) => {
-    return value;
-  }
-};
-
 /**
  * 渲染详情项内容
  * @param column 列配置
@@ -79,15 +73,7 @@ export const renderItemContent = <T extends Record<string, any>>(
 
   const value = getFieldValueByColumn(record, column);
 
-  // render 是一个函数的key
-  if (renderFunKey) {
-    const renderFun = renderFunObj[renderFunKey];
-
-    // 如果有自定义渲染函数，优先使用
-    if (renderFun) {
-      return renderFun(value, record, 0, { type: 'read' } as any, {} as any);
-    }
-  }
+  if (renderFunKey === 'tag') return value;
 
   // 处理空值
   if (value === null || value === undefined || value === '') {
