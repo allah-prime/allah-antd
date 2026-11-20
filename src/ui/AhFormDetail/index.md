@@ -38,6 +38,14 @@ group:
 
 <code src="./demo/ConfigDemo.tsx"></code>
 
+## 整表编辑
+
+传入 `mode="edit"` 后，可编辑字段直接显示控件。弹窗通过 `formRef.current.validateFields()` 一次校验和读取已注册字段，在业务层按字段路径合并原记录并提交。取消可通过销毁弹窗内容丢弃草稿。日期控件默认保持面板关闭，调用方仍可显式配置焦点和展开行为。
+
+`disabled`、`fieldProps.disabled` 和自定义 `render` 可用于保留只读字段。内置附件编辑器依赖行内保存，该模式仅展示附件。提交值保留 Ant Design 表单格式，由调用方转换为业务接口所需格式。
+
+<code src="./demo/FullEditDemo.tsx"></code>
+
 ## 行内编辑
 
 传入 `editable` 开启编辑能力。开启后**所有可编辑字段常驻注册在表单里**，单元格通过 ProFormField 的 `read` / `edit` 双模式切换：字段值右侧悬停显示铅笔，点击后该字段切到 `edit` 模式变成编辑控件（占满单元格），同时详情顶部出现「数据编辑中」操作栏，右侧提供取消 / 确认按钮。
@@ -117,6 +125,7 @@ group:
 | column | 一行的 Descriptions items 数量，支持响应式对象写法 | `DescriptionsProps['column']` | `{ xs: 1, sm: 1, md: 1, lg: 1, xl: 2, xxl: 3 }` |
 | descriptionsProps | 透传 antd Descriptions 的配置 | `DescriptionsProps` | - |
 | editable | 是否开启单字段编辑能力 | `boolean` | `false` |
+| mode | 整表直接编辑，保存和取消由调用方接管 | `'edit'` | - |
 | onFieldSave | 单字段保存回调，校验通过后触发；返回 `false` 或抛错则停留编辑态，不传视为保存成功（纯前端模式） | `(value, column, record) => Promise<boolean> \| boolean` | - |
 | pencilRender | 自定义铅笔按钮渲染 | `(column, record) => ReactNode` | - |
 | fieldControlRender | 自定义编辑控件渲染，优先级高于内置 valueType 映射 | `(column, record) => ReactNode` | - |

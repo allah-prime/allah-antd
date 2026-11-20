@@ -186,7 +186,8 @@ export const renderProFormField = <T extends Record<string, any>>(
   column: IFormColumns<T>,
   record: T,
   mode: 'read' | 'edit',
-  fieldControlRender?: (column: IFormColumns<T>, record: T) => React.ReactNode
+  fieldControlRender?: (column: IFormColumns<T>, record: T) => React.ReactNode,
+  focusOnMount = true
 ): React.ReactNode => {
   const { valueType, dataIndex, disabled, fieldProps, options, request } = column;
   const isEdit = mode === 'edit';
@@ -202,7 +203,7 @@ export const renderProFormField = <T extends Record<string, any>>(
     ...fieldProps,
     disabled: isEdit ? disabled || fieldProps?.disabled : undefined,
     // edit 模式下控件挂载即聚焦；read 模式所有字段常驻挂载，绝不能抢焦点
-    autoFocus: isEdit ? ((fieldProps as any)?.autoFocus ?? true) : undefined,
+    autoFocus: isEdit ? ((fieldProps as any)?.autoFocus ?? focusOnMount) : undefined,
     style: isEdit ? { width: '100%', ...(fieldProps?.style as object) } : fieldProps?.style
   };
 
@@ -263,7 +264,7 @@ export const renderProFormField = <T extends Record<string, any>>(
       // read 模式为纯文本展示，不弹面板
       const pickerFieldProps = {
         ...mergedFieldProps,
-        ...(isEdit ? { defaultOpen: (fieldProps as any)?.defaultOpen ?? true } : {})
+        ...(isEdit ? { defaultOpen: (fieldProps as any)?.defaultOpen ?? focusOnMount } : {})
       };
       const PickerField =
         valueType === 'date'

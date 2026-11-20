@@ -72,12 +72,14 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
     showPlaceholderBorder = false,
     primaryKey = 'id',
     editable,
+    mode,
     onFieldSave,
     pencilRender,
     fieldControlRender,
     onDataChange,
     formRef
   } = props;
+  const isFullEdit = mode === 'edit';
 
   const [currentData, setData] = useState<T | undefined>(dataSource);
   const [loading, setLoading] = React.useState(false);
@@ -102,6 +104,9 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
     if (formRef) {
       formRef.current = form;
     }
+    return () => {
+      if (formRef?.current === form) formRef.current = undefined;
+    };
   }, [form, formRef]);
 
   useLayoutEffect(() => () => {
@@ -293,7 +298,7 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
               />
             </Form.Item>
           ) : (
-            renderProFormField(column, currentData!, 'edit', fieldControlRender)
+            renderProFormField(column, currentData!, 'edit', fieldControlRender, !isFullEdit)
           )}
         </div>
       </div>
@@ -399,8 +404,9 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
       ? renderFunObj[renderFunKey]
       : undefined;
     const renderControl = renderer?.renderControl;
-    const canEdit = editable && isFormColumn(column, !!renderControl);
-    if (canEdit && editingKeys.has(getColumnKey(column))) {
+    const canEdit = (editable || isFullEdit) && isFormColumn(column, !!renderControl) &&
+      (!isFullEdit || (!column.disabled && !column.fieldProps?.disabled && column.editor?.type !== 'upload'));
+    if (canEdit && (isFullEdit || editingKeys.has(getColumnKey(column)))) {
       return renderEditCell(column, column.editor ?? (renderControl && { type: 'custom', renderControl }));
     }
 
@@ -432,7 +438,7 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
       form={form}
       component={false}
       disabled={saving}
-      onValuesChange={editable ? collectDirtyKeys : undefined}
+      onValuesChange={editable && !isFullEdit ? collectDirtyKeys : undefined}
     >
       {loading ? (
         <div style={getContainerStyle(minHeight, showPlaceholderBorder)}>
@@ -440,7 +446,7 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
         </div>
       ) : (
         <div>
-          {renderEditBar()}
+          {!isFullEdit && renderEditBar()}
           {renderGroupedDescriptions()}
         </div>
       )}

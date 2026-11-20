@@ -109,6 +109,11 @@ export interface IAhFormDetailProps<T = any> {
    */
   editable?: boolean;
   /**
+   * 整表编辑模式。直接渲染可编辑字段，保存和取消由调用方通过 formRef 接管。
+   * 内置 upload 编辑器依赖行内保存流程，在此模式下仅展示。
+   */
+  mode?: 'edit';
+  /**
    * 单字段保存回调，字段校验通过后触发。
    * 返回 true 视为保存成功，退出编辑态并更新组件内部数据；
    * 返回 false 或抛出异常则停留在编辑态。
