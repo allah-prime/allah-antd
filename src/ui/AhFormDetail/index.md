@@ -46,6 +46,20 @@ group:
 
 <code src="./demo/FullEditDemo.tsx"></code>
 
+### 校验辅助：validateForm
+
+`validateForm(formRef)` 校验整张表单：通过返回整份值，失败返回 `undefined`（错误已显示在字段上，调用方直接 return），非校验类异常照常抛出，省去每处 `try/catch`。
+
+```tsx
+const formRef = useRef<FormInstance>(null);
+
+const submit = async () => {
+  const values = await validateForm<Head>(formRef);
+  if (!values) return;
+  await save(values);
+};
+```
+
 ## 行内编辑
 
 传入 `editable` 开启编辑能力。开启后**所有可编辑字段常驻注册在表单里**，单元格通过 ProFormField 的 `read` / `edit` 双模式切换：字段值右侧悬停显示铅笔，点击后该字段切到 `edit` 模式变成编辑控件（占满单元格），同时详情顶部出现「数据编辑中」操作栏，右侧提供取消 / 确认按钮。
@@ -130,7 +144,8 @@ group:
 | pencilRender | 自定义铅笔按钮渲染 | `(column, record) => ReactNode` | - |
 | fieldControlRender | 自定义编辑控件渲染，优先级高于内置 valueType 映射 | `(column, record) => ReactNode` | - |
 | onDataChange | 单字段保存成功后的数据回调 | `(newData: T) => void` | - |
-| formRef | 获取组件内部的表单实例 | `React.MutableRefObject<FormInstance \| undefined>` | - |
+| formRef | 获取组件内部的表单实例，支持 `useRef`、回调 ref 和 `MutableRefObject` | `IAhFormRef` | - |
+| plain | 紧凑表单外观：无边框、上下布局、不加冒号、空值显示「—」。显式传入的 `bordered`、`emptyText`、`descriptionsProps` 优先 | `boolean` | `false` |
 | minHeight | 组件最小高度，用于无数据时撑开容器 | `number \| string` | - |
 | placeholder | 无数据时的占位内容 | `ReactNode` | Skeleton |
 | showPlaceholderBorder | 是否显示占位内容的边框 | `boolean` | `false` |

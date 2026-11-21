@@ -5,8 +5,18 @@ import React, { useEffect, useImperativeHandle, useMemo, useRef } from 'react';
 import './index.less';
 import AhModal, { IAhModalProps } from '../AhModal';
 import { modelSize } from '..';
+import AhModalFormColumns, { type IAhModalFormColumnsProps } from './ColumnsModal';
 
-export type IAhModalFormProps<T> = {
+export type {
+  IAhModalFormColumnsContext,
+  IAhModalFormColumnsProps,
+  IAhModalFormMode
+} from './ColumnsModal';
+
+/** 经典用法：children 放 ProForm 字段 */
+export type IAhModalFormClassicProps<T> = {
+  /** 经典用法下没有列配置；传 `columns` 会进入一体弹窗的列配置模式 */
+  columns?: undefined;
   /**
    * 覆盖弹窗设置
    */
@@ -72,10 +82,13 @@ export type IAhModalFormProps<T> = {
   style?: React.CSSProperties;
 };
 
+/** AhModalForm 属性：传 `columns` 为一体弹窗（详情、编辑、新增），否则为经典 ProForm 弹窗 */
+export type IAhModalFormProps<T> = IAhModalFormClassicProps<T> | IAhModalFormColumnsProps<T>;
+
 /**
  * 这个是对ModalForm的封装
  */
-const AhModalForm = <T,>(props: IAhModalFormProps<T>): React.ReactElement => {
+const ClassicModalForm = <T,>(props: IAhModalFormClassicProps<T>): React.ReactElement => {
   const {
     modalProps = {},
     trigger,
@@ -240,6 +253,18 @@ const AhModalForm = <T,>(props: IAhModalFormProps<T>): React.ReactElement => {
       {triggerDom}
     </>
   );
+};
+
+/**
+ * 表单弹窗。
+ * - 经典用法：`children` 放 ProForm 字段，`onFinish` 接收整份表单。
+ * - 列配置模式：传 `columns` 和 `dataSource`，详情、编辑、新增共用同一个弹窗，见 IAhModalFormColumnsProps。
+ */
+const AhModalForm = <T,>(props: IAhModalFormProps<T>): React.ReactElement => {
+  if (props.columns) {
+    return <AhModalFormColumns {...(props as IAhModalFormColumnsProps<any>)} />;
+  }
+  return <ClassicModalForm<T> {...(props as IAhModalFormClassicProps<T>)} />;
 };
 
 export default AhModalForm;

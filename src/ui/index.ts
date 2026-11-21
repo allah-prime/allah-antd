@@ -71,6 +71,12 @@ export {
     ahReqErrorHandler
 } from './utils/AhNetWork';
 export {
+    archiveModalWidth,
+    compactModalFooterStyle,
+    formColumnsFor,
+    type IFormColumnCount
+} from './utils/formModalSize';
+export {
     antdStatusColor,
     buildListLoading, ColorSpan, getHttpCodeColor,
     modelSize, default as AhReactUtils
@@ -115,8 +121,9 @@ export { default as AhProTable } from './AhProTable/AhProTable';
 
 export { default as ListCarousel } from './ListGroup/ListCarousel/ListCarousel';
 export { default as AhFilePreview } from './AhFilePreview';
-export { default as AhFormDetail } from './AhFormDetail';
+export { default as AhFormDetail, validateForm } from './AhFormDetail';
 export type {
+  IAhFormRef,
   IAhFormDetailColumn,
   IAhFormDetailEditor,
   IAhFormDetailPickerContext,

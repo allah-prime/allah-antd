@@ -126,9 +126,21 @@ export interface IAhFormDetailProps<T = any> {
   fieldControlRender?: (column: IFormColumns<T>, record: T) => React.ReactNode;
   /** 单字段保存成功后的数据回调，便于外部同步最新的数据 */
   onDataChange?: (newData: T) => void;
-  /** 用于获取组件内部的表单实例，可在外部做校验、取值等操作 */
-  formRef?: React.MutableRefObject<FormInstance | undefined>;
+  /** 用于获取组件内部的表单实例，可在外部做校验、取值等操作。支持 useRef、回调 ref 和旧的 MutableRefObject */
+  formRef?: IAhFormRef;
+  /**
+   * 紧凑表单外观，一次开启：无边框、上下布局、不加冒号、空值显示「—」。
+   * 显式传入的 bordered、emptyText、descriptionsProps 仍然优先。
+   * @default false
+   */
+  plain?: boolean;
 }
+
+/** AhFormDetail 的 formRef 可接受的引用类型 */
+export type IAhFormRef =
+  | React.RefCallback<FormInstance | undefined>
+  | React.RefObject<FormInstance | null | undefined>
+  | React.MutableRefObject<FormInstance | undefined>;
 
 /**
  * 详情项渲染上下文

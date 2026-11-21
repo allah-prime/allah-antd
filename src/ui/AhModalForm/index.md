@@ -10,6 +10,20 @@ group:
 
 基于 Ant Design ProForm 的整表单弹窗，适用于新增记录和整单编辑。校验通过后，`onFinish(values)` 接收整份表单数据。已有记录的详情查看和行内修改使用 `AhFormDetail`。
 
+## 一体弹窗（列配置模式）
+
+传入 `columns` 和 `dataSource` 后，AhModalForm 内部渲染 `AhFormDetail`，**详情、编辑、新增共用同一个弹窗**，适合字段不多（10 个及以下）、没有明细表和页签的档案，不再需要抽屉加另开的编辑弹窗。老的 `children` 用法不变。
+
+- **详情态**（`view`）：只读，底栏「关闭」、`viewFooter` 里的额外按钮、「编辑」。`canEdit={false}` 时不显示「编辑」。
+- **编辑态**（`edit`）：点「编辑」切换，底栏「取消」「保存」。取消回到详情态并丢弃草稿；保存成功回到详情态，显示 `onSave` 返回的新记录（返回 `true` 则把已提交值合并进当前记录）。
+- **新增态**（`create`）：不传 `dataSource`，直接是空表单。取消直接关闭，保存成功后关闭。
+- 宽度按字段数自动取：6 个及以下一栏 400px，7–10 个两栏 640px，更多三栏 `min(75vw, 1280px)`；可用 `column`、`width` 覆盖。
+- 内置：紧凑底栏、关闭后销毁内容、编辑和新增态点遮罩不关闭、保存中防重复提交、校验失败保留输入并在字段上提示、`onSave` 抛错时用全局 message 提示并保持当前状态。
+- 打开方式：调用方用 `defaultMode` 决定每次打开的起点（点行传 `view`，点新增传 `create`，列表里的「编辑」传 `edit`），换记录用 `dataSource`。
+- test id：弹窗根节点 `<testId>-modal`（带 `data-mode="view|edit|create"`），编辑按钮 `<testId>-edit`，底栏按钮 `modal-ok`、`modal-cancel`。
+
+<code src="./demo/ColumnsDemo.tsx"></code>
+
 ## 特性
 
 - 基于 ProForm 和 Modal 组件封装
@@ -212,9 +226,34 @@ export default () => {
 | onInit | 表单初始化完成回调 | `(values: T, form: ProFormInstance) => void` | - |
 | onValuesChange | 表单值变化回调 | `(changedValues: Partial<T>, values: T) => void` | - |
 
+### 列配置模式属性
+
+传入 `columns` 后生效，`children`、`initialValues`、`onFinish` 不再使用。
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| columns | 字段配置，传入即启用列配置模式 | `IAhFormDetailColumn<T>[]` | - |
+| dataSource | 当前记录，新增时不传 | `T` | - |
+| visible | 是否显示 | `boolean` | `false` |
+| onCancel | 关闭弹窗（取消、关闭、遮罩、新增保存成功），由调用方把 `visible` 置为 `false` | `() => void` | - |
+| defaultMode | 每次打开的初始状态 | `'view' \| 'edit' \| 'create'` | 有 `dataSource` 为 `view`，否则 `create` |
+| mode / onModeChange | 受控状态与切换回调 | `IAhModalFormMode` / `(mode) => void` | - |
+| canEdit | 详情态是否显示「编辑」 | `boolean` | `true` |
+| onSave | 保存；返回 `false` 保持当前状态，返回对象刷新详情态，抛错会提示 | `(values, mode) => Promise<boolean \| T \| void>` | - |
+| title / subTitle | 标题与灰色辅助文字，可按 `{ mode, record }` 返回 | `ReactNode \| (ctx) => ReactNode` | - |
+| viewFooter | 详情态底栏额外按钮 | `ReactNode \| (ctx) => ReactNode` | - |
+| viewExtra | 详情态字段下方的额外内容 | `ReactNode \| (ctx) => ReactNode` | - |
+| column | 栏数 | `1 \| 2 \| 3` | 按字段数计算 |
+| width | 弹窗宽度 | `number \| string` | 按栏数计算 |
+| okText / cancelText / closeText / editText | 按钮文字 | `ReactNode` | 保存 / 取消 / 关闭 / 编辑 |
+| testId | test id 前缀 | `string` | `ah` |
+| formRef | 内部表单实例 | `IAhFormRef` | - |
+| formDetailProps | 透传给 AhFormDetail 的其他属性 | `Partial<IAhFormDetailProps<T>>` | - |
+| modalProps | 覆盖 AhModal 属性 | `IAhModalProps` | - |
+
 ### 注意事项
 
-1. `initialValues` 为必传参数，用于防止第一次渲染没有值的情况
+1. 经典用法下 `initialValues` 为必传参数，用于防止第一次渲染没有值的情况
 2. `onFinish` 返回 `true` 时会自动关闭弹窗
 3. 组件内部会自动处理表单的重置操作
 4. 支持通过 `formRef` 获取表单实例进行操作

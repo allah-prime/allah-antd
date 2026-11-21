@@ -1,5 +1,5 @@
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { EditOutlined } from '@ant-design/icons';
 import { Alert, Button, Descriptions, Form, Space, theme } from 'antd';
 import type { IUploadRef } from '@allahjs/utils';
@@ -24,8 +24,11 @@ import {
   renderProFormField
 } from './editUtils';
 import { DetailEditor, renderEditorValue } from './editorFields';
+import { assignFormRef, readFormRef } from './formRef';
 import './index.less';
+export { validateForm } from './formRef';
 export type {
+  IAhFormRef,
   IAhFormDetailColumn,
   IAhFormDetailEditor,
   IAhFormDetailPickerContext,
@@ -65,8 +68,7 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
     dataSource,
     renderFunObj,
     request,
-    emptyText = '暂无数据',
-    descriptionsProps,
+    plain = false,
     minHeight,
     placeholder,
     showPlaceholderBorder = false,
@@ -80,6 +82,12 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
     formRef
   } = props;
   const isFullEdit = mode === 'edit';
+  // plain 是一组默认值，显式传入的属性优先
+  const emptyText = props.emptyText ?? (plain ? '—' : '暂无数据');
+  const descriptionsProps = useMemo(
+    () => (plain ? { layout: 'vertical' as const, colon: false, ...props.descriptionsProps } : props.descriptionsProps),
+    [plain, props.descriptionsProps]
+  );
 
   const [currentData, setData] = useState<T | undefined>(dataSource);
   const [loading, setLoading] = React.useState(false);
@@ -101,11 +109,9 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
 
   // 同步内部表单实例到外部 formRef
   useEffect(() => {
-    if (formRef) {
-      formRef.current = form;
-    }
+    assignFormRef(formRef, form);
     return () => {
-      if (formRef?.current === form) formRef.current = undefined;
+      if (readFormRef(formRef) === form || typeof formRef === 'function') assignFormRef(formRef, undefined);
     };
   }, [form, formRef]);
 
@@ -370,7 +376,7 @@ const AhFormDetail = <T extends Record<string, any> = any>(props: IAhFormDetailP
           </Space>
         ) : undefined}
         column={props.column || { xs: 1, sm: 1, md: 1, lg: 1, xl: 2, xxl: 3 }}
-        bordered={props.bordered ?? true}
+        bordered={props.bordered ?? !plain}
         items={generateDescriptionItems(group.columns, currentData, renderCell)}
         {...descriptionsProps}
         // 统一列宽：覆盖 antd v6 bordered 模式的 table-layout: auto，保证 value 列均分宽度
