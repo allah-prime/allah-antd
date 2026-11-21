@@ -114,6 +114,7 @@ export type { IAhSplitEditLayoutProps } from './AhSplitEditLayout';
 export { default as AhImageRender } from './AhImageRender';
 export { default as AhModal } from './AhModal';
 export { default as AhModalForm } from './AhModalForm';
+export type { IAhModalFormMode, IAhModalFormColumnsProps, IAhModalFormColumnsContext, IAhModalFormClassicProps, IAhModalFormProps } from './AhModalForm';
 export { default as AhProTable } from './AhProTable/AhProTable';
 
     export { default as ApiParameterEditor, transformParamsForApi } from './ApiParameterEditor';
