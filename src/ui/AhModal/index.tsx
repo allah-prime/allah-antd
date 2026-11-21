@@ -1,7 +1,7 @@
 import { CloseOutlined } from '@ant-design/icons';
 import { domUtils } from '@allahjs/utils';
 import type { ModalProps } from 'antd';
-import { Modal, Spin } from 'antd';
+import { Modal, Spin, theme } from 'antd';
 import React, { useMemo } from 'react';
 import './index.less';
 
@@ -94,9 +94,9 @@ const getWrapperRadius = (hasHeader: boolean, hasFooter: boolean) => {
   return 8;
 };
 
-const DEFAULT_HEADER_OFFSET = 40;
+/** 标题区总高：上下内边距 12 * 2 + 分隔线 1 + 单行文字 22 */
+const HEADER_OFFSET = 47;
 const DEFAULT_FOOTER_OFFSET = 60;
-const STRING_TITLE_OFFSET = 47;
 const RIGHT_FOOTER_OFFSET = 57;
 
 // ─── 组件 ───
@@ -123,15 +123,12 @@ const AhModal: React.FC<IAhModalProps> = (props) => {
     ...restModalProps
   } = props;
 
+  const { token } = theme.useToken();
   const hasHeader = !!title;
   const hasFooter = !!(rightFooter || footer);
 
   // ─── 高度计算 ───
-  const headerOffset = hasHeader
-    ? typeof title === 'string'
-      ? STRING_TITLE_OFFSET
-      : DEFAULT_HEADER_OFFSET
-    : 0;
+  const headerOffset = hasHeader ? HEADER_OFFSET : 0;
   const footerOffset = rightFooter ? RIGHT_FOOTER_OFFSET : hasFooter ? DEFAULT_FOOTER_OFFSET : 0;
   const offsetHeight = headerOffset + footerOffset;
   const verticalPadding = useMemo(() => resolveVerticalPadding(scrollYPadding), [scrollYPadding]);
@@ -156,6 +153,11 @@ const AhModal: React.FC<IAhModalProps> = (props) => {
         }
       : { padding: 8, ...bodyStyle };
 
+    // 标题区的内边距和分隔线由 header 槽提供，字符串与节点标题一视同仁；调用方的 styles.header 优先
+    const baseHeader: React.CSSProperties = hasHeader
+      ? { padding: '12px 16px', margin: 0, borderBottom: `1px solid ${token.colorSplit}` }
+      : {};
+
     if (typeof stylesProp === 'function') {
       // antd6 styles 支持函数形式，但类型定义中暂未覆盖
       const styleFn = stylesProp as (info: unknown) => Record<string, React.CSSProperties>;
@@ -163,6 +165,7 @@ const AhModal: React.FC<IAhModalProps> = (props) => {
         const resolved = styleFn(info);
         return {
           ...resolved,
+          header: { ...baseHeader, ...resolved?.header },
           body: { ...baseBody, ...resolved?.body },
           container: { padding: 0, ...resolved?.container }
         };
@@ -172,29 +175,22 @@ const AhModal: React.FC<IAhModalProps> = (props) => {
 
     return {
       ...stylesProp,
+      header: { ...baseHeader, ...stylesProp?.header },
       body: { ...baseBody, ...stylesProp?.body },
       container: { padding: 0, ...stylesProp?.container }
     };
-  }, [stylesProp, scrollY, hasHeader, bodyStyle, hasFooter]);
+  }, [stylesProp, scrollY, hasHeader, bodyStyle, hasFooter, token.colorSplit]);
 
-  // ─── 标题 ───
+  // ─── 标题 ───（有 titleExtra 时左右分布，其余原样输出）
   const titleNode = useMemo(() => {
-    if (typeof title === 'string') {
-      return (
-        <div
-          style={{
-            padding: 12,
-            borderBottom: '1px solid #e8e8e8',
-            display: 'flex',
-            justifyContent: 'space-between'
-          }}
-        >
-          <div>{title}</div>
-          {titleExtra && <div>{titleExtra}</div>}
-        </div>
-      );
-    }
-    return title ?? null;
+    if (!title) return null;
+    if (!titleExtra) return title;
+    return (
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>{title}</div>
+        <div>{titleExtra}</div>
+      </div>
+    );
   }, [title, titleExtra]);
 
   // ─── 滚动容器样式 ───

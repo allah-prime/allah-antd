@@ -296,4 +296,4 @@ export default () => {
 2. `height` 属性会影响整个模态框的高度，而 `scrollYHeight` 只影响滚动区域的高度
 3. 当使用 `rightFooter` 时，模态框底部会自动添加一条分割线
 4. 组件会自动处理模态框的关闭按钮，无需额外配置
-5. 标题区域支持字符串和自定义 React 节点两种方式
+5. 标题区域支持字符串和自定义 React 节点两种方式。标题区的内边距（`12px 16px`）和分隔线（主题 `colorSplit`）由 `styles.header` 统一提供，字符串与节点标题一致；需要自定义时传 `styles.header` 覆盖即可，不必在标题节点里自己包外壳。`titleExtra` 对两种标题都生效
