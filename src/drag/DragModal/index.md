@@ -281,6 +281,8 @@ export default () => {
 | --- | --- | --- | --- |
 | visible | 是否可见 | boolean | false |
 | title | 标题 | ReactNode | - |
+| titleRender | 自定义可拖拽标题区的内容 | () => ReactNode | - |
+| extraControls | 与全屏、关闭按钮同排的自定义按钮，相邻按钮间距为 4 px | ReactNode | - |
 | width | 宽度 | number \| string | 520 |
 | children | 内容 | ReactNode | - |
 | footer | 页脚内容 | ReactNode | - |
