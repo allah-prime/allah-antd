@@ -434,7 +434,7 @@ const BaseDragModal: React.FC<BaseDragModalProps> = ({
             style={{
               height: headerHeight,
               minHeight: headerHeight,
-              padding: '0 24px',
+              padding: '0 4px 0 24px',
               boxSizing: 'border-box',
             }}
           >
