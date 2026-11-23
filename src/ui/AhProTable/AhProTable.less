@@ -483,7 +483,12 @@
   }
 }
 
-/* 横向条已经挪到表体下方。表体仍可被同步 scrollLeft，但不要再画出原生横条。 */
-.ah-antd-pro-table-container .ant-table-body.has-horizontal-scrollbar {
-  overflow-x: hidden !important;
+/* 横向条已经挪到表体下方。overflow-x:hidden 时 Chromium 会忽略 scrollLeft，自定义条无法带动表体。 */
+.ah-antd-pro-table-container .ant-table-body.ant-table-body.has-horizontal-scrollbar {
+  overflow-x: auto !important;
+  scrollbar-width: none;
+}
+
+.ah-antd-pro-table-container .ant-table-body.ant-table-body.has-horizontal-scrollbar::-webkit-scrollbar {
+  height: 0;
 }
