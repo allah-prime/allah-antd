@@ -114,7 +114,7 @@
   padding-block: 8px;
 }
 
-// 筛选行：左右各占一半，各自换行
+// 右侧按控件宽度排列，左侧使用剩余空间。
 .ah-filter-row {
   display: flex;
   align-items: center;
@@ -130,14 +130,25 @@
   &-left,
   &-right {
     display: flex;
-    flex: 1 1 0;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
     min-width: 0;
   }
 
+  &-left {
+    flex: 1 1 0;
+
+    // 完整条件仍可通过筛选按钮查看，快捷条件只显示首行。
+    &:has(> .ah-bar-btn) {
+      align-content: start;
+      max-block-size: 32px;
+      overflow: clip;
+    }
+  }
+
   &-right {
+    flex: 0 1 auto;
     justify-content: flex-end;
   }
 }
